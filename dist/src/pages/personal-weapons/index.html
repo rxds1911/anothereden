@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>专武 - 另一个伊甸攻略站</title>
+  <script type="module" crossorigin src="/assets/personal-weapons-DfA0dHTN.js"></script>
+  <link rel="modulepreload" crossorigin href="/assets/table-C-Ui19mt.js">
+  <link rel="modulepreload" crossorigin href="/assets/Breadcrumb-DJZBPKE_.js">
+  <link rel="stylesheet" crossorigin href="/assets/table-DPhrOVZ3.css">
+  <link rel="stylesheet" crossorigin href="/assets/Breadcrumb-CzZ8sRB0.css">
+</head>
+<body>
+  <div id="app">
+    <button class="sidebar-toggle" @click="toggleSidebar">☰</button>
+    <div class="sidebar-overlay" :class="{ show: sidebarOpen }" @click="toggleSidebar"></div>
+    <aside class="sidebar" :class="{ open: sidebarOpen }">
+      <app-sidebar current-page="personal-weapons"></app-sidebar>
+    </aside>
+    <main class="main-content">
+      <div class="page-header">
+        <breadcrumb current="专武"></breadcrumb>
+        <h1>专武</h1>
+      </div>
+      <search-bar v-model="searchQuery" placeholder="搜索专武..." :filters="filterOptions" v-model:filter-value="filterValue"></search-bar>
+      <data-table :columns="columns" :data="filteredData" v-model:sort-key="sortKey" v-model:sort-dir="sortDir"></data-table>
+    </main>
+  </div>
+</body>
+</html>

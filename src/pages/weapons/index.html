@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>武器 - 另一个伊甸攻略站</title>
+</head>
+<body>
+  <div id="app">
+    <button class="sidebar-toggle" @click="toggleSidebar">☰</button>
+    <div class="sidebar-overlay" :class="{ show: sidebarOpen }" @click="toggleSidebar"></div>
+    <aside class="sidebar" :class="{ open: sidebarOpen }">
+      <app-sidebar current-page="weapons"></app-sidebar>
+    </aside>
+    <main class="main-content">
+      <div class="page-header">
+        <breadcrumb current="武器"></breadcrumb>
+        <h1>武器</h1>
+      </div>
+      <search-bar v-model="searchQuery" placeholder="搜索武器..." :filters="filterOptions" v-model:filter-value="filterValue"></search-bar>
+      <data-table :columns="columns" :data="filteredData" v-model:sort-key="sortKey" v-model:sort-dir="sortDir"></data-table>
+    </main>
+  </div>
+  <script type="module">
+    import { createApp } from "vue"
+    import AppSidebar from "../../components/AppSidebar.vue"
+    import SearchBar from "../../components/SearchBar.vue"
+    import DataTable from "../../components/DataTable.vue"
+    import Breadcrumb from "../../components/Breadcrumb.vue"
+    import { sampleWeapons } from "../../data/samples/weapons.js"
+    import "../../assets/styles/variables.css"
+    import "../../assets/styles/reset.css"
+    import "../../assets/styles/layout.css"
+    import "../../assets/styles/sidebar.css"
+    import "../../assets/styles/table.css"
+
+    const columns = [{ label: '名称', key: 'name', sortable: true }, { label: '类型', key: 'type', sortable: true }, { label: '攻击力', key: 'atk', sortable: true }, { label: '特效', key: 'effect', sortable: true }, { label: '获取方式', key: 'source', sortable: true }]
+
+    const app = createApp({
+      data() {
+        return { searchQuery: "", filterValue: "", sortKey: "", sortDir: "", columns, filterOptions: [], sidebarOpen: false }
+      },
+      computed: {
+        allData() { return sampleWeapons },
+        filteredData() {
+          let list = this.allData
+          if (this.filterValue) {
+            list = list.filter(r => r.element === this.filterValue || r.type === this.filterValue)
+          }
+          if (this.searchQuery) {
+            const q = this.searchQuery.toLowerCase()
+            list = list.filter(r => Object.values(r).some(v => v.toString().toLowerCase().includes(q)))
+          }
+          return list
+        }
+      },
+      methods: {
+        toggleSidebar() { this.sidebarOpen = !this.sidebarOpen }
+      }
+    })
+    app.component("app-sidebar", AppSidebar)
+    app.component("search-bar", SearchBar)
+    app.component("data-table", DataTable)
+    app.component("breadcrumb", Breadcrumb)
+    app.mount("#app")
+  </script>
+</body>
+</html>

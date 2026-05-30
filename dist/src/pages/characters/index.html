@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>角色 - 另一个伊甸攻略站</title>
+  <script type="module" crossorigin src="/assets/characters-DCWTCo5L.js"></script>
+  <link rel="modulepreload" crossorigin href="/assets/table-C-Ui19mt.js">
+  <link rel="modulepreload" crossorigin href="/assets/Breadcrumb-DJZBPKE_.js">
+  <link rel="modulepreload" crossorigin href="/assets/characters-D1hDmsrM.js">
+  <link rel="stylesheet" crossorigin href="/assets/table-DPhrOVZ3.css">
+  <link rel="stylesheet" crossorigin href="/assets/Breadcrumb-CzZ8sRB0.css">
+</head>
+<body>
+  <div id="app">
+    <button class="sidebar-toggle" @click="toggleSidebar">☰</button>
+    <div class="sidebar-overlay" :class="{ show: sidebarOpen }" @click="toggleSidebar"></div>
+    <aside class="sidebar" :class="{ open: sidebarOpen }">
+      <app-sidebar current-page="characters"></app-sidebar>
+    </aside>
+    <main class="main-content">
+      <div class="page-header">
+        <breadcrumb current="角色"></breadcrumb>
+        <h1>角色</h1>
+      </div>
+      <search-bar v-model="searchQuery" placeholder="搜索角色..." :filters="filterOptions" v-model:filter-value="filterValue"></search-bar>
+      <data-table :columns="columns" :data="filteredData" v-model:sort-key="sortKey" v-model:sort-dir="sortDir" @row-click="goToDetail"></data-table>
+    </main>
+  </div>
+</body>
+</html>

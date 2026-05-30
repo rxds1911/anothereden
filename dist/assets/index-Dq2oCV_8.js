@@ -1,0 +1,1 @@
+import{c as t,A as p,n}from"./table-C-Ui19mt.js";const s={角色:5,战斗:5,武器:5,防具:5,徽章:5,地图:5,灵晶:5,书架:5,猫:5,日记:5,专武:5,回生:5,副本:5,活动:5},e=t({data(){return{navItems:n,sidebarOpen:!1}},methods:{toggleSidebar(){this.sidebarOpen=!this.sidebarOpen},getItemCount(a){return s[a]||"待补充"}}});e.component("app-sidebar",p);e.mount("#app");

@@ -1,0 +1,589 @@
+﻿/* Stats grid for basic attributes */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 12px;
+  padding: 16px 20px;
+}
+
+.stat-item {
+  background: #f8f9fa;
+  border-radius: 8px;
+  border: 1px solid #eee;
+  padding: 12px 10px;
+  text-align: center;
+  transition: box-shadow .2s;
+}
+
+.stat-item:hover {
+  box-shadow: 0 2px 8px rgba(0,0,0,.08);
+}
+
+.stat-label {
+  font-size: .75rem;
+  color: #888;
+  margin-bottom: 4px;
+  font-weight: 600;
+}
+
+.stat-value {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #1a2940;
+}
+/* Wiki detail page styles */
+
+/* Wiki detail page styles */
+
+
+
+.char-header {
+
+  background: linear-gradient(135deg, #1a2940 0%, #2a3f5a 100%);
+  
+  color: #fff;
+    
+    padding: 24px 32px;
+    
+  display: flex;
+  
+  align-items: center;
+  
+  gap: 20px;
+  
+  border-radius: 8px 8px 0 0;
+  
+  margin-bottom: 0;
+  
+}
+
+
+
+.char-avatar {
+
+  width: 72px;
+  
+  height: 72px;
+  
+  border-radius: 50%;
+  
+  background: #c8a84e;
+    
+    display: flex;
+    
+  align-items: center;
+  
+  justify-content: center;
+  
+  font-size: 2rem;
+  
+  flex-shrink: 0;
+  
+}
+
+
+
+.char-header-info h1 {
+
+  font-size: 1.5rem;
+  
+  color: #fff;
+    
+    margin: 0;
+    
+}
+
+
+
+.char-title-row {
+
+  display: flex;
+  
+  flex-wrap: wrap;
+  
+  gap: 8px;
+  
+  margin: 6px 0;
+  
+}
+
+
+
+.char-class-tag {
+
+  background: #c8a84e;
+    
+    color: #1a2940;
+      
+    padding: 2px 12px;
+    
+  border-radius: 12px;
+  
+  font-size: .8rem;
+  
+  font-weight: 700;
+  
+}
+
+
+
+.char-rank-tag {
+
+  background: rgba(255,255,255,.15);
+  
+  color: #c8a84e;
+    
+    padding: 2px 12px;
+    
+  border-radius: 12px;
+  
+  font-size: .8rem;
+  
+}
+
+
+
+.char-element-tag {
+
+  padding: 2px 12px;
+  
+  border-radius: 12px;
+  
+  font-size: .8rem;
+  
+  font-weight: 600;
+  
+}
+
+
+
+.char-personality {
+
+  display: flex;
+  
+  flex-wrap: wrap;
+  
+  gap: 6px;
+  
+  margin-top: 4px;
+  
+}
+
+
+
+.personality-badge {
+
+  background: rgba(255,255,255,.12);
+  
+  color: #ccc;
+    
+    font-size: .75rem;
+    
+  padding: 1px 10px;
+  
+  border-radius: 10px;
+  
+}
+
+
+
+/* Wiki section */
+
+.wiki-section {
+
+  background: #fff;
+    
+    border: 1px solid #e0e0e0;
+    
+  border-radius: 8px;
+  
+  margin-bottom: 20px;
+  
+  overflow: hidden;
+  
+}
+
+
+
+.wiki-section-header {
+
+  background: #f5f5f5;
+    
+    color: #1a2940;
+      
+    font-size: 1rem;
+    
+  font-weight: 700;
+  
+  padding: 10px 20px;
+  
+  border-bottom: 2px solid #c8a84e;
+  
+}
+
+
+
+/* Info table */
+
+.wiki-info-table {
+
+  width: 100%;
+  
+  border-collapse: collapse;
+  
+}
+
+
+
+.wiki-info-table tr {
+
+  border-bottom: 1px solid #eee;
+  
+}
+
+
+
+.wiki-info-table tr:last-child {
+
+  border-bottom: none;
+  
+}
+
+
+
+.wiki-info-table tr:nth-child(even) {
+
+  background: #fafafa;
+    
+  }
+  
+
+
+.wiki-info-table td {
+
+  padding: 8px 20px;
+  
+  font-size: .88rem;
+  
+}
+
+
+
+.info-label {
+
+  width: 120px;
+  
+  font-weight: 600;
+  
+  color: #888;
+    
+  }
+  
+
+
+/* Wiki table */
+
+.wiki-table {
+
+  width: 100%;
+  
+  border-collapse: collapse;
+  
+  margin-bottom: 0;
+  
+}
+
+
+
+.wiki-table th {
+
+  background: #1a2940;
+    
+    color: #fff;
+      
+    padding: 8px 14px;
+    
+  text-align: left;
+  
+  font-weight: 600;
+  
+  font-size: .82rem;
+  
+}
+
+
+
+.wiki-table td {
+
+  padding: 8px 14px;
+  
+  border-bottom: 1px solid #eee;
+  
+  font-size: .85rem;
+  
+}
+
+
+
+.wiki-table tbody tr:nth-child(even) {
+
+  background: #fafafa;
+    
+  }
+  
+
+
+.wiki-table th[colspan] {
+
+  background: #2a3f5a;
+    
+    text-align: center;
+    
+}
+
+
+
+.wiki-table thead tr:last-child th {
+
+  font-size: .8rem;
+  
+  opacity: .85;
+  
+}
+
+
+
+.wiki-table thead tr:last-child th:first-child:empty,
+
+.wiki-table thead tr:last-child th:empty {
+
+  background: transparent;
+  
+  border-bottom: none;
+  
+}
+
+
+
+.skill-desc {
+
+  font-size: .82rem;
+  
+  line-height: 1.5;
+  
+  color: #555;
+    
+    max-width: 350px;
+    
+}
+
+
+
+.skill-type-heading {
+
+  font-size: .9rem;
+  
+  font-weight: 600;
+  
+  color: #2a3f5a;
+    
+    margin: 16px 20px 8px;
+    
+  padding: 4px 12px;
+  
+  background: #f0f4f8;
+    
+    border-left: 3px solid #c8a84e;
+    
+  border-radius: 0 4px 4px 0;
+  
+}
+
+
+
+.skill-sub-heading {
+
+  font-size: .85rem;
+  
+  font-weight: 600;
+  
+  color: #555;
+    
+    margin: 12px 20px 6px;
+    
+  padding-left: 12px;
+  
+}
+
+
+
+.no-data {
+
+  color: #999;
+    
+    font-size: .82rem;
+    
+  padding: 8px 20px;
+  
+}
+
+
+
+/* Tenmei grid */
+
+.tenmei-grid {
+
+  display: grid;
+  
+  grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+  
+  gap: 8px;
+  
+  padding: 16px 20px;
+  
+}
+
+
+
+.tenmei-card {
+
+  background: #fafafa;
+    
+    border-radius: 6px;
+    
+  border: 1px solid #e0e0e0;
+  
+  overflow: hidden;
+  
+  text-align: center;
+  
+}
+
+
+
+.tenmei-level {
+
+  background: #1a2940;
+    
+    color: #c8a84e;
+      
+    font-weight: 700;
+    
+  font-size: .82rem;
+  
+  padding: 5px 4px;
+  
+}
+
+
+
+.tenmei-effect {
+
+  font-size: .75rem;
+  
+  padding: 6px 4px;
+  
+  color: #333;
+    
+    line-height: 1.4;
+    
+}
+
+
+
+.back-link {
+
+  display: inline-flex;
+  
+  align-items: center;
+  
+  gap: 6px;
+  
+  color: #888;
+    
+    font-size: .85rem;
+    
+  margin-bottom: 12px;
+  
+  text-decoration: none;
+  
+}
+
+
+
+.back-link:hover {
+
+  color: #c8a84e;
+    
+  }
+  
+
+
+/* Tags */
+
+.tag-fire { color: #fff; background: #e74c3c; padding: 1px 10px; border-radius: 10px; font-size: .8rem; }
+  
+  .tag-water { color: #fff; background: #3498db; padding: 1px 10px; border-radius: 10px; font-size: .8rem; }
+    
+  .tag-wind { color: #fff; background: #2ecc71; padding: 1px 10px; border-radius: 10px; font-size: .8rem; }
+    
+  .tag-earth { color: #fff; background: #8e44ad; padding: 1px 10px; border-radius: 10px; font-size: .8rem; }
+    
+  .tag-thunder { color: #fff; background: #f39c12; padding: 1px 10px; border-radius: 10px; font-size: .8rem; }
+    
+  .tag-shade { color: #fff; background: #6c5ce7; padding: 1px 10px; border-radius: 10px; font-size: .8rem; }
+    
+  .tag-crystal { color: #fff; background: #00cec9; padding: 1px 10px; border-radius: 10px; font-size: .8rem; }
+    
+  
+  
+  @media (max-width: 768px) {
+  
+  .char-header { flex-direction: column; text-align: center; padding: 20px; }
+  
+  .char-title-row { justify-content: center; }
+  
+  .char-personality { justify-content: center; }
+  
+  .wiki-table { font-size: .8rem; }
+  
+  .wiki-table th, .wiki-table td { padding: 6px 8px; }
+  
+  .skill-desc { max-width: none; }
+  
+}
+
+
+
+
+.skill-group-label {
+  background: #f0f4f8 !important;
+  font-weight: 700;
+  color: #2a3f5a;
+  font-size: .85rem;
+  text-align: center;
+  border-bottom: 2px solid #c8a84e;
+}
+
+.wiki-table td strong {
+  color: #1a2940;
+}
+
+.skill-type-heading {
+  margin: 16px 0 8px 0 !important;
+  padding: 4px 0 !important;
+}
+.wiki-table th:first-child,
+.wiki-table td:first-child {
+  padding-left: 4px !important;
+}
+
+.skill-sub-heading {
+  margin: 12px 0 6px 0 !important;
+  padding: 6px 10px !important;
+  background: #eef2f7 !important;
+  border-left: 3px solid #1a2940 !important;
+  font-weight: 700 !important;
+  font-size: .88rem !important;
+  color: #1a2940 !important;
+}

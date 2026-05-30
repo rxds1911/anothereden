@@ -1,0 +1,13 @@
+﻿const fs = require("fs");
+const h = fs.readFileSync("C:/Users/xylt2/Documents/anothereden/src/pages/character-detail/index.html", "utf-8");
+console.log("Size:", h.length);
+console.log("Has </html>:", h.includes("</html>"));
+console.log("Has 基础属性:", h.includes("基础属性"));
+console.log("Has 天冥奖励:", h.includes("天冥奖励"));
+console.log("Has 星导觉醒:", h.includes("星导觉醒"));
+console.log("Count of 技能:</div>:", (h.match(/技能<\/div>/g) || []).length);
+console.log("Count of <div id=\"app\">:", (h.match(/<div id="app">/g) || []).length);
+console.log("Has 战斗宣言 header:", h.includes("等级</th>"));
+console.log("Has 固有技能 header:", h.includes("固有技能"));
+console.log("Has 习得技能:", h.includes("习得技能"));
+console.log("Tables count:", (h.match(/<table class="wiki-table"/g) || []).length);
