@@ -1,0 +1,12 @@
+node_modules/
+dist/
+*.log
+*.out
+server.log
+server.out
+server2.log
+srv.log
+vite_*.log
+.DS_Store
+Thumbs.db
+
