@@ -17,7 +17,33 @@
         <breadcrumb current="角色"></breadcrumb>
         <h1>角色</h1>
       </div>
-      <search-bar v-model="searchQuery" placeholder="搜索角色..." :filters="filterOptions" v-model:filter-value="filterValue"></search-bar>
+      <search-bar v-model="searchQuery" placeholder="搜索角色..."></search-bar>
+      <div class="filter-bar">
+        <div class="filter-group">
+          <span class="filter-label">武器</span>
+          <span v-for="f in weaponOptions" :key="f"
+            class="filter-chip" :class="{ active: filterWeapon.includes(f) }"
+            @click="toggleFilter('filterWeapon', f)">{{ f }}</span>
+        </div>
+        <div class="filter-group">
+          <span class="filter-label">属性</span>
+          <span v-for="f in elementOptions" :key="f"
+            class="filter-chip" :class="{ active: filterElement.includes(f) }"
+            @click="toggleFilter('filterElement', f)">{{ f }}</span>
+        </div>
+        <div class="filter-group">
+          <span class="filter-label">头衔</span>
+          <span v-for="f in formOptions" :key="f"
+            class="filter-chip" :class="{ active: filterForm.includes(f) }"
+            @click="toggleFilter('filterForm', f)">{{ f }}</span>
+        </div>
+        <div class="filter-group">
+          <span class="filter-label">个性</span>
+          <span v-for="f in personalityOptions" :key="f"
+            class="filter-chip" :class="{ active: filterPersonality.includes(f) }"
+            @click="toggleFilter('filterPersonality', f)">{{ f }}</span>
+        </div>
+      </div>
       <data-table :columns="columns" :data="filteredData" v-model:sort-key="sortKey" v-model:sort-dir="sortDir" @row-click="goToDetail"></data-table>
     </main>
   </div>

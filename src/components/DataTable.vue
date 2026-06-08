@@ -1,4 +1,4 @@
-﻿<template>
+<template>
   <div class="data-table-wrapper">
     <table class="data-table">
       <thead>
@@ -18,7 +18,8 @@
         </tr>
         <tr v-for="(row, i) in sortedData" :key="i" @click="$emit('row-click', row)" style="cursor:pointer">
           <td v-for="col in columns" :key="col.key">
-            <span v-if="col.tag" :class="'tag tag-' + (row[col.key] || '').toLowerCase()">{{ row[col.key] }}</span>
+            <span v-if="col.type === 'avatar'" class="table-avatar">{{ (row[col.key] || '?')[0] }}</span>
+            <span v-else-if="col.tag" :class="'tag tag-' + (row[col.key] || '').toLowerCase()">{{ row[col.key] }}</span>
             <span v-else-if="col.type === 'list'">{{ (row[col.key] || []).join('、') }}</span>
             <span v-else>{{ row[col.key] || '-' }}</span>
           </td>

@@ -17,7 +17,7 @@ const app = createApp({
     return {
       character,
       sidebarOpen: false,
-      skillTypes: ['\u6218\u6597\u5ba3\u8a00', '\u56fa\u6709\u6280\u80fd', '\u4e60\u5f97\u6280\u80fd']
+      skillTypes: ['战斗宣言', '固有技能', '习得技能']
     }
   },
   computed: {
@@ -28,13 +28,14 @@ const app = createApp({
       if (!this.character || !this.character.starGuideAbilities || !this.character.starGuideAbilities.starSkills) return []
       return this.character.starGuideAbilities.starSkills
     },
-    burstEnhance() {
-      if (!this.character || !this.character.starGuideAbilities || !this.character.starGuideAbilities.burstEnhance) return []
-      return this.character.starGuideAbilities.burstEnhance
-    },
-    abilityGain() {
-      if (!this.character || !this.character.starGuideAbilities || !this.character.starGuideAbilities.abilityGain) return []
-      return this.character.starGuideAbilities.abilityGain
+    mergedStarAbilities() {
+      if (!this.hasStarGuide) return []
+      const list = []
+      const sa = this.character.starGuideAbilities
+      for (const item of sa.tenmei || []) { list.push({ ...item, category: '天冥能力', cond: item.condition || '' }) }
+      for (const item of sa.burstEnhance || []) { list.push({ ...item, category: '星导爆裂强化', cond: item.condition || '' }) }
+      for (const item of sa.abilityGain || []) { list.push({ ...item, category: '获得能力', cond: item.unlock || '' }) }
+      return list
     }
   },
   methods: {
