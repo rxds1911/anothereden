@@ -116,3 +116,18 @@
   color: #fff;
   border-color: #1a2940;
 }
+
+/* Collapsible filter section */
+.filter-collapse {
+  margin-top: 2px;
+}
+.filter-label-clickable {
+  cursor: pointer;
+  user-select: none;
+}
+.filter-label-clickable:hover {
+  color: #1a2940;
+}
+.filter-collapse-content {
+  margin-top: 6px;
+}

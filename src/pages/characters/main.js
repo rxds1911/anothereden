@@ -14,7 +14,7 @@
 
     const app = createApp({
       data() {
-        return { searchQuery: "", filterWeapon: [], filterElement: [], filterForm: [], filterPersonality: [], sortKey: "", sortDir: "", columns, filterOptions: [], personalityOptions: ["主人公","天之指引","冥之诱语","大地元晶","龙","恋爱烦恼","机械","诅咒","失忆","封印","葬仪","法外之人","复仇者"], weaponOptions: ['刀','剑','杖','斧','枪','弓','拳','锤'], elementOptions: ['火','水','风','地','无','阴','雷','晶'], formOptions: ['NS','AS','ES','AC'], sidebarOpen: false }
+        return { searchQuery: "", filterWeapon: [], filterElement: [], filterForm: [], filterPersonality: [], filterLightShadow: [], showPersonality: false, sortKey: "", sortDir: "", columns, filterOptions: [], personalityOptions: ["主人公","天之指引","冥之诱语","大地元晶","龙","恋爱烦恼","机械","诅咒","失忆","封印","葬仪","法外之人","复仇者"], weaponOptions: ['刀','剑','杖','斧','枪','弓','拳','锤'], elementOptions: ['火','水','风','地','无','阴','雷','晶'], formOptions: ['NS','AS','ES','AC'], lightShadowOptions: ['天','冥'], sidebarOpen: false }
       },
       computed: {
         allData() { return sampleCharacters },
@@ -31,6 +31,9 @@
           }
           if (this.filterPersonality.length) {
             list = list.filter(r => r.personality && r.personality.some(p => this.filterPersonality.includes(p)))
+          }
+          if (this.filterLightShadow.length) {
+            list = list.filter(r => this.filterLightShadow.includes(r.lightShadow))
           }
           if (this.searchQuery) {
             const q = this.searchQuery.toLowerCase()

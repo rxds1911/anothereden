@@ -38,10 +38,22 @@
             @click="toggleFilter('filterForm', f)">{{ f }}</span>
         </div>
         <div class="filter-group">
-          <span class="filter-label">个性</span>
-          <span v-for="f in personalityOptions" :key="f"
-            class="filter-chip" :class="{ active: filterPersonality.includes(f) }"
-            @click="toggleFilter('filterPersonality', f)">{{ f }}</span>
+          <span class="filter-label">天冥</span>
+          <span v-for="f in lightShadowOptions" :key="f"
+            class="filter-chip" :class="{ active: filterLightShadow.includes(f) }"
+            @click="toggleFilter('filterLightShadow', f)">{{ f }}</span>
+        </div>
+        <div class="filter-group">
+          <span class="filter-label filter-label-clickable" @click="showPersonality = !showPersonality">
+            个性筛选（点击展开）
+          </span>
+        </div>
+        <div v-show="showPersonality" class="filter-collapse-content">
+          <div class="filter-group">
+            <span v-for="f in personalityOptions" :key="f"
+              class="filter-chip" :class="{ active: filterPersonality.includes(f) }"
+              @click="toggleFilter('filterPersonality', f)">{{ f }}</span>
+          </div>
         </div>
       </div>
       <data-table :columns="columns" :data="filteredData" v-model:sort-key="sortKey" v-model:sort-dir="sortDir" @row-click="goToDetail"></data-table>
