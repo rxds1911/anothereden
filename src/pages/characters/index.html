@@ -46,9 +46,10 @@
             @click="toggleFilter('filterLightShadow', f)">{{ f }}</span>
         </div>
         <div class="filter-group">
-          <span class="filter-label filter-label-clickable" @click="showPersonality = !showPersonality">
+          <span class="filter-label filter-label-clickable" :class="{ expanded: showPersonality }" @click="showPersonality = !showPersonality">
             个性筛选（点击展开）
           </span>
+            
         </div>
         <div v-show="showPersonality" class="filter-collapse-content">
           <div class="filter-group">
