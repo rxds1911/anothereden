@@ -1,18 +1,28 @@
 <template>
   <div class="char-list">
+    <!-- Sort Bar -->
     <div class="char-list-toolbar" v-if="columns.some(c => c.sortable)">
-      <span class="sort-label">排序：</span>
+      <span class="sort-label">排序</span>
       <span v-for="col in columns.filter(c => c.sortable)" :key="col.key"
         class="sort-btn" :class="{ active: sortKey === col.key, asc: sortKey === col.key && sortDir === 'asc', desc: sortKey === col.key && sortDir === 'desc' }"
         @click="toggleSort(col.key)">
         {{ col.label }}
         <span class="sort-arrow" v-if="sortKey === col.key">{{ sortDir === 'asc' ? '↑' : '↓' }}</span>
       </span>
+      <span v-if="hasActiveFilters" class="sort-clear-all" @click="$emit('clear-filters')">
+        清除筛选
+      </span>
     </div>
+
+    <!-- Empty State -->
     <div v-if="sortedData.length === 0" class="char-list-empty">
-      暂无数据
+      <div class="char-list-empty-icon">🔍</div>
+      <div class="char-list-empty-text">没有找到符合条件的角色</div>
+      <div class="char-list-empty-hint">试试调整筛选条件或搜索关键词</div>
     </div>
-    <div v-for="(row, i) in sortedData" :key="i" class="char-card" @click="$emit('row-click', row)">
+
+    <!-- Cards -->
+    <div v-for="(row, i) in sortedData" :key="row.id || i" class="char-card" @click="$emit('row-click', row)" :style="{ animationDelay: (i * 0.03) + 's' }">
       <div class="char-card-avatar">{{ (row.name || '?')[0] }}</div>
       <div class="char-card-body">
         <div class="char-card-top">
@@ -41,9 +51,10 @@ export default {
     columns: Array,
     data: { type: Array, default: () => [] },
     sortKey: String,
-    sortDir: String
+    sortDir: String,
+    hasActiveFilters: { type: Boolean, default: false }
   },
-  emits: ["update:sortKey", "update:sortDir", "row-click"],
+  emits: ["update:sortKey", "update:sortDir", "row-click", "clear-filters"],
   computed: {
     sortedData() {
       if (!this.sortKey) return this.data

@@ -91,14 +91,17 @@
         <div class="detail-section-header"><span class="icon">✨</span> 星导觉醒</div>
         <div class="star-guide-section">
           <div class="skill-group-title">星导技能</div>
-          <div class="star-skill-comparison" v-if="starSkills.length">
-            <div class="star-skill-box before" v-for="skill in starSkills" :key="skill.name">
-              <div class="star-skill-box-label">强化前</div>
-              <div class="star-skill-box-desc">{{ skill.normalState }}</div>
-            </div>
-            <div class="star-skill-box after" v-for="skill in starSkills" :key="skill.name + '-after'">
-              <div class="star-skill-box-label">强化后</div>
-              <div class="star-skill-box-desc">{{ skill.burstState }}</div>
+          <div class="star-skill-wrap" v-if="starSkills.length">
+            <div class="star-skill-comparison" v-for="skill in starSkills" :key="skill.name">
+              <div class="star-skill-box before">
+                <div class="star-skill-box-label">强化前</div>
+                <div class="star-skill-box-desc">{{ skill.normalState }}</div>
+              </div>
+              <div class="star-skill-connector">→</div>
+              <div class="star-skill-box after">
+                <div class="star-skill-box-label">强化后</div>
+                <div class="star-skill-box-desc">{{ skill.burstState }}</div>
+              </div>
             </div>
           </div>
           <div class="skill-group-title">觉醒能力</div>

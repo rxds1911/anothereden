@@ -13,9 +13,11 @@
       <app-sidebar current-page="characters"></app-sidebar>
     </aside>
     <main class="main-content">
-      <div class="page-header" style="margin-bottom: 20px;">
-        <h1 style="font-size: 1.4rem; font-weight: 700; color: #1a2940; margin: 0;">角色</h1>
-        <p style="font-size: .82rem; color: #999; margin: 4px 0 0 0;">共 {{ filteredData.length }} 名角色</p>
+      <div class="char-page-header">
+        <div>
+          <h1 class="char-page-title">角色</h1>
+          <p class="char-page-count">共 <strong>{{ filteredData.length }}</strong> 名角色</p>
+        </div>
       </div>
       <search-bar v-model="searchQuery" placeholder="搜索角色..."></search-bar>
       <div class="filter-bar">
@@ -56,7 +58,7 @@
           </div>
         </div>
       </div>
-      <data-table :columns="columns" :data="filteredData" v-model:sort-key="sortKey" v-model:sort-dir="sortDir" @row-click="goToDetail"></data-table>
+      <data-table :columns="columns" :data="filteredData" v-model:sort-key="sortKey" v-model:sort-dir="sortDir" :has-active-filters="hasActiveFilters" @row-click="goToDetail" @clear-filters="clearFilters"></data-table>
     </main>
   </div>
   <script type="module" src="main.js"></script>

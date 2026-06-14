@@ -1,18 +1,13 @@
-﻿<template>
-  <div class="toolbar">
+<template>
+  <div class="search-wrap">
     <div class="search-bar">
       <span class="search-icon">🔍</span>
       <input type="text" :placeholder="placeholder"
         :value="modelValue"
         @input="$emit('update:modelValue', $event.target.value)"
         class="search-input" />
+      <span v-if="modelValue" class="search-clear" @click="$emit('update:modelValue', '')">✕</span>
     </div>
-    <select v-if="filters && filters.length" :value="filterValue"
-      @change="$emit('update:filterValue', $event.target.value)"
-      class="filter-select">
-      <option value="">全部</option>
-      <option v-for="f in filters" :key="f.value" :value="f.value">{{ f.label }}</option>
-    </select>
   </div>
 </template>
 
@@ -30,10 +25,42 @@ export default {
 </script>
 
 <style scoped>
-.toolbar { display: flex; gap: 12px; margin-bottom: 20px; flex-wrap: wrap; align-items: center; }
-.search-bar { display: flex; align-items: center; gap: 8px; background: var(--color-bg-card); border: 1px solid var(--color-border); border-radius: var(--border-radius); padding: 6px 12px; flex: 1; max-width: 500px; }
-.search-icon { font-size: 0.9rem; opacity: 0.5; }
-.search-input { flex: 1; border: none; outline: none; background: transparent; font-size: 0.9rem; color: var(--color-text); }
-.search-input::placeholder { color: var(--color-text-light); opacity: 0.6; }
-.filter-select { border: 1px solid var(--color-border); border-radius: 4px; padding: 6px 10px; background: #fff; font-size: 0.85rem; color: var(--color-text); cursor: pointer; }
+.search-wrap { margin-bottom: 20px; }
+.search-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  padding: 10px 16px;
+  max-width: 480px;
+  transition: all .2s;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+}
+.search-bar:focus-within {
+  border-color: #c8a84e;
+  box-shadow: 0 0 0 3px rgba(200,168,78,0.1);
+}
+.search-icon { font-size: .9rem; opacity: 0.4; flex-shrink: 0; }
+.search-input {
+  flex: 1;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: .88rem;
+  color: #2c2c2c;
+  font-family: inherit;
+}
+.search-input::placeholder { color: #bbb; }
+.search-clear {
+  font-size: .75rem;
+  color: #ccc;
+  cursor: pointer;
+  padding: 2px 6px;
+  border-radius: 50%;
+  transition: all .15s;
+  flex-shrink: 0;
+}
+.search-clear:hover { color: #c8a84e; background: rgba(200,168,78,0.08); }
 </style>

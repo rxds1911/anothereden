@@ -18,6 +18,9 @@
       },
       computed: {
         allData() { return sampleCharacters },
+        hasActiveFilters() {
+          return this.filterWeapon.length > 0 || this.filterElement.length > 0 || this.filterForm.length > 0 || this.filterLightShadow.length > 0 || this.filterPersonality.length > 0 || this.searchQuery.trim() !== ""
+        },
         filteredData() {
           let list = this.allData
           if (this.filterWeapon.length) {
@@ -51,6 +54,14 @@
           } else {
             this[key] = [...arr, value]
           }
+        },
+        clearFilters() {
+          this.filterWeapon = []
+          this.filterElement = []
+          this.filterForm = []
+          this.filterLightShadow = []
+          this.filterPersonality = []
+          this.searchQuery = ""
         },
         goToDetail(row) { window.location.href = "../character-detail/index.html?id=" + row.id }
       }
