@@ -1,30 +1,135 @@
-﻿<!DOCTYPE html> <html lang="zh-CN"> <head>   <meta charset="UTF-8" />   <meta name="viewport" content="width=device-width, initial-scale=1.0" />   <title>角色详情</title> </head> <body>   <div id="app">     <button class="sidebar-toggle" @click="toggleSidebar"></button>     <div class="sidebar-overlay" :class="{ show: sidebarOpen }" @click="toggleSidebar"></div>     <aside class="sidebar" :class="{ open: sidebarOpen }">       <app-sidebar current-page="characters"></app-sidebar>     </aside>     <main class="main-content" v-if="character">       <a class="back-link" href="../characters/index.html"> 返回角色列表</a>        <div class="char-header">         <div class="char-avatar">⭐</div>         <div class="char-header-info">           <h1 class="char-name">{{ character.name }}</h1>           <div class="char-title-row">             <span class="char-class-tag">{{ character.job }}</span>             <span class="char-rank-tag">{{ character.stars }}★</span>             <span :class="'char-element-tag tag-' + character.element.toLowerCase()">{{ character.element }}</span>           </div>           <div class="char-personality">             <span v-for="p in character.personality" :key="p" class="personality-badge">{{ p }}</span>           </div>         </div>       </div>        <div class="wiki-section">         <div class="wiki-section-header">基础属性</div>         <div class="stats-grid">           <div class="stat-item"><div class="stat-label">星级</div><div class="stat-value">{{ character.stars }} ★</div></div>           <div class="stat-item"><div class="stat-label">头衔</div><div class="stat-value">{{ character.title }}</div></div>           <div class="stat-item"><div class="stat-label">天冥</div><div class="stat-value">{{ character.lightShadow }}</div></div>           <div class="stat-item"><div class="stat-label">性别</div><div class="stat-value">{{ character.gender }}</div></div>           <div class="stat-item"><div class="stat-label">星导</div><div class="stat-value">{{ character.starGuide }}</div></div>           <div class="stat-item"><div class="stat-label">属性</div><div class="stat-value"><span :class="'tag tag-' + character.element.toLowerCase()">{{ character.element }}</span></div></div>           <div class="stat-item"><div class="stat-label">武器</div><div class="stat-value">{{ character.weapon }}</div></div>           <div class="stat-item"><div class="stat-label">职业书掉落</div><div class="stat-value">{{ character.tomeDrop }}</div></div>           <div class="stat-item"><div class="stat-label">声优</div><div class="stat-value">{{ character.voiceActor }}</div></div>           <div class="stat-item"><div class="stat-label">入手方式</div><div class="stat-value">{{ character.acquisition }}</div></div>         </div>       </div>        <div class="wiki-section">         <div class="wiki-section-header">天冥奖励</div>         <div class="tenmei-grid">           <div class="tenmei-card" v-for="item in character.starGuideAbilities.tenmei" :key="item.condition">             <div class="tenmei-level">{{ item.condition }}</div>             <div class="tenmei-effect">{{ item.initialEffect }}</div>           </div>         </div>       </div>        <div class="wiki-section">         <div class="wiki-section-header">技能</div>         <div v-for="st in skillTypes" :key="st">           <h4 class="skill-type-heading">{{ st }}</h4>           <table class="wiki-table" v-if="getSkillsByType(st).length">             <thead v-if="st === '战斗宣言'">               <tr><th>技能名</th><th>等级</th></tr>             </thead>             <thead v-else>               <tr><th>技能名</th><th>属性</th><th>MP</th><th>效果</th></tr>             </thead>             <tbody>               <tr v-for="skill in getSkillsByType(st)" :key="skill.name">                 <td v-if="st === '战斗宣言'"><strong>{{ skill.name }}</strong></td>                 <td v-if="st === '战斗宣言'">{{ skill.level || 'Lv.1' }}</td>                 <td v-if="st !== '战斗宣言'"><strong>{{ skill.name }}</strong></td>                 <td v-if="st !== '战斗宣言'"><span :class="'tag tag-' + skill.type.toLowerCase()">{{ skill.type }}</span></td>                 <td v-if="st !== '战斗宣言'">{{ skill.cost }}</td>                 <td v-if="st !== '战斗宣言'" class="skill-desc">{{ skill.desc }}</td>               </tr>             </tbody>           </table>           <p v-else class="no-data">暂无</p>         </div>       </div>              <div class="wiki-section" v-if="hasStarGuide">
-        <div class="wiki-section-header">星导觉醒</div>
-        <h4 class="skill-type-heading">星导技能</h4>
-        <table class="wiki-table" v-if="starSkills.length">
-          <thead><tr><th>强化前</th><th>强化后</th></tr></thead>
-          <tbody>
-            <tr v-for="skill in starSkills" :key="skill.name">
-              <td class="skill-desc">{{ skill.normalState }}</td>
-              <td class="skill-desc">{{ skill.burstState }}</td>
-            </tr>
-          </tbody>
-        </table>
-        <h4 class="skill-type-heading">觉醒能力</h4>
-        <table class="wiki-table" v-if="mergedStarAbilities.length">
-          <thead>
-            <tr>
-              <th>分类</th>
-              <th>初期效果</th>
-              <th>强化效果</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="item in mergedStarAbilities" :key="item.category + '-' + item.name">
-              <td><span class="ability-category-tag">{{ item.category }}</span></td>
-              <td class="skill-desc">{{ item.initialEffect }}</td>
-              <td class="skill-desc">{{ item.enhancedEffect }}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>     </main>     <main class="main-content" v-else>       <div class="page-header">         <h1>角色未找到</h1>         <p><a href="../characters/index.html">返回角色列表</a></p>       </div>     </main>   </div>   <script type="module" src="main.js"></script> </body> </html>
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>角色详情</title>
+</head>
+<body>
+  <div id="app">
+    <button class="sidebar-toggle" @click="toggleSidebar">☰</button>
+    <div class="sidebar-overlay" :class="{ show: sidebarOpen }" @click="toggleSidebar"></div>
+    <aside class="sidebar" :class="{ open: sidebarOpen }">
+      <app-sidebar current-page="characters"></app-sidebar>
+    </aside>
+    <main class="main-content" v-if="character">
+      <a class="back-link" href="../characters/index.html">← 返回角色列表</a>
+
+      <!-- Hero Header -->
+      <div class="char-hero">
+        <div class="char-hero-avatar">⭐</div>
+        <div class="char-hero-info">
+          <h1 class="char-hero-name">{{ character.name }}</h1>
+          <div class="char-hero-tags">
+            <span class="char-hero-tag">{{ character.job }}</span>
+            <span class="char-hero-tag">{{ character.stars }}★</span>
+            <span class="char-hero-tag element" :class="'tag-' + character.element.toLowerCase()">{{ character.element }}</span>
+            <span class="char-hero-tag">{{ character.form }}</span>
+          </div>
+          <div class="char-hero-personality">
+            <span v-for="p in character.personality" :key="p">{{ p }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Basic Stats -->
+      <div class="detail-section">
+        <div class="detail-section-header"><span class="icon">📊</span> 基础属性</div>
+        <div class="stats-grid">
+          <div class="stat-item"><div class="stat-label">星级</div><div class="stat-value">{{ character.stars }} ★</div></div>
+          <div class="stat-item"><div class="stat-label">头衔</div><div class="stat-value">{{ character.title }}</div></div>
+          <div class="stat-item"><div class="stat-label">天冥</div><div class="stat-value">{{ character.lightShadow }}</div></div>
+          <div class="stat-item"><div class="stat-label">性别</div><div class="stat-value">{{ character.gender }}</div></div>
+          <div class="stat-item"><div class="stat-label">星导</div><div class="stat-value">{{ character.starGuide }}</div></div>
+          <div class="stat-item"><div class="stat-label">属性</div><div class="stat-value"><span :class="'tag tag-' + character.element.toLowerCase()">{{ character.element }}</span></div></div>
+          <div class="stat-item"><div class="stat-label">武器</div><div class="stat-value">{{ character.weapon }}</div></div>
+          <div class="stat-item"><div class="stat-label">职业书掉落</div><div class="stat-value">{{ character.tomeDrop }}</div></div>
+          <div class="stat-item"><div class="stat-label">声优</div><div class="stat-value">{{ character.voiceActor }}</div></div>
+          <div class="stat-item"><div class="stat-label">入手方式</div><div class="stat-value">{{ character.acquisition }}</div></div>
+        </div>
+      </div>
+
+      <!-- Tenmei Rewards -->
+      <div class="detail-section">
+        <div class="detail-section-header"><span class="icon">🎁</span> 天冥奖励</div>
+        <div class="tenmei-modern">
+          <div class="tenmei-card" v-for="item in character.starGuideAbilities.tenmei" :key="item.condition">
+            <div class="tenmei-level">{{ item.condition }}</div>
+            <div class="tenmei-effect">{{ item.initialEffect }}</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Skills -->
+      <div class="detail-section">
+        <div class="detail-section-header"><span class="icon">⚔️</span> 技能</div>
+        <div class="skills-container">
+          <div v-for="st in skillTypes" :key="st" class="skill-group">
+            <div class="skill-group-title">{{ st }}</div>
+            <div class="skill-cards" v-if="getSkillsByType(st).length">
+              <div class="skill-card" v-for="skill in getSkillsByType(st)" :key="skill.name">
+                <div class="skill-card-icon" :style="{ background: skill.type ? getTypeColor(skill.type) : '#888' }">
+                  {{ (skill.type || '?')[0] }}
+                </div>
+                <div class="skill-card-body">
+                  <div class="skill-card-header">
+                    <span class="skill-card-name">{{ skill.name }}</span>
+                    <span class="skill-card-meta" v-if="skill.cost">MP {{ skill.cost }}</span>
+                    <span class="skill-card-meta" v-if="skill.level">{{ skill.level }}</span>
+                  </div>
+                  <div class="skill-card-desc" v-if="skill.desc">{{ skill.desc }}</div>
+                </div>
+              </div>
+            </div>
+            <p v-else class="no-data">暂无</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Star Guide -->
+      <div class="detail-section" v-if="hasStarGuide">
+        <div class="detail-section-header"><span class="icon">✨</span> 星导觉醒</div>
+        <div class="star-guide-section">
+          <div class="skill-group-title">星导技能</div>
+          <div class="star-skill-comparison" v-if="starSkills.length">
+            <div class="star-skill-box before" v-for="skill in starSkills" :key="skill.name">
+              <div class="star-skill-box-label">强化前</div>
+              <div class="star-skill-box-desc">{{ skill.normalState }}</div>
+            </div>
+            <div class="star-skill-box after" v-for="skill in starSkills" :key="skill.name + '-after'">
+              <div class="star-skill-box-label">强化后</div>
+              <div class="star-skill-box-desc">{{ skill.burstState }}</div>
+            </div>
+          </div>
+          <div class="skill-group-title">觉醒能力</div>
+          <div class="ability-table-wrap" v-if="mergedStarAbilities.length">
+            <table class="ability-table">
+              <thead>
+                <tr>
+                  <th>分类</th>
+                  <th>初期效果</th>
+                  <th>强化效果</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="item in mergedStarAbilities" :key="item.category + '-' + item.name">
+                  <td><span class="ability-category-tag">{{ item.category }}</span></td>
+                  <td>{{ item.initialEffect }}</td>
+                  <td>{{ item.enhancedEffect }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </main>
+    <main class="main-content" v-else>
+      <div class="page-header">
+        <h1>角色未找到</h1>
+        <p><a href="../characters/index.html">返回角色列表</a></p>
+      </div>
+    </main>
+  </div>
+  <script type="module" src="main.js"></script>
+</body>
+</html>

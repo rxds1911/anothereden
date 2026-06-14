@@ -1,31 +1,36 @@
 <template>
-  <div class="data-table-wrapper">
-    <table class="data-table">
-      <thead>
-        <tr>
-          <th v-for="col in columns" :key="col.key"
-            :class="{ sortable: col.sortable, ['sort-' + sortDir]: sortKey === col.key }"
-            @click="col.sortable && toggleSort(col.key)">
-            {{ col.label }}
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-if="sortedData.length === 0">
-          <td :colspan="columns.length" style="text-align:center;padding:40px;color:var(--color-text-light)">
-            暂无数据
-          </td>
-        </tr>
-        <tr v-for="(row, i) in sortedData" :key="i" @click="$emit('row-click', row)" style="cursor:pointer">
-          <td v-for="col in columns" :key="col.key">
-            <span v-if="col.type === 'avatar'" class="table-avatar">{{ (row[col.key] || '?')[0] }}</span>
-            <span v-else-if="col.tag" :class="'tag tag-' + (row[col.key] || '').toLowerCase()">{{ row[col.key] }}</span>
-            <span v-else-if="col.type === 'list'">{{ (row[col.key] || []).join('、') }}</span>
-            <span v-else>{{ row[col.key] || '-' }}</span>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+  <div class="char-list">
+    <div class="char-list-toolbar" v-if="columns.some(c => c.sortable)">
+      <span class="sort-label">排序：</span>
+      <span v-for="col in columns.filter(c => c.sortable)" :key="col.key"
+        class="sort-btn" :class="{ active: sortKey === col.key, asc: sortKey === col.key && sortDir === 'asc', desc: sortKey === col.key && sortDir === 'desc' }"
+        @click="toggleSort(col.key)">
+        {{ col.label }}
+        <span class="sort-arrow" v-if="sortKey === col.key">{{ sortDir === 'asc' ? '↑' : '↓' }}</span>
+      </span>
+    </div>
+    <div v-if="sortedData.length === 0" class="char-list-empty">
+      暂无数据
+    </div>
+    <div v-for="(row, i) in sortedData" :key="i" class="char-card" @click="$emit('row-click', row)">
+      <div class="char-card-avatar">{{ (row.name || '?')[0] }}</div>
+      <div class="char-card-body">
+        <div class="char-card-top">
+          <span class="char-card-name">{{ row.name }}</span>
+          <span class="char-card-form">{{ row.form || '-' }}</span>
+        </div>
+        <div class="char-card-tags">
+          <span class="char-card-tag" :class="'tag-' + (row.element || '').toLowerCase()">{{ row.element }}</span>
+          <span class="char-card-tag tag-weapon">{{ row.weapon }}</span>
+          <span class="char-card-tag tag-ls">{{ row.lightShadow }}</span>
+        </div>
+        <div class="char-card-personality" v-if="row.personality && row.personality.length">
+          <span v-for="p in row.personality.slice(0, 4)" :key="p" class="char-card-pers">{{ p }}</span>
+          <span v-if="row.personality.length > 4" class="char-card-pers-more">+{{ row.personality.length - 4 }}</span>
+        </div>
+      </div>
+      <div class="char-card-arrow">›</div>
+    </div>
   </div>
 </template>
 

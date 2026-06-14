@@ -43,6 +43,10 @@ const app = createApp({
     getSkillsByType(type) {
       if (!this.character || !this.character.skills) return []
       return this.character.skills.filter(s => s.skillType === type)
+    },
+    getTypeColor(type) {
+      const colors = { '火': '#e74c3c', '水': '#3498db', '风': '#2ecc71', '地': '#8e44ad', '雷': '#f39c12', '阴': '#6c5ce7', '晶': '#00cec9', '无': '#95a5a6' }
+      return colors[type] || '#888'
     }
   }
 })
