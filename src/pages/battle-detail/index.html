@@ -90,6 +90,7 @@
         </div>
       </div>
 
+      <div class="video-team-container">
       <!-- Strategy Video -->
       <div class="detail-section" v-if="battle.isHiddenBoss && battle.videoUrl">
         <div class="detail-section-header"><span class="icon">▶</span> 攻略视频</div>
@@ -111,7 +112,7 @@
               </div>
             </div>
           </div>
-          <div class="team-row">
+      </div>          <div class="team-row">
             <div class="team-row-label">后排</div>
             <div class="team-slots">
               <div v-for="name in battle.team.back" :key="name" class="team-avatar">
