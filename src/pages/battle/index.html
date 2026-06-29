@@ -18,7 +18,7 @@
         <h1>战斗</h1>
       </div>
       <search-bar v-model="searchQuery" placeholder="搜索战斗..." :filters="filterOptions" v-model:filter-value="filterValue"></search-bar>
-      <data-table :columns="columns" :data="filteredData" v-model:sort-key="sortKey" v-model:sort-dir="sortDir"></data-table>
+      <data-table :columns="columns" :data="filteredData" ></data-table>
     </main>
   </div>
   <script type="module">
@@ -34,11 +34,11 @@
     import "../../assets/styles/sidebar.css"
     import "../../assets/styles/table.css"
 
-    const columns = [{ label: '编号', key: 'id', sortable: true }, { label: '名称', key: 'name', sortable: true }, { label: '推荐等级', key: 'level', sortable: true }, { label: '弱点', key: 'weakness', sortable: true }, { label: '耐性', key: 'resist', sortable: true }, { label: '开始条件', key: 'startCondition', sortable: true }, { label: '出现地域', key: 'location', sortable: true }, { label: '报酬', key: 'reward', sortable: true }, { label: '注意事项', key: 'note', sortable: true }]
+    const columns = [{ label: '编号', key: 'id', sortable: false }, { label: '名称', key: 'name', sortable: false }, { label: '推荐等级', key: 'level', sortable: false }, { label: '弱点', key: 'weakness', sortable: false }, { label: '耐性', key: 'resist', sortable: false }, { label: '开始条件', key: 'startCondition', sortable: false }, { label: '出现地域', key: 'location', sortable: false }, { label: '报酬', key: 'reward', sortable: false }, { label: '注意事项', key: 'note', sortable: false }]
 
     const app = createApp({
       data() {
-        return { searchQuery: "", filterValue: "", sortKey: "", sortDir: "", columns, filterOptions: [], sidebarOpen: false }
+        return { searchQuery: "", filterValue: "",  columns, filterOptions: [], sidebarOpen: false }
       },
       computed: {
         allData() { return sampleBattles },
