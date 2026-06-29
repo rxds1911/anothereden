@@ -299,3 +299,11 @@
   font-weight: 700;
 }
 .char-card-tag.tag-ls { background: #eef2f7; color: #2c3e5a; }
+
+/* ---- Battle Table ---- */
+.battle-table { width: 100%; border-collapse: collapse; font-size: .85rem; background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 1px 6px rgba(0,0,0,0.06); }
+.battle-table thead th { background: #1a2940; color: #fff; padding: 12px 14px; text-align: left; font-weight: 600; font-size: .78rem; letter-spacing: 0.3px; white-space: nowrap; }
+.battle-table tbody td { padding: 10px 14px; border-bottom: 1px solid #f0f0f0; color: #444; line-height: 1.5; }
+.battle-table tbody tr:nth-child(even) { background: #fafbfc; }
+.battle-table tbody tr:hover { background: #f5f3ee; }
+@media (max-width: 768px) { .battle-table { font-size: .78rem; } .battle-table thead th, .battle-table tbody td { padding: 8px 10px; } }

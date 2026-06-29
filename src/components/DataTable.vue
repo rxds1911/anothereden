@@ -21,8 +21,8 @@
       <div class="char-list-empty-hint">试试调整筛选条件或搜索关键词</div>
     </div>
 
-    <!-- Cards -->
-    <div v-for="(row, i) in sortedData" :key="row.id || i" class="char-card" @click="$emit('row-click', row)" :style="{ animationDelay: (i * 0.03) + 's' }">
+    <!-- Cards (character mode) -->
+    <div v-for="(row, i) in sortedData" :key="row.id || i" v-if="hasPersonality" class="char-card" @click="$emit('row-click', row)" :style="{ animationDelay: (i * 0.03) + 's' }">
       <div class="char-card-avatar">{{ (row.name || '?')[0] }}</div>
       <div class="char-card-body">
         <div class="char-card-top">
@@ -41,6 +41,19 @@
       </div>
       <div class="char-card-arrow">›</div>
     </div>
+    <!-- Table mode (generic data) -->
+    <table v-if="!hasPersonality" class="battle-table">
+      <thead>
+        <tr>
+          <th v-for="col in columns" :key="col.key">{{ col.label }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="(row, i) in sortedData" :key="row.id || i">
+          <td v-for="col in columns" :key="col.key">{{ row[col.key] }}</td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </template>
 
@@ -56,6 +69,9 @@ export default {
   },
   emits: ["update:sortKey", "update:sortDir", "row-click", "clear-filters"],
   computed: {
+    hasPersonality() {
+      return this.data.length > 0 && this.data[0].personality !== undefined
+    },
     sortedData() {
       if (!this.sortKey) return this.data
       const arr = [...this.data]
