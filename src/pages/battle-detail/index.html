@@ -49,6 +49,14 @@
           <div class="stat-item"><div class="stat-label">无效</div><div class="stat-value">{{ battle.null || '-' }}</div></div>
           <div class="stat-item"><div class="stat-label">吸收</div><div class="stat-value">{{ battle.absorb || '-' }}</div></div>
         </div>
+            </div>
+
+      <!-- Traits -->
+      <div class="detail-section" v-if="battle.traits && battle.traits.length">
+        <div class="detail-section-header"><span class="icon">🧠</span> 特征</div>
+        <div class="traits-container">
+          <span v-for="trait in battle.traits" :key="trait" class="trait-tag">{{ trait }}</span>
+        </div>
       </div>
 
       <!-- Hidden Boss Skills (only for hidden bosses) -->
