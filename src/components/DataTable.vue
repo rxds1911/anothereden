@@ -1,4 +1,4 @@
-<template>
+﻿<template>
   <div class="char-list">
     <!-- Sort Bar -->
     <div class="char-list-toolbar" v-if="columns.some(c => c.sortable)">
@@ -43,7 +43,7 @@
     </div>
     <!-- Card mode (generic data) -->
     <div v-if="!hasPersonality" class="char-list">
-      <div v-for="(row, i) in sortedData" :key="row.id || i" class="char-card" @click="('row-click', row)" :style="{ animationDelay: (i * 0.03) + 's' }">
+      <div v-for="(row, i) in sortedData" :key="row.id || i" class="char-card" @click="$emit('row-click', row)" :style="{ animationDelay: (i * 0.03) + 's' }">
         <div class="char-card-avatar" :style="{ background: row.isHiddenBoss ? 'linear-gradient(135deg, #c0392b, #e74c3c)' : 'linear-gradient(135deg, #c8a84e, #e8c96e)', fontSize: '1.2rem' }">#{{ row.id }}</div>
         <div class="char-card-body">
           <div class="char-card-top">
