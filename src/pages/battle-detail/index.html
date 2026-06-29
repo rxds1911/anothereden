@@ -59,16 +59,26 @@
         </div>
       </div>
 
-      <!-- Hidden Boss Skills (only for hidden bosses) -->
+      <!-- Behavior Pattern (only for hidden bosses) -->
       <div class="detail-section" v-if="battle.isHiddenBoss && battle.skills">
-        <div class="detail-section-header"><span class="icon">⚡</span> 隐王技能</div>
-        <div class="skills-container" style="padding: 20px 24px;">
-          <div class="skill-card" v-for="skill in battle.skills" :key="skill" style="margin-bottom: 8px;">
-            <div class="skill-card-icon" style="background: #c0392b;">隐</div>
-            <div class="skill-card-body">
-              <div class="skill-card-desc">{{ skill }}</div>
-            </div>
-          </div>
+        <div class="detail-section-header"><span class="icon">🧠</span> 行为模式</div>
+        <div class="behavior-table-wrap">
+          <table class="behavior-table">
+            <thead>
+              <tr>
+                <th style="width: 60px;">顺序</th>
+                <th>行动</th>
+                <th>效果</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="skill in battle.skills" :key="skill.order">
+                <td style="text-align: center; font-weight: 700; color: #1a2940;">{{ skill.order }}</td>
+                <td style="font-weight: 600; color: #c0392b;">{{ skill.action }}</td>
+                <td>{{ skill.effect }}</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
 

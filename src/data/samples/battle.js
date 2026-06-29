@@ -72,9 +72,21 @@ export const sampleBattles = [
     "isHiddenBoss": true,
     "hp": "500000",
     "skills": [
-      "星幽波动：全体魔法攻击+附带混乱效果",
-      "暗星坠落：单体超高伤害",
-      "星之屏障：自身全属性耐性大幅提升"
+      {
+        "order": 1,
+        "action": "星幽波动",
+        "effect": "全体魔法攻击 + 附带混乱效果"
+      },
+      {
+        "order": 2,
+        "action": "暗星坠落",
+        "effect": "单体超高伤害"
+      },
+      {
+        "order": 3,
+        "action": "星之屏障",
+        "effect": "自身全属性耐性大幅提升"
+      }
     ],
     "strategy": "推荐带驱散角色和魔法坦，优先破坏屏障",
     "detailedRewards": [
@@ -112,9 +124,21 @@ export const sampleBattles = [
     "isHiddenBoss": true,
     "hp": "350000",
     "skills": [
-      "时空乱流：全体行动顺序重置",
-      "时间裂隙：单体即死效果",
-      "加速领域：自身速度大幅提升"
+      {
+        "order": 1,
+        "action": "时空乱流",
+        "effect": "全体行动顺序重置"
+      },
+      {
+        "order": 2,
+        "action": "时间裂隙",
+        "effect": "单体即死效果"
+      },
+      {
+        "order": 3,
+        "action": "加速领域",
+        "effect": "自身速度大幅提升"
+      }
     ],
     "strategy": "需要高速角色抢先手，建议携带即死免疫装备",
     "detailedRewards": [
