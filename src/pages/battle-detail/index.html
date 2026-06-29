@@ -54,8 +54,8 @@
       <!-- Traits -->
       <div class="detail-section" v-if="battle.traits && battle.traits.length">
         <div class="detail-section-header"><span class="icon">🧠</span> 特征</div>
-        <div class="traits-container">
-          <span v-for="trait in battle.traits" :key="trait" class="trait-tag">{{ trait }}</span>
+        <div style="padding: 20px 24px; font-size: .85rem; line-height: 1.8; color: #444;">
+          <div v-for="trait in battle.traits" :key="trait" style="padding: 4px 0;">{{ trait }}</div>
         </div>
       </div>
 
