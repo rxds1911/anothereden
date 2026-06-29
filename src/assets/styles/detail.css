@@ -464,3 +464,7 @@
 /* ---- Video Wrapper ---- */
 .video-wrapper { position: relative; width: 100%; padding-bottom: 56.25%; background: #000; border-radius: 10px; overflow: hidden; }
 .video-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+
+/* ---- Traits ---- */
+.traits-container { padding: 20px 24px; display: flex; flex-wrap: wrap; gap: 8px; }
+.trait-tag { display: inline-block; padding: 6px 18px; background: linear-gradient(135deg, #1a2940, #2c3e5a); color: #e8c96e; font-size: .8rem; font-weight: 600; border-radius: 20px; border: 1px solid rgba(200,168,78,0.2); }

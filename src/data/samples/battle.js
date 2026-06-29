@@ -91,7 +91,13 @@ export const sampleBattles = [
     "spirit": "260",
     "luck": "200",
     "null": "水",
-    "absorb": ""
+    "absorb": "",
+    "traits": [
+      "星幽属性",
+      "魔法攻击主体",
+      "屏障机制",
+      "弱火"
+    ]
   },
   {
     "id": 7,
@@ -125,6 +131,12 @@ export const sampleBattles = [
     "spirit": "300",
     "luck": "280",
     "null": "",
-    "absorb": "阴"
+    "absorb": "阴",
+    "traits": [
+      "时空属性",
+      "高速先手",
+      "即死技能",
+      "弱风"
+    ]
   }
 ]
