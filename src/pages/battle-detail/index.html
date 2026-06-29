@@ -83,13 +83,6 @@
         </div>
       </div>
 
-      <!-- Rewards -->
-      <div class="detail-section">
-        <div class="detail-section-header"><span class="icon">🎁</span> 报酬</div>
-        <div style="padding: 20px 24px;">
-          <div v-if="battle.detailedRewards" class="reward-list">
-            <div v-for="reward in battle.detailedRewards" :key="reward" class="reward-item">{{ reward }}</div>
-          </div>
           <div v-else class="reward-simple">{{ battle.reward }}</div>
         </div>
       </div>
