@@ -455,3 +455,8 @@
 .char-hero-tag.tag-无 { background: rgba(149,165,166,0.3); border-color: rgba(149,165,166,0.3); color: #fff; }
 
 
+
+/* ---- Reward List ---- */
+.reward-list { display: flex; flex-direction: column; gap: 6px; }
+.reward-item { padding: 8px 14px; background: #fafbfc; border: 1px solid #edf0f4; border-radius: 8px; font-size: .82rem; color: #444; }
+.reward-simple { font-size: .85rem; color: #444; line-height: 1.6; }

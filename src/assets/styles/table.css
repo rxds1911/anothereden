@@ -307,3 +307,6 @@
 .generic-card-label { color: #999; font-weight: 600; min-width: 60px; flex-shrink: 0; }
 .generic-card-value { color: #444; flex: 1; }
 @media (max-width: 768px) { .generic-card-row { font-size: .76rem; } .generic-card-label { min-width: 48px; } }
+
+/* ---- Hidden Boss Badge ---- */
+.hidden-boss-badge { display: inline-block; background: linear-gradient(135deg, #c0392b, #e74c3c); color: #fff; font-size: .7rem; font-weight: 700; padding: 2px 10px; border-radius: 10px; margin-left: 8px; letter-spacing: 0.5px; }

@@ -20,7 +20,7 @@
         </div>
       </div>
       <search-bar v-model="searchQuery" placeholder="搜索战斗..." :filters="filterOptions" v-model:filter-value="filterValue"></search-bar>
-      <data-table :columns="columns" :data="filteredData" ></data-table>
+      <data-table :columns="columns" :data="filteredData" @row-click="goToDetail"></data-table>
     </main>
   </div>
   <script type="module">
@@ -56,7 +56,8 @@
         }
       },
       methods: {
-        toggleSidebar() { this.sidebarOpen = !this.sidebarOpen }
+        toggleSidebar() { this.sidebarOpen = !this.sidebarOpen },
+        goToDetail(row) { window.location.href = "../battle-detail/index.html?id=" + row.id }
       }
     })
     app.component("app-sidebar", AppSidebar)

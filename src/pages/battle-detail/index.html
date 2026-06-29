@@ -1,0 +1,110 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>战斗详情 - 另一个伊甸攻略站</title>
+</head>
+<body>
+  <div id="app">
+    <button class="sidebar-toggle" @click="toggleSidebar">☰</button>
+    <div class="sidebar-overlay" :class="{ show: sidebarOpen }" @click="toggleSidebar"></div>
+    <aside class="sidebar" :class="{ open: sidebarOpen }">
+      <app-sidebar current-page="battle"></app-sidebar>
+    </aside>
+    <main class="main-content" v-if="battle">
+      <a class="back-link" href="../battle/index.html">← 返回战斗列表</a>
+
+      <!-- Hero Header -->
+      <div class="char-hero">
+        <div class="char-hero-avatar" style="background: linear-gradient(135deg, #c0392b, #e74c3c);" v-if="battle.isHiddenBoss">👹</div>
+        <div class="char-hero-avatar" v-else>⚔</div>
+        <div class="char-hero-info">
+          <h1 class="char-hero-name">{{ battle.name }}</h1>
+          <div class="char-hero-tags">
+            <span class="char-hero-tag" v-if="battle.isHiddenBoss" style="background: rgba(192,57,43,0.3); color: #fff; border-color: rgba(192,57,43,0.3);">隐王</span>
+            <span class="char-hero-tag">Lv.{{ battle.level }}</span>
+            <span class="char-hero-tag element" :class="'tag-' + battle.weakness.toLowerCase()">弱点: {{ battle.weakness }}</span>
+            <span class="char-hero-tag">耐性: {{ battle.resist }}</span>
+          </div>
+          <div class="char-hero-personality">
+            <span>{{ battle.location }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Basic Info -->
+      <div class="detail-section">
+        <div class="detail-section-header"><span class="icon">📋</span> 基本信息</div>
+        <div class="stats-grid">
+          <div class="stat-item"><div class="stat-label">推荐等级</div><div class="stat-value">{{ battle.level }}</div></div>
+          <div class="stat-item"><div class="stat-label">弱点</div><div class="stat-value">{{ battle.weakness }}</div></div>
+          <div class="stat-item"><div class="stat-label">耐性</div><div class="stat-value">{{ battle.resist }}</div></div>
+          <div class="stat-item" v-if="battle.hp"><div class="stat-label">HP</div><div class="stat-value">{{ battle.hp }}</div></div>
+          <div class="stat-item"><div class="stat-label">开始条件</div><div class="stat-value">{{ battle.startCondition }}</div></div>
+          <div class="stat-item"><div class="stat-label">出现地域</div><div class="stat-value">{{ battle.location }}</div></div>
+        </div>
+      </div>
+
+      <!-- Hidden Boss Skills (only for hidden bosses) -->
+      <div class="detail-section" v-if="battle.isHiddenBoss && battle.skills">
+        <div class="detail-section-header"><span class="icon">⚡</span> 隐王技能</div>
+        <div class="skills-container" style="padding: 20px 24px;">
+          <div class="skill-card" v-for="skill in battle.skills" :key="skill" style="margin-bottom: 8px;">
+            <div class="skill-card-icon" style="background: #c0392b;">隐</div>
+            <div class="skill-card-body">
+              <div class="skill-card-desc">{{ skill }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Strategy (only for hidden bosses) -->
+      <div class="detail-section" v-if="battle.isHiddenBoss && battle.strategy">
+        <div class="detail-section-header"><span class="icon">💡</span> 攻略建议</div>
+        <div style="padding: 20px 24px; font-size: .85rem; line-height: 1.8; color: #444;">
+          {{ battle.strategy }}
+        </div>
+      </div>
+
+      <!-- Rewards -->
+      <div class="detail-section">
+        <div class="detail-section-header"><span class="icon">🎁</span> 报酬</div>
+        <div style="padding: 20px 24px;">
+          <div v-if="battle.detailedRewards" class="reward-list">
+            <div v-for="reward in battle.detailedRewards" :key="reward" class="reward-item">{{ reward }}</div>
+          </div>
+          <div v-else class="reward-simple">{{ battle.reward }}</div>
+        </div>
+      </div>
+    </main>
+    <main class="main-content" v-else>
+      <div class="page-header">
+        <h1>战斗未找到</h1>
+        <p><a href="../battle/index.html">返回战斗列表</a></p>
+      </div>
+    </main>
+  </div>
+  <script type="module">
+    import { createApp } from "vue"
+    import AppSidebar from "../../components/AppSidebar.vue"
+    import { sampleBattles } from "../../data/samples/battle.js"
+    import "../../assets/styles/variables.css"
+    import "../../assets/styles/reset.css"
+    import "../../assets/styles/layout.css"
+    import "../../assets/styles/sidebar.css"
+    import "../../assets/styles/detail.css"
+
+    const params = new URLSearchParams(window.location.search)
+    const battleId = params.get('id')
+    const battle = sampleBattles.find(b => String(b.id) === battleId) || null
+
+    const app = createApp({
+      data() { return { battle, sidebarOpen: false } },
+      methods: { toggleSidebar() { this.sidebarOpen = !this.sidebarOpen } }
+    })
+    app.component("app-sidebar", AppSidebar)
+    app.mount("#app")
+  </script>
+</body>
+</html>

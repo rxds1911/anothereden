@@ -43,11 +43,12 @@
     </div>
     <!-- Card mode (generic data) -->
     <div v-if="!hasPersonality" class="char-list">
-      <div v-for="(row, i) in sortedData" :key="row.id || i" class="char-card" :style="{ animationDelay: (i * 0.03) + 's' }">
-        <div class="char-card-avatar" style="background: linear-gradient(135deg, #c8a84e, #e8c96e); font-size: 1.2rem;">#{{ row.id }}</div>
+      <div v-for="(row, i) in sortedData" :key="row.id || i" class="char-card" @click="('row-click', row)" :style="{ animationDelay: (i * 0.03) + 's' }">
+        <div class="char-card-avatar" :style="{ background: row.isHiddenBoss ? 'linear-gradient(135deg, #c0392b, #e74c3c)' : 'linear-gradient(135deg, #c8a84e, #e8c96e)', fontSize: '1.2rem' }">#{{ row.id }}</div>
         <div class="char-card-body">
           <div class="char-card-top">
             <span class="char-card-name">{{ row.name }}</span>
+            <span v-if="row.isHiddenBoss" class="hidden-boss-badge">隐王</span>
           </div>
           <div class="generic-card-detail">
             <div class="generic-card-row" v-if="row.startCondition">
