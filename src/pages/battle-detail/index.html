@@ -37,12 +37,17 @@
       <div class="detail-section">
         <div class="detail-section-header"><span class="icon">📋</span> 基本信息</div>
         <div class="stats-grid">
-          <div class="stat-item"><div class="stat-label">推荐等级</div><div class="stat-value">{{ battle.level }}</div></div>
+          <div class="stat-item"><div class="stat-label">HP</div><div class="stat-value">{{ battle.hp }}</div></div>
+          <div class="stat-item"><div class="stat-label">力量</div><div class="stat-value">{{ battle.strength }}</div></div>
+          <div class="stat-item"><div class="stat-label">智力</div><div class="stat-value">{{ battle.intelligence }}</div></div>
+          <div class="stat-item"><div class="stat-label">速度</div><div class="stat-value">{{ battle.speed }}</div></div>
+          <div class="stat-item"><div class="stat-label">耐久</div><div class="stat-value">{{ battle.endurance }}</div></div>
+          <div class="stat-item"><div class="stat-label">精神</div><div class="stat-value">{{ battle.spirit }}</div></div>
+          <div class="stat-item"><div class="stat-label">幸运</div><div class="stat-value">{{ battle.luck }}</div></div>
           <div class="stat-item"><div class="stat-label">弱点</div><div class="stat-value">{{ battle.weakness }}</div></div>
           <div class="stat-item"><div class="stat-label">耐性</div><div class="stat-value">{{ battle.resist }}</div></div>
-          <div class="stat-item" v-if="battle.hp"><div class="stat-label">HP</div><div class="stat-value">{{ battle.hp }}</div></div>
-          <div class="stat-item"><div class="stat-label">开始条件</div><div class="stat-value">{{ battle.startCondition }}</div></div>
-          <div class="stat-item"><div class="stat-label">出现地域</div><div class="stat-value">{{ battle.location }}</div></div>
+          <div class="stat-item"><div class="stat-label">无效</div><div class="stat-value">{{ battle.null || '-' }}</div></div>
+          <div class="stat-item"><div class="stat-label">吸收</div><div class="stat-value">{{ battle.absorb || '-' }}</div></div>
         </div>
       </div>
 

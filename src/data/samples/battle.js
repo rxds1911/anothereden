@@ -83,7 +83,15 @@ export const sampleBattles = [
       "星幽勋章×1"
     ],
     "videoUrl": "https://www.youtube.com/embed/dQw4w9WgXcQ",
-    "videoTitle": "星幽霸主 无续关攻略"
+    "videoTitle": "星幽霸主 无续关攻略",
+    "strength": "320",
+    "intelligence": "280",
+    "speed": "250",
+    "endurance": "300",
+    "spirit": "260",
+    "luck": "200",
+    "null": "水",
+    "absorb": ""
   },
   {
     "id": 7,
@@ -109,6 +117,14 @@ export const sampleBattles = [
       "时之结晶×3"
     ],
     "videoUrl": "https://www.youtube.com/embed/dQw4w9WgXcQ",
-    "videoTitle": "时空间谍 逃课打法"
+    "videoTitle": "时空间谍 逃课打法",
+    "strength": "260",
+    "intelligence": "350",
+    "speed": "380",
+    "endurance": "220",
+    "spirit": "300",
+    "luck": "280",
+    "null": "",
+    "absorb": "阴"
   }
 ]
