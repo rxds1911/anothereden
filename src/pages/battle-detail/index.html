@@ -104,14 +104,15 @@
           <div v-else class="reward-simple">{{ battle.reward }}</div>
         </div>
       </div>
-    </main>
-
-        <!-- Team Comp -->
+      <!-- Team Comp -->
       <div class="detail-section" v-if="battle.team">
         <div class="detail-section-header"><span class="icon">👥</span> 推荐组队</div>
         <div class="team-section">
           <div class="team-row">
             <div class="team-row-label">前排</div>
+</main>
+
+        <!-- 
             <div class="team-slots">
               <div v-for="name in battle.team.front" :key="name" class="team-avatar">
                 <div class="team-avatar-icon">{{ name[0] }}</div>
