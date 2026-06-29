@@ -41,19 +41,32 @@
       </div>
       <div class="char-card-arrow">›</div>
     </div>
-    <!-- Table mode (generic data) -->
-    <table v-if="!hasPersonality" class="battle-table">
-      <thead>
-        <tr>
-          <th v-for="col in columns" :key="col.key">{{ col.label }}</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="(row, i) in sortedData" :key="row.id || i">
-          <td v-for="col in columns" :key="col.key">{{ row[col.key] }}</td>
-        </tr>
-      </tbody>
-    </table>
+    <!-- Card mode (generic data) -->
+    <div v-if="!hasPersonality" class="char-list">
+      <div v-for="(row, i) in sortedData" :key="row.id || i" class="char-card" :style="{ animationDelay: (i * 0.03) + 's' }">
+        <div class="char-card-avatar" style="background: linear-gradient(135deg, #c8a84e, #e8c96e); font-size: 1.2rem;">#{{ row.id }}</div>
+        <div class="char-card-body">
+          <div class="char-card-top">
+            <span class="char-card-name">{{ row.name }}</span>
+          </div>
+          <div class="generic-card-detail">
+            <div class="generic-card-row" v-if="row.startCondition">
+              <span class="generic-card-label">开始条件</span>
+              <span class="generic-card-value">{{ row.startCondition }}</span>
+            </div>
+            <div class="generic-card-row" v-if="row.location">
+              <span class="generic-card-label">出现地域</span>
+              <span class="generic-card-value">{{ row.location }}</span>
+            </div>
+            <div class="generic-card-row" v-if="row.reward">
+              <span class="generic-card-label">报酬</span>
+              <span class="generic-card-value">{{ row.reward }}</span>
+            </div>
+          </div>
+        </div>
+        <div class="char-card-arrow">›</div>
+      </div>
+    </div>
   </div>
 </template>
 

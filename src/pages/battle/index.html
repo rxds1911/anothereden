@@ -13,9 +13,11 @@
       <app-sidebar current-page="battle"></app-sidebar>
     </aside>
     <main class="main-content">
-      <div class="page-header">
-        <breadcrumb current="战斗"></breadcrumb>
-        <h1>战斗</h1>
+      <div class="char-page-header">
+        <div>
+          <h1 class="char-page-title">战斗</h1>
+          <p class="char-page-count">共 <strong>{{ filteredData.length }}</strong> 个战斗</p>
+        </div>
       </div>
       <search-bar v-model="searchQuery" placeholder="搜索战斗..." :filters="filterOptions" v-model:filter-value="filterValue"></search-bar>
       <data-table :columns="columns" :data="filteredData" ></data-table>
@@ -26,15 +28,14 @@
     import AppSidebar from "../../components/AppSidebar.vue"
     import SearchBar from "../../components/SearchBar.vue"
     import DataTable from "../../components/DataTable.vue"
-    import Breadcrumb from "../../components/Breadcrumb.vue"
-    import { sampleBattles } from "../../data/samples/battle.js"
+        import { sampleBattles } from "../../data/samples/battle.js"
     import "../../assets/styles/variables.css"
     import "../../assets/styles/reset.css"
     import "../../assets/styles/layout.css"
     import "../../assets/styles/sidebar.css"
     import "../../assets/styles/table.css"
 
-    const columns = [{ label: '编号', key: 'id', sortable: false }, { label: '名称', key: 'name', sortable: false }, { label: '推荐等级', key: 'level', sortable: false }, { label: '弱点', key: 'weakness', sortable: false }, { label: '耐性', key: 'resist', sortable: false }, { label: '开始条件', key: 'startCondition', sortable: false }, { label: '出现地域', key: 'location', sortable: false }, { label: '报酬', key: 'reward', sortable: false }, { label: '注意事项', key: 'note', sortable: false }]
+    const columns = [{ label: '编号', key: 'id', sortable: false }, { label: '名称', key: 'name', sortable: false }, { label: '开始条件', key: 'startCondition', sortable: false }, { label: '出现地域', key: 'location', sortable: false }, { label: '报酬', key: 'reward', sortable: false }]
 
     const app = createApp({
       data() {
@@ -61,8 +62,7 @@
     app.component("app-sidebar", AppSidebar)
     app.component("search-bar", SearchBar)
     app.component("data-table", DataTable)
-    app.component("breadcrumb", Breadcrumb)
-    app.mount("#app")
+app.mount("#app")
   </script>
 </body>
 </html>

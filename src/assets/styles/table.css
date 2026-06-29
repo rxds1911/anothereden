@@ -300,10 +300,10 @@
 }
 .char-card-tag.tag-ls { background: #eef2f7; color: #2c3e5a; }
 
-/* ---- Battle Table ---- */
-.battle-table { width: 100%; border-collapse: collapse; font-size: .85rem; background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 1px 6px rgba(0,0,0,0.06); }
-.battle-table thead th { background: #1a2940; color: #fff; padding: 12px 14px; text-align: left; font-weight: 600; font-size: .78rem; letter-spacing: 0.3px; white-space: nowrap; }
-.battle-table tbody td { padding: 10px 14px; border-bottom: 1px solid #f0f0f0; color: #444; line-height: 1.5; }
-.battle-table tbody tr:nth-child(even) { background: #fafbfc; }
-.battle-table tbody tr:hover { background: #f5f3ee; }
-@media (max-width: 768px) { .battle-table { font-size: .78rem; } .battle-table thead th, .battle-table tbody td { padding: 8px 10px; } }
+
+/* ---- Generic Card Detail ---- */
+.generic-card-detail { display: flex; flex-direction: column; gap: 4px; margin-top: 8px; }
+.generic-card-row { display: flex; gap: 8px; font-size: .8rem; line-height: 1.5; }
+.generic-card-label { color: #999; font-weight: 600; min-width: 60px; flex-shrink: 0; }
+.generic-card-value { color: #444; flex: 1; }
+@media (max-width: 768px) { .generic-card-row { font-size: .76rem; } .generic-card-label { min-width: 48px; } }
