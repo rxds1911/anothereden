@@ -94,7 +94,7 @@ export const sampleBattles = [
       "UR武器图鉴随机×1",
       "星幽勋章×1"
     ],
-    "videoUrl": "https://player.bilibili.com/player.html?bvid=BV1GJ411x7y7",
+    "videoUrl": "https://player.bilibili.com/player.html?bvid=BV1GJ411x7y7&autoplay=0",
     "videoTitle": "星幽霸主 无续关攻略",
     "strength": "320",
     "intelligence": "280",
@@ -146,7 +146,7 @@ export const sampleBattles = [
       "传说防具图鉴×1",
       "时之结晶×3"
     ],
-    "videoUrl": "https://player.bilibili.com/player.html?bvid=BV1GJ411x7y7",
+    "videoUrl": "https://player.bilibili.com/player.html?bvid=BV1GJ411x7y7&autoplay=0",
     "videoTitle": "时空间谍 逃课打法",
     "strength": "260",
     "intelligence": "350",
