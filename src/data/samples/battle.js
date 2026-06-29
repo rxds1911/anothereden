@@ -81,7 +81,9 @@ export const sampleBattles = [
       "星幽结晶×1（武器强化材料）",
       "UR武器图鉴随机×1",
       "星幽勋章×1"
-    ]
+    ],
+    "videoUrl": "https://www.youtube.com/embed/dQw4w9WgXcQ",
+    "videoTitle": "星幽霸主 无续关攻略"
   },
   {
     "id": 7,
@@ -105,6 +107,8 @@ export const sampleBattles = [
       "时空之钥×1",
       "传说防具图鉴×1",
       "时之结晶×3"
-    ]
+    ],
+    "videoUrl": "https://www.youtube.com/embed/dQw4w9WgXcQ",
+    "videoTitle": "时空间谍 逃课打法"
   }
 ]

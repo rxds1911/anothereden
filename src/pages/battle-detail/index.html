@@ -67,6 +67,17 @@
         </div>
       </div>
 
+      <!-- Strategy Video -->
+      <div class="detail-section" v-if="battle.isHiddenBoss && battle.videoUrl">
+        <div class="detail-section-header"><span class="icon">▶</span> 攻略视频</div>
+        <div style="padding: 20px 24px;">
+          <div style="font-size: .85rem; font-weight: 600; color: #1a2940; margin-bottom: 12px;">{{ battle.videoTitle }}</div>
+          <div class="video-wrapper">
+            <iframe :src="battle.videoUrl" frameborder="0" allowfullscreen style="width: 100%; height: 100%; border-radius: 8px;"></iframe>
+          </div>
+        </div>
+      </div>
+
       <!-- Rewards -->
       <div class="detail-section">
         <div class="detail-section-header"><span class="icon">🎁</span> 报酬</div>
