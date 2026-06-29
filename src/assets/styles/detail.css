@@ -485,6 +485,6 @@
 .team-avatar-name { font-size: .72rem; color: #888; max-width: 52px; text-align: center; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
 /* ---- Video + Team Side-by-side ---- */
-.video-team-container { display: flex; gap: 20px; }
-.video-team-container .detail-section { flex: 1; min-width: 0; }
+.video-team-container { display: flex; gap: 20px; align-items: stretch; }
+.video-team-container .detail-section { flex: 1; min-width: 0; display: flex; flex-direction: column; } .video-team-container .detail-section .team-section { flex: 1; }
 @media (max-width: 768px) { .video-team-container { flex-direction: column; } }
