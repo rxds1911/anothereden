@@ -4,6 +4,7 @@
     import DataTable from "../../components/DataTable.vue"
     import Breadcrumb from "../../components/Breadcrumb.vue"
     import { sampleCharacters } from "../../data/samples/characters.js"
+    import { weaponOptions, elementOptions, formOptions, lightShadowOptions, personalityOptions } from "../../data/config.js"
     import "../../assets/styles/variables.css"
     import "../../assets/styles/reset.css"
     import "../../assets/styles/layout.css"
@@ -14,7 +15,7 @@
 
     const app = createApp({
       data() {
-        return { searchQuery: "", filterWeapon: [], filterElement: [], filterForm: [], filterPersonality: [], filterLightShadow: [], showPersonality: false, sortKey: "", sortDir: "", columns, filterOptions: [], personalityOptions: ["主人公","天之指引","冥之诱语","大地元晶","龙","恋爱烦恼","机械","诅咒","失忆","封印","葬仪","法外之人","复仇者"], weaponOptions: ['刀','剑','杖','斧','枪','弓','拳','锤'], elementOptions: ['火','水','风','地','无','阴','雷','晶'], formOptions: ['NS','AS','ES','AC'], lightShadowOptions: ['天','冥'], sidebarOpen: false }
+        return { searchQuery: "", filterWeapon: [], filterElement: [], filterForm: [], filterPersonality: [], filterLightShadow: [], showPersonality: false, sortKey: "", sortDir: "", columns, filterOptions: [], personalityOptions, weaponOptions, elementOptions, formOptions, lightShadowOptions, sidebarOpen: false }
       },
       computed: {
         allData() { return sampleCharacters },

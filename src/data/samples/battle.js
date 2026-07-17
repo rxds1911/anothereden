@@ -1,3 +1,4 @@
+﻿
 export const sampleBattles = [
   {
     "id": 1,

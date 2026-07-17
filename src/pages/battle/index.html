@@ -36,14 +36,14 @@
     import AppSidebar from "../../components/AppSidebar.vue"
     import SearchBar from "../../components/SearchBar.vue"
     import DataTable from "../../components/DataTable.vue"
-        import { sampleBattles } from "../../data/samples/battle.js"
+        import { taskCategories } from '../../data/config.js'
+    import { sampleBattles } from '../../data/samples/battle.js'
     import "../../assets/styles/variables.css"
     import "../../assets/styles/reset.css"
     import "../../assets/styles/layout.css"
     import "../../assets/styles/sidebar.css"
     import "../../assets/styles/table.css"
 
-    const taskCategories = ['主线第1部', '主线第1.5部', '主线第2部前篇', '主线第2部中篇', '主线第2部后篇转', '主线第2部后篇结', '主线第3部前篇', '主线第3部中篇', '主线第3部后篇', '主线第3部最终篇', '外传', '外典', '群像', '外史', '断章', '邂逅', '开眼', '觉醒', '角色任务', '其他']
 
     const columns = [{ label: '编号', key: 'id', sortable: false }, { label: '名称', key: 'name', sortable: false }, { label: '开始条件', key: 'startCondition', sortable: false }, { label: '出现地域', key: 'location', sortable: false }, { label: '报酬', key: 'reward', sortable: false }]
 
@@ -80,3 +80,5 @@ app.mount("#app")
   </script>
 </body>
 </html>
+
+
