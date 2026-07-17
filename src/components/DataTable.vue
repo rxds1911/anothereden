@@ -17,7 +17,7 @@
     <!-- Empty State -->
     <div v-if="sortedData.length === 0" class="char-list-empty">
       <div class="char-list-empty-icon">🔍</div>
-      <div class="char-list-empty-text">没有找到符合条件的角色</div>
+      <div class="char-list-empty-text">没有找到符合条件的战斗</div>
       <div class="char-list-empty-hint">试试调整筛选条件或搜索关键词</div>
     </div>
 
@@ -49,6 +49,7 @@
           <div class="char-card-top">
             <span class="char-card-name">{{ row.name }}</span>
             <span v-if="row.isHiddenBoss" class="hidden-boss-badge">隐王</span>
+            <span v-if="row.taskCategory" class="task-category-badge">{{ row.taskCategory }}</span>
           </div>
           <div class="generic-card-detail">
             <div class="generic-card-row" v-if="row.startCondition">

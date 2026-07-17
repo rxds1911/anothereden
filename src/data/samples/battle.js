@@ -9,7 +9,8 @@ export const sampleBattles = [
     "location": "魔兽城·顶层",
     "reward": "魔兽铠甲图鉴、经验卷轴×5",
     "note": "注意AOE攻击",
-    "isHiddenBoss": false
+    "isHiddenBoss": false,
+    "taskCategory": "主线第1部"
   },
   {
     "id": 2,
@@ -21,7 +22,8 @@ export const sampleBattles = [
     "location": "时之塔·中层",
     "reward": "时之碎片×3、中级经验书",
     "note": "建议带驱散",
-    "isHiddenBoss": false
+    "isHiddenBoss": false,
+    "taskCategory": "外传"
   },
   {
     "id": 3,
@@ -33,7 +35,8 @@ export const sampleBattles = [
     "location": "异境·龙之领域",
     "reward": "龙鳞×1、高级武器材料",
     "note": "高伤害单体",
-    "isHiddenBoss": false
+    "isHiddenBoss": false,
+    "taskCategory": "外传"
   },
   {
     "id": 4,
@@ -45,7 +48,8 @@ export const sampleBattles = [
     "location": "古代遗迹·最深处",
     "reward": "遗迹宝箱钥匙×1、金币5000",
     "note": "会召唤小怪",
-    "isHiddenBoss": false
+    "isHiddenBoss": false,
+    "taskCategory": "主线第1部"
   },
   {
     "id": 5,
@@ -57,7 +61,8 @@ export const sampleBattles = [
     "location": "虚空裂缝·核心",
     "reward": "虚空结晶×1、传说武器图鉴",
     "note": "推荐满级队伍",
-    "isHiddenBoss": false
+    "isHiddenBoss": false,
+    "taskCategory": "外传"
   },
   {
     "id": 6,
@@ -125,7 +130,8 @@ export const sampleBattles = [
         "帕蒂",
         "克罗德"
       ]
-    }
+    },
+    "taskCategory": "外典"
   },
   {
     "id": 7,
@@ -193,6 +199,7 @@ export const sampleBattles = [
         "米悠",
         "伊薇"
       ]
-    }
+    },
+    "taskCategory": "断章"
   }
 ]
