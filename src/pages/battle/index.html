@@ -63,7 +63,7 @@
           }
           if (this.searchQuery) {
             const q = this.searchQuery.toLowerCase()
-            list = list.filter(r => Object.values(r).some(v => v.toString().toLowerCase().includes(q)))
+            list = list.filter(r => ['id','name','startCondition','location','reward','note','taskCategory'].some(k => r[k] && r[k].toString().toLowerCase().includes(q)))
           }
           return list
         }

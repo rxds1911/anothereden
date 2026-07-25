@@ -47,7 +47,7 @@
         <div class="char-card-avatar" :style="{ background: row.isHiddenBoss ? 'linear-gradient(135deg, #c0392b, #e74c3c)' : 'linear-gradient(135deg, #c8a84e, #e8c96e)', fontSize: '1.2rem' }">#{{ row.id }}</div>
         <div class="char-card-body">
           <div class="char-card-top">
-            <span class="char-card-name">{{ row.name }}</span>
+            <span class="char-card-name">#{{ row.id }} {{ row.name }}</span>
             <span v-if="row.isHiddenBoss" class="hidden-boss-badge">隐王</span>
             <span v-if="row.taskCategory" class="task-category-badge">{{ row.taskCategory }}</span>
           </div>
@@ -112,3 +112,5 @@ export default {
   }
 }
 </script>
+
+

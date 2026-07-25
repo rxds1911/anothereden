@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8" />
@@ -15,11 +15,15 @@
     </aside>
     <main class="main-content">
 
-      <!-- Hero -->
-      <div class="home-hero">
-        <div class="home-hero-content">
-          <h1 class="home-hero-title">📖 另一个伊甸 <span class="accent">攻略查询站</span></h1>
-          <p class="home-hero-desc">欢迎来到《另一个伊甸：超越时空的猫》中文攻略站。<br>选择下方板块开始查询。</p>
+      <!-- Carousel -->
+      <div class="carousel-wrap">
+        <div class="carousel" @mouseenter="carouselPause" @mouseleave="carouselResume">
+          <div v-for="(ev, i) in recentCarousel" :key="i" class="carousel-slide" :class="{ active: carouselIndex === i }">
+            <img :src="ev.img" :alt="ev.name" class="carousel-img" />
+          </div>
+          <div class="carousel-dots">
+            <span v-for="(ev, i) in recentCarousel" :key="i" class="carousel-dot" :class="{ active: carouselIndex === i }" @click="carouselIndex = i"></span>
+          </div>
         </div>
       </div>
 
@@ -63,6 +67,7 @@
     import { createApp } from 'vue'
     import AppSidebar from './src/components/AppSidebar.vue'
     import { navItems } from './src/data/nav.js'
+    import { sampleEvents } from './src/data/samples/events.js'
     import './src/assets/styles/variables.css'
     import './src/assets/styles/reset.css'
     import './src/assets/styles/layout.css'
@@ -77,10 +82,24 @@
     }
 
     const app = createApp({
-      data() { return { navItems, sidebarOpen: false } },
+      data() { return { navItems, sidebarOpen: false, carouselIndex: 0, carouselTimer: null } },
+      computed: {
+        recentCarousel() { return [
+          { name: '星之引导', img: 'https://picsum.photos/seed/star1/800/300' },
+          { name: '龙神降临', img: 'https://picsum.photos/seed/dragon1/800/300' },
+          { name: '异境讨伐', img: 'https://picsum.photos/seed/dimension1/800/300' },
+          { name: '星导祭', img: 'https://picsum.photos/seed/festival1/800/300' }
+        ] }
+      },
+      mounted() { this.carouselStart() },
+      beforeUnmount() { clearInterval(this.carouselTimer) },
       methods: {
         toggleSidebar() { this.sidebarOpen = !this.sidebarOpen },
-        getItemCount(name) { return countMap[name] || '待补充' }
+        getItemCount(name) { return countMap[name] || '待补充' },
+        carouselStart() { this.carouselTimer = setInterval(() => { this.carouselIndex = (this.carouselIndex + 1) % this.recentCarousel.length }, 4000) },
+        carouselPause() { clearInterval(this.carouselTimer) },
+        carouselResume() { this.carouselStart() },
+
       }
     })
     app.component('app-sidebar', AppSidebar)
