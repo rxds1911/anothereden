@@ -23,7 +23,7 @@
       <div class="filter-bar">
         <div class="filter-group">
           <span class="filter-label">武器</span>
-          <span v-for="f in weaponOptions" :key="f"
+          <span v-for="f in weaponTypes" :key="f"
             class="filter-chip" :class="{ active: filterWeapon.includes(f) }"
             @click="toggleFilter('filterWeapon', f)">{{ f }}</span>
         </div>

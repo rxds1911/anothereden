@@ -13,12 +13,22 @@
       <app-sidebar current-page="diary"></app-sidebar>
     </aside>
     <main class="main-content">
-      <div class="page-header">
-        <breadcrumb current="日记"></breadcrumb>
-        <h1>日记</h1>
+      <div class="char-page-header">
+        <div>
+          <h1 class="char-page-title">日记</h1>
+          <p class="char-page-count">共 <strong>{{ filteredData.length }}</strong> 篇日记</p>
+        </div>
       </div>
       <search-bar v-model="searchQuery" placeholder="搜索日记..." :filters="filterOptions" v-model:filter-value="filterValue"></search-bar>
-      <data-table :columns="columns" :data="filteredData" v-model:sort-key="sortKey" v-model:sort-dir="sortDir"></data-table>
+      <div class="filter-bar">
+        <div class="filter-group">
+          <span class="filter-label">时代</span>
+          <span v-for="t in storyEras" :key="t"
+            class="filter-chip" :class="{ active: filterEra === t }"
+            @click="filterEra = filterEra === t ? '' : t">{{ t }}</span>
+        </div>
+      </div>
+      <data-table :columns="columns" :data="filteredData" empty-text="没有找到符合条件的日记" :show-id="false" :show-avatar="false"></data-table>
     </main>
   </div>
   <script type="module">
@@ -26,30 +36,33 @@
     import AppSidebar from "../../components/AppSidebar.vue"
     import SearchBar from "../../components/SearchBar.vue"
     import DataTable from "../../components/DataTable.vue"
-    import Breadcrumb from "../../components/Breadcrumb.vue"
     import { sampleDiary } from "../../data/samples/diary.js"
+    import { storyEras } from "../../data/config.js"
     import "../../assets/styles/variables.css"
     import "../../assets/styles/reset.css"
     import "../../assets/styles/layout.css"
     import "../../assets/styles/sidebar.css"
     import "../../assets/styles/table.css"
 
-    const columns = [{ label: '章节', key: 'chapter', sortable: true }, { label: '标题', key: 'title', sortable: true }, { label: '所在区域', key: 'area', sortable: true }, { label: '触发条件', key: 'trigger', sortable: true }]
+    const columns = [
+      { label: '猫咪叙述', key: 'name', sortable: false },
+      { label: '时代', key: 'era', sortable: false },
+      { label: '区域', key: 'area', sortable: false }
+    ]
 
     const app = createApp({
       data() {
-        return { searchQuery: "", filterValue: "", sortKey: "", sortDir: "", columns, filterOptions: [], sidebarOpen: false }
+        return { searchQuery: "", filterValue: "", filterEra: "", columns, filterOptions: [], storyEras, sidebarOpen: false }
       },
       computed: {
-        allData() { return sampleDiary },
         filteredData() {
-          let list = this.allData
-          if (this.filterValue) {
-            list = list.filter(r => r.element === this.filterValue || r.type === this.filterValue)
+          let list = sampleDiary
+          if (this.filterEra) {
+            list = list.filter(r => r.era === this.filterEra)
           }
           if (this.searchQuery) {
             const q = this.searchQuery.toLowerCase()
-            list = list.filter(r => Object.values(r).some(v => v.toString().toLowerCase().includes(q)))
+            list = list.filter(r => ['name', 'era', 'area'].some(k => r[k] && r[k].toString().toLowerCase().includes(q)))
           }
           return list
         }
@@ -61,7 +74,6 @@
     app.component("app-sidebar", AppSidebar)
     app.component("search-bar", SearchBar)
     app.component("data-table", DataTable)
-    app.component("breadcrumb", Breadcrumb)
     app.mount("#app")
   </script>
 </body>

@@ -13,12 +13,22 @@
       <app-sidebar current-page="weapons"></app-sidebar>
     </aside>
     <main class="main-content">
-      <div class="page-header">
-        <breadcrumb current="武器"></breadcrumb>
-        <h1>武器</h1>
+      <div class="char-page-header">
+        <div>
+          <h1 class="char-page-title">武器</h1>
+          <p class="char-page-count">共 <strong>{{ filteredData.length }}</strong> 件武器</p>
+        </div>
       </div>
       <search-bar v-model="searchQuery" placeholder="搜索武器..." :filters="filterOptions" v-model:filter-value="filterValue"></search-bar>
-      <data-table :columns="columns" :data="filteredData" v-model:sort-key="sortKey" v-model:sort-dir="sortDir"></data-table>
+      <div class="filter-bar">
+        <div class="filter-group">
+          <span class="filter-label">类型</span>
+          <span v-for="t in weaponTypes" :key="t"
+            class="filter-chip" :class="{ active: filterType === t }"
+            @click="filterType = filterType === t ? '' : t">{{ t }}</span>
+        </div>
+      </div>
+      <data-table :columns="columns" :data="filteredData" empty-text="没有找到符合条件的武器" :show-id="false" :two-column-detail="true"></data-table>
     </main>
   </div>
   <script type="module">
@@ -26,30 +36,37 @@
     import AppSidebar from "../../components/AppSidebar.vue"
     import SearchBar from "../../components/SearchBar.vue"
     import DataTable from "../../components/DataTable.vue"
-    import Breadcrumb from "../../components/Breadcrumb.vue"
     import { sampleWeapons } from "../../data/samples/weapons.js"
+    import { weaponTypes } from "../../data/config.js"
     import "../../assets/styles/variables.css"
     import "../../assets/styles/reset.css"
     import "../../assets/styles/layout.css"
     import "../../assets/styles/sidebar.css"
     import "../../assets/styles/table.css"
 
-    const columns = [{ label: '名称', key: 'name', sortable: true }, { label: '类型', key: 'type', sortable: true }, { label: '攻击力', key: 'atk', sortable: true }, { label: '特效', key: 'effect', sortable: true }, { label: '获取方式', key: 'source', sortable: true }]
+    const columns = [
+      { label: '名称', key: 'name', sortable: false },
+      { label: '类型', key: 'type', sortable: false },
+      { label: '装备等级', key: 'equipLevel', sortable: false, format: v => 'Lv.' + v },
+      { label: '攻击', key: 'atk', sortable: false },
+      { label: '魔攻', key: 'matk', sortable: false, format: v => v || '—' },
+      { label: '发动效果', key: 'effect', sortable: false },
+      { label: '获取方式', key: 'source', sortable: false }
+    ]
 
     const app = createApp({
       data() {
-        return { searchQuery: "", filterValue: "", sortKey: "", sortDir: "", columns, filterOptions: [], sidebarOpen: false }
+        return { searchQuery: "", filterValue: "", filterType: "", columns, filterOptions: [], weaponTypes, sidebarOpen: false }
       },
       computed: {
-        allData() { return sampleWeapons },
         filteredData() {
-          let list = this.allData
-          if (this.filterValue) {
-            list = list.filter(r => r.element === this.filterValue || r.type === this.filterValue)
+          let list = sampleWeapons
+          if (this.filterType) {
+            list = list.filter(r => r.type === this.filterType)
           }
           if (this.searchQuery) {
             const q = this.searchQuery.toLowerCase()
-            list = list.filter(r => Object.values(r).some(v => v.toString().toLowerCase().includes(q)))
+            list = list.filter(r => ['name', 'character', 'type', 'equipLevel', 'atk', 'matk', 'effect', 'source'].some(k => r[k] && r[k].toString().toLowerCase().includes(q)))
           }
           return list
         }
@@ -61,7 +78,6 @@
     app.component("app-sidebar", AppSidebar)
     app.component("search-bar", SearchBar)
     app.component("data-table", DataTable)
-    app.component("breadcrumb", Breadcrumb)
     app.mount("#app")
   </script>
 </body>

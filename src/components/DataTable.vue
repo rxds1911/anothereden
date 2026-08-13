@@ -17,7 +17,7 @@
     <!-- Empty State -->
     <div v-if="sortedData.length === 0" class="char-list-empty">
       <div class="char-list-empty-icon">🔍</div>
-      <div class="char-list-empty-text">没有找到符合条件的战斗</div>
+      <div class="char-list-empty-text">{{ emptyText }}</div>
       <div class="char-list-empty-hint">试试调整筛选条件或搜索关键词</div>
     </div>
 
@@ -44,26 +44,21 @@
     <!-- Card mode (generic data) -->
     <div v-if="!hasPersonality" class="char-list">
       <div v-for="(row, i) in sortedData" :key="row.id || i" class="char-card" @click="$emit('row-click', row)" :style="{ animationDelay: (i * 0.03) + 's' }">
-        <div class="char-card-avatar" :style="{ background: row.isHiddenBoss ? 'linear-gradient(135deg, #c0392b, #e74c3c)' : 'linear-gradient(135deg, #c8a84e, #e8c96e)', fontSize: '1.2rem' }">#{{ row.id }}</div>
+        <div v-if="showAvatar" class="char-card-avatar" :style="{ background: row.isHiddenBoss ? 'linear-gradient(135deg, #c0392b, #e74c3c)' : 'linear-gradient(135deg, #c8a84e, #e8c96e)', fontSize: '1.2rem' }">{{ row.icon || (showId ? '#' + row.id : (row.name || '?')[0]) }}</div>
         <div class="char-card-body">
           <div class="char-card-top">
-            <span class="char-card-name">#{{ row.id }} {{ row.name }}</span>
+            <span class="char-card-name">{{ showId ? '#' + row.id + ' ' + row.name : row.name }}</span>
+            <span v-if="row.character && row.name" class="task-category-badge">{{ row.character }}</span>
             <span v-if="row.isHiddenBoss" class="hidden-boss-badge">隐王</span>
             <span v-if="row.taskCategory" class="task-category-badge">{{ row.taskCategory }}</span>
           </div>
-          <div class="generic-card-detail">
-            <div class="generic-card-row" v-if="row.startCondition">
-              <span class="generic-card-label">开始条件</span>
-              <span class="generic-card-value">{{ row.startCondition }}</span>
-            </div>
-            <div class="generic-card-row" v-if="row.location">
-              <span class="generic-card-label">出现地域</span>
-              <span class="generic-card-value">{{ row.location }}</span>
-            </div>
-            <div class="generic-card-row" v-if="row.reward">
-              <span class="generic-card-label">报酬</span>
-              <span class="generic-card-value">{{ row.reward }}</span>
-            </div>
+          <div class="generic-card-detail" :class="{ 'two-col': twoColumnDetail }">
+            <template v-for="col in detailColumns(row)" :key="col.key">
+              <div class="generic-card-row" :class="{ 'generic-card-row--full': col.full }" v-if="col.value !== undefined && col.value !== null && col.value !== ''">
+                <span class="generic-card-label">{{ col.label }}</span>
+                <span class="generic-card-value">{{ col.value }}</span>
+              </div>
+            </template>
           </div>
         </div>
         <div class="char-card-arrow">›</div>
@@ -80,12 +75,16 @@ export default {
     data: { type: Array, default: () => [] },
     sortKey: String,
     sortDir: String,
-    hasActiveFilters: { type: Boolean, default: false }
+    hasActiveFilters: { type: Boolean, default: false },
+    emptyText: { type: String, default: "没有找到符合条件的战斗" },
+    showId: { type: Boolean, default: true },
+    showAvatar: { type: Boolean, default: true },
+    twoColumnDetail: { type: Boolean, default: false }
   },
   emits: ["update:sortKey", "update:sortDir", "row-click", "clear-filters"],
   computed: {
     hasPersonality() {
-      return this.data.length > 0 && this.data[0].personality !== undefined
+      return this.data.length > 0 && Array.isArray(this.data[0].personality)
     },
     sortedData() {
       if (!this.sortKey) return this.data
@@ -99,6 +98,16 @@ export default {
     }
   },
   methods: {
+    detailColumns(row) {
+      const cols = this.columns
+        .filter(c => c.key !== "name" && c.key !== "id")
+        .map(c => ({ key: c.key, label: c.label, value: c.format ? c.format(row[c.key], row) : row[c.key] }))
+        .filter(d => d.value !== undefined && d.value !== null && d.value !== '')
+      if (this.twoColumnDetail && cols.length % 2 === 1) {
+        cols[cols.length - 1].full = true
+      }
+      return cols
+    },
     toggleSort(key) {
       if (this.sortKey === key) {
         const next = this.sortDir === "asc" ? "desc" : this.sortDir === "desc" ? "" : "asc"

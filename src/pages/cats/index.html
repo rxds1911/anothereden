@@ -13,12 +13,14 @@
       <app-sidebar current-page="cats"></app-sidebar>
     </aside>
     <main class="main-content">
-      <div class="page-header">
-        <breadcrumb current="猫"></breadcrumb>
-        <h1>猫</h1>
+      <div class="char-page-header">
+        <div>
+          <h1 class="char-page-title">猫</h1>
+          <p class="char-page-count">共 <strong>{{ filteredData.length }}</strong> 只猫</p>
+        </div>
       </div>
       <search-bar v-model="searchQuery" placeholder="搜索猫..." :filters="filterOptions" v-model:filter-value="filterValue"></search-bar>
-      <data-table :columns="columns" :data="filteredData" v-model:sort-key="sortKey" v-model:sort-dir="sortDir"></data-table>
+      <data-table :columns="columns" :data="filteredData" empty-text="没有找到符合条件的猫" :show-id="false" :two-column-detail="true"></data-table>
     </main>
   </div>
   <script type="module">
@@ -26,7 +28,6 @@
     import AppSidebar from "../../components/AppSidebar.vue"
     import SearchBar from "../../components/SearchBar.vue"
     import DataTable from "../../components/DataTable.vue"
-    import Breadcrumb from "../../components/Breadcrumb.vue"
     import { sampleCats } from "../../data/samples/cats.js"
     import "../../assets/styles/variables.css"
     import "../../assets/styles/reset.css"
@@ -34,22 +35,24 @@
     import "../../assets/styles/sidebar.css"
     import "../../assets/styles/table.css"
 
-    const columns = [{ label: '名称', key: 'name', sortable: true }, { label: '所在区域', key: 'area', sortable: true }, { label: '出现条件', key: 'condition', sortable: true }, { label: '奖励', key: 'reward', sortable: true }]
+    const columns = [
+      { label: '名称', key: 'name', sortable: false },
+      { label: '住处', key: 'home', sortable: false },
+      { label: '出现条件', key: 'condition', sortable: false },
+      { label: '性别', key: 'gender', sortable: false },
+      { label: '性格', key: 'personality', sortable: false }
+    ]
 
     const app = createApp({
       data() {
-        return { searchQuery: "", filterValue: "", sortKey: "", sortDir: "", columns, filterOptions: [], sidebarOpen: false }
+        return { searchQuery: "", filterValue: "", columns, filterOptions: [], sidebarOpen: false }
       },
       computed: {
-        allData() { return sampleCats },
         filteredData() {
-          let list = this.allData
-          if (this.filterValue) {
-            list = list.filter(r => r.element === this.filterValue || r.type === this.filterValue)
-          }
+          let list = sampleCats
           if (this.searchQuery) {
             const q = this.searchQuery.toLowerCase()
-            list = list.filter(r => Object.values(r).some(v => v.toString().toLowerCase().includes(q)))
+            list = list.filter(r => ['name', 'home', 'condition', 'gender', 'personality'].some(k => r[k] && r[k].toString().toLowerCase().includes(q)))
           }
           return list
         }
@@ -61,7 +64,6 @@
     app.component("app-sidebar", AppSidebar)
     app.component("search-bar", SearchBar)
     app.component("data-table", DataTable)
-    app.component("breadcrumb", Breadcrumb)
     app.mount("#app")
   </script>
 </body>

@@ -78,6 +78,11 @@ anothereden/
 - 数据以 ES Module 方式导出 JS 对象数组
 - 每份数据通常包含 id、name、rarity 等字段，根据板块特性增减
 
+### 配置管理
+- 所有配置统一集中写在 src/data/config.js 中，以 ES Module 方式导出
+- 筛选选项、分类/类型、时代等可配置项不得写死在页面或组件中，需要时从 config.js import 使用
+- 新增配置前先检查 config.js 是否已有相同项，避免重复定义
+
 ### 样式约定
 - 全局变量维护在 variables.css 中
 - 布局相关写在 layout.css 中

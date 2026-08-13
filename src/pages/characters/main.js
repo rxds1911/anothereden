@@ -4,7 +4,7 @@
     import DataTable from "../../components/DataTable.vue"
     import Breadcrumb from "../../components/Breadcrumb.vue"
     import { sampleCharacters } from "../../data/samples/characters.js"
-    import { weaponOptions, elementOptions, formOptions, lightShadowOptions, personalityOptions } from "../../data/config.js"
+    import { weaponTypes, elementOptions, formOptions, lightShadowOptions, personalityOptions } from "../../data/config.js"
     import "../../assets/styles/variables.css"
     import "../../assets/styles/reset.css"
     import "../../assets/styles/layout.css"
@@ -15,7 +15,7 @@
 
     const app = createApp({
       data() {
-        return { searchQuery: "", filterWeapon: [], filterElement: [], filterForm: [], filterPersonality: [], filterLightShadow: [], showPersonality: false, sortKey: "", sortDir: "", columns, filterOptions: [], personalityOptions, weaponOptions, elementOptions, formOptions, lightShadowOptions, sidebarOpen: false }
+        return { searchQuery: "", filterWeapon: [], filterElement: [], filterForm: [], filterPersonality: [], filterLightShadow: [], showPersonality: false, sortKey: "", sortDir: "", columns, filterOptions: [], personalityOptions, weaponTypes, elementOptions, formOptions, lightShadowOptions, sidebarOpen: false }
       },
       computed: {
         allData() { return sampleCharacters },
