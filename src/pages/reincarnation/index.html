@@ -20,15 +20,7 @@
         </div>
       </div>
       <search-bar v-model="searchQuery" placeholder="搜索回生..." :filters="filterOptions" v-model:filter-value="filterValue"></search-bar>
-      <div class="filter-bar">
-        <div class="filter-group">
-          <span class="filter-label">难度</span>
-          <span v-for="d in difficultyOptions" :key="d"
-            class="filter-chip" :class="{ active: filterDifficulty === d }"
-            @click="filterDifficulty = filterDifficulty === d ? '' : d">{{ d }}</span>
-        </div>
-      </div>
-      <data-table :columns="columns" :data="filteredData" empty-text="没有找到符合条件的关卡" :show-id="false" :show-avatar="false" :two-column-detail="true"></data-table>
+      <data-table :columns="columns" :data="filteredData" empty-text="没有找到符合条件的试炼" :show-id="false" :show-avatar="false" @row-click="goToDetail"></data-table>
     </main>
   </div>
   <script type="module">
@@ -37,7 +29,6 @@
     import SearchBar from "../../components/SearchBar.vue"
     import DataTable from "../../components/DataTable.vue"
     import { sampleReincarnation } from "../../data/samples/reincarnation.js"
-    import { difficultyOptions } from "../../data/config.js"
     import "../../assets/styles/variables.css"
     import "../../assets/styles/reset.css"
     import "../../assets/styles/layout.css"
@@ -45,31 +36,26 @@
     import "../../assets/styles/table.css"
 
     const columns = [
-      { label: '回生名称', key: 'name', sortable: false },
-      { label: '难度', key: 'difficulty', sortable: false },
-      { label: '关卡', key: 'stage', sortable: false },
-      { label: '奖励', key: 'reward', sortable: false }
+      { label: '回生名称', key: 'name', sortable: false }
     ]
 
     const app = createApp({
       data() {
-        return { searchQuery: "", filterValue: "", filterDifficulty: "", columns, filterOptions: [], difficultyOptions, sidebarOpen: false }
+        return { searchQuery: "", filterValue: "", columns, filterOptions: [], sidebarOpen: false }
       },
       computed: {
         filteredData() {
           let list = sampleReincarnation
-          if (this.filterDifficulty) {
-            list = list.filter(r => r.difficulty === this.filterDifficulty)
-          }
           if (this.searchQuery) {
             const q = this.searchQuery.toLowerCase()
-            list = list.filter(r => ['name', 'difficulty', 'stage', 'reward'].some(k => r[k] && r[k].toString().toLowerCase().includes(q)))
+            list = list.filter(r => ['name'].some(k => r[k] && r[k].toString().toLowerCase().includes(q)))
           }
           return list
         }
       },
       methods: {
-        toggleSidebar() { this.sidebarOpen = !this.sidebarOpen }
+        toggleSidebar() { this.sidebarOpen = !this.sidebarOpen },
+        goToDetail(row) { window.location.href = "../reincarnation-detail/index.html?id=" + row.id + "&difficulty=" + row.difficulty }
       }
     })
     app.component("app-sidebar", AppSidebar)

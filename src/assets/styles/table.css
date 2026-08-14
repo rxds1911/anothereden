@@ -332,6 +332,12 @@
 
 /* ---- Generic Card Detail ---- */
 .generic-card-detail { display: flex; flex-direction: column; gap: 4px; margin-top: 8px; }
+.generic-card-image {
+  width: 180px;
+  height: auto;
+  border-radius: 10px;
+  flex-shrink: 0;
+}
 .generic-card-detail.two-col {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -342,7 +348,22 @@
 .generic-card-label { color: #999; font-weight: 600; min-width: 60px; flex-shrink: 0; }
 .generic-card-value { color: #444; flex: 1; }
 @media (max-width: 768px) { .generic-card-row { font-size: .76rem; } .generic-card-label { min-width: 48px; } }
-@media (max-width: 480px) { .generic-card-detail.two-col { grid-template-columns: 1fr; } }
+@media (max-width: 480px) { .generic-card-detail.two-col { grid-template-columns: 1fr; } .generic-card-image { width: 120px; } }
+
+/* ---- Difficulty Badge ---- */
+.difficulty-badge {
+  display: inline-block;
+  font-size: .7rem;
+  font-weight: 700;
+  padding: 2px 10px;
+  border-radius: 10px;
+  color: #fff;
+  margin-left: 8px;
+  letter-spacing: 0.3px;
+  white-space: nowrap;
+}
+.difficulty-badge--Normal { background: linear-gradient(135deg, #e67e22, #f39c12); }
+.difficulty-badge--Extreme { background: linear-gradient(135deg, #c0392b, #e74c3c); }
 
 /* ---- Hidden Boss Badge ---- */
 .hidden-boss-badge { display: inline-block; background: linear-gradient(135deg, #c0392b, #e74c3c); color: #fff; font-size: .7rem; font-weight: 700; padding: 2px 10px; border-radius: 10px; margin-left: 8px; letter-spacing: 0.5px; }

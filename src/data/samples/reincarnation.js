@@ -1,12 +1,24 @@
 export const sampleReincarnation = [
-  // Hard
-  { id: 1, name: "埃迪之门", difficulty: "Hard", stage: "第1关", reward: "异节×1" },
-  { id: 2, name: "埃迪之门", difficulty: "Hard", stage: "第2关", reward: "异节×1" },
-  { id: 3, name: "露娜之门", difficulty: "Hard", stage: "第1关", reward: "异节×1" },
-  { id: 4, name: "露娜之门", difficulty: "Hard", stage: "第2关", reward: "异节×2" },
-  { id: 5, name: "菲洛之门", difficulty: "Hard", stage: "第1关", reward: "异节×2" },
-  // Extreme
-  { id: 6, name: "索菲亚之门", difficulty: "Extreme", stage: "第1关", reward: "异节×3" },
-  { id: 7, name: "索菲亚之门", difficulty: "Extreme", stage: "第2关", reward: "典录×1" },
-  { id: 8, name: "终焉之门", difficulty: "Extreme", stage: "最终关", reward: "典录×2" }
+  { id: 1, name: "照亮时空黑暗之人的试炼", difficulty: "Normal", image: "/screenshots/reincarnation/照亮时空黑暗之人的试炼hard.png" },
+  { id: 2, name: "照亮时空黑暗之人的试炼", difficulty: "Extreme", image: "/screenshots/reincarnation/照亮时空黑暗之人的试炼extreme.png" },
+  { id: 3, name: "恢弘壮阔震裂崩落之试炼", difficulty: "Normal", image: "/screenshots/reincarnation/恢弘壮阔震裂崩落之试炼hard.png" },
+  { id: 4, name: "恢弘壮阔震裂崩落之试炼", difficulty: "Extreme", image: "/screenshots/reincarnation/恢弘壮阔震裂崩落之试炼extreme.png" },
+  { id: 5, name: "澄明净澈水牢大祸之试炼", difficulty: "Normal", image: "/screenshots/reincarnation/澄明净澈水牢大祸之试炼hard.png" },
+  { id: 6, name: "澄明净澈水牢大祸之试炼", difficulty: "Extreme", image: "/screenshots/reincarnation/澄明净澈水牢大祸之试炼extreme.png" },
+  { id: 7, name: "时空扭曲纠正者之试炼", difficulty: "Normal", image: "/screenshots/reincarnation/时空扭曲纠正者之试炼hard.png" },
+  { id: 8, name: "时空扭曲纠正者之试炼", difficulty: "Extreme", image: "/screenshots/reincarnation/时空扭曲纠正者之试炼extreme.png" },
+  { id: 9, name: "赫然灼烧豪焰猛火之试炼", difficulty: "Normal", image: "/screenshots/reincarnation/赫然灼烧豪焰猛火之试炼hard.png" },
+  { id: 10, name: "赫然灼烧豪焰猛火之试炼", difficulty: "Extreme", image: "/screenshots/reincarnation/赫然灼烧豪焰猛火之试炼extreme.png" },
+  { id: 11, name: "解开虚像谜团者之试炼", difficulty: "Normal", image: "/screenshots/reincarnation/解开虚像谜团者之试炼hard.png" },
+  { id: 12, name: "解开虚像谜团者之试炼", difficulty: "Extreme", image: "/screenshots/reincarnation/解开虚像谜团者之试炼extreme.png" },
+  { id: 13, name: "被封印的灾祸魍魉之试炼", difficulty: "Normal", image: "/screenshots/reincarnation/被封印的灾祸魍魉之试炼hard.png" },
+  { id: 14, name: "被封印的灾祸魍魉之试炼", difficulty: "Extreme", image: "/screenshots/reincarnation/被封印的灾祸魍魉之试炼extreme.png" },
+  { id: 15, name: "严峻烈然狂风荒乱之试炼", difficulty: "Normal", image: "/screenshots/reincarnation/严峻烈然狂风荒乱之试炼hard.png" },
+  { id: 16, name: "严峻烈然狂风荒乱之试炼", difficulty: "Extreme", image: "/screenshots/reincarnation/严峻烈然狂风荒乱之试炼extreme.png" },
+  { id: 17, name: "切断因果束缚者之试炼", difficulty: "Normal", image: "/screenshots/reincarnation/切断因果束缚者之试炼hard.png" },
+  { id: 18, name: "切断因果束缚者之试炼", difficulty: "Extreme", image: "/screenshots/reincarnation/切断因果束缚者之试炼extreme.png" },
+  { id: 19, name: "拥抱虚无真实之人的试炼", difficulty: "Normal", image: "/screenshots/reincarnation/拥抱虚无真实之人的试炼hard.png" },
+  { id: 20, name: "拥抱虚无真实之人的试炼", difficulty: "Extreme", image: "/screenshots/reincarnation/拥抱虚无真实之人的试炼extreme.png" },
+  { id: 21, name: "抵抗灵长令式之人的试炼", difficulty: "Normal", image: "/screenshots/reincarnation/抵抗灵长令式之人的试炼hard.png" },
+  { id: 22, name: "抵抗灵长令式之人的试炼", difficulty: "Extreme", image: "/screenshots/reincarnation/抵抗灵长令式之人的试炼extreme.png" }
 ]

@@ -22,6 +22,3 @@ export const storyEras = ['现代', '未来', '古代', '次元夹缝', '虚时�
 
 // 书架页书籍分类
 export const bookTypes = ['主线剧情第1部', '主线剧情第1.5部', '主线剧情第2部', '主线剧情第3部', '外传/协奏', '外典', '群像', '伙伴', '豪杰']
-
-// 回生页难度
-export const difficultyOptions = ['Hard', 'Extreme']

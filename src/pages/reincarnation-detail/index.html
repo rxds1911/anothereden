@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>回生详情 - 另一个伊甸攻略站</title>
+</head>
+<body>
+  <div id="app">
+    <button class="sidebar-toggle" @click="toggleSidebar">☰</button>
+    <div class="sidebar-overlay" :class="{ show: sidebarOpen }" @click="toggleSidebar"></div>
+    <aside class="sidebar" :class="{ open: sidebarOpen }">
+      <app-sidebar current-page="reincarnation"></app-sidebar>
+    </aside>
+    <main class="main-content" v-if="trial">
+      <a class="back-link" href="../reincarnation/index.html">← 返回回生列表</a>
+      <div class="char-page-header">
+        <div>
+          <h1 class="char-page-title">{{ trial.name }}</h1>
+          <p class="char-page-count">回生关卡 · {{ difficulty }}</p>
+        </div>
+      </div>
+      <div class="detail-section">
+        <div class="detail-section-header"><span class="icon">🗺️</span> 关卡条件与报酬</div>
+        <div class="behavior-table-wrap">
+          <table class="ability-table">
+            <thead>
+              <tr>
+                <th style="width: 90px;">关卡</th>
+                <th>条件</th>
+                <th>报酬</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(m, i) in flatRows" :key="i">
+                <td v-if="m.rowspan" :rowspan="m.rowspan" class="stage-num">第{{ m.stage }}关</td>
+                <td>{{ m.condition }}</td>
+                <td>{{ m.reward }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+  </div>
+  <script type="module">
+    import { createApp } from "vue"
+    import AppSidebar from "../../components/AppSidebar.vue"
+    import { sampleReincarnation } from "../../data/samples/reincarnation.js"
+    import { reincarnationStages } from "../../data/samples/reincarnation-stages.js"
+    import "../../assets/styles/variables.css"
+    import "../../assets/styles/reset.css"
+    import "../../assets/styles/layout.css"
+    import "../../assets/styles/sidebar.css"
+    import "../../assets/styles/table.css"
+    import "../../assets/styles/detail.css"
+
+    const params = new URLSearchParams(window.location.search)
+    const trialId = params.get('id')
+    const trial = sampleReincarnation.find(r => String(r.id) === trialId) || null
+    const difficulty = params.get('difficulty') === 'Extreme' ? 'Extreme' : 'Normal'
+
+    const app = createApp({
+      data() {
+        return { trial, difficulty, sidebarOpen: false }
+      },
+      computed: {
+        flatRows() {
+          const stages = reincarnationStages[this.difficulty] || []
+          const rows = []
+          stages.forEach(s => {
+            s.missions.forEach((m, i) => {
+              rows.push({ ...m, stage: s.stage, rowspan: i === 0 ? s.missions.length : 0 })
+            })
+          })
+          return rows
+        }
+      },
+      methods: {
+        toggleSidebar() { this.sidebarOpen = !this.sidebarOpen }
+      }
+    })
+    app.component("app-sidebar", AppSidebar)
+    app.mount("#app")
+  </script>
+</body>
+</html>

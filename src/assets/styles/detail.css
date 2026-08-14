@@ -475,6 +475,14 @@
 .behavior-table tbody tr:nth-child(even) { background: #fafbfc; }
 .behavior-table tbody tr:hover { background: #f5f3ee; }
 
+/* ---- Reincarnation Detail ---- */
+.stage-num {
+  font-weight: 700;
+  color: #1a2940;
+  text-align: center;
+  white-space: nowrap;
+}
+
 /* ---- Team Section ---- */
 .team-section { padding: 28px 24px; display: flex; flex-direction: column; gap: 16px; }
 .team-row { display: flex; align-items: center; gap: 16px; }
