@@ -28,7 +28,7 @@
             @click="filterType = filterType === t ? '' : t">{{ t }}</span>
         </div>
       </div>
-      <data-table :columns="columns" :data="filteredData" empty-text="没有找到符合条件的防具" :show-id="false" :two-column-detail="true"></data-table>
+      <data-table :columns="columns" :data="filteredData" empty-text="没有找到符合条件的防具" :show-id="false" :show-avatar="false" :two-column-detail="true"></data-table>
     </main>
   </div>
   <script type="module">
@@ -50,8 +50,9 @@
       { label: '装备等级', key: 'equipLevel', sortable: false, format: v => 'Lv.' + v },
       { label: '防御', key: 'def', sortable: false },
       { label: '魔防', key: 'mdef', sortable: false },
-      { label: '发动效果', key: 'effect', sortable: false },
-      { label: '获取方式', key: 'source', sortable: false }
+      { label: '装备条件', key: 'condition', sortable: false },
+      { label: '获取方式', key: 'source', sortable: false },
+      { label: '发动效果', key: 'effect', sortable: false }
     ]
 
     const app = createApp({
@@ -66,7 +67,7 @@
           }
           if (this.searchQuery) {
             const q = this.searchQuery.toLowerCase()
-            list = list.filter(r => ['name', 'character', 'type', 'equipLevel', 'def', 'mdef', 'effect', 'source'].some(k => r[k] && r[k].toString().toLowerCase().includes(q)))
+            list = list.filter(r => ['name', 'character', 'type', 'equipLevel', 'def', 'mdef', 'condition', 'source', 'effect'].some(k => r[k] && r[k].toString().toLowerCase().includes(q)))
           }
           return list
         }

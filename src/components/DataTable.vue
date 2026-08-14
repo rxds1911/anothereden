@@ -44,7 +44,7 @@
     <!-- Card mode (generic data) -->
     <div v-if="!hasPersonality" class="char-list">
       <div v-for="(row, i) in sortedData" :key="row.id || i" class="char-card" @click="$emit('row-click', row)" :style="{ animationDelay: (i * 0.03) + 's' }">
-        <div v-if="showAvatar" class="char-card-avatar" :style="{ background: row.isHiddenBoss ? 'linear-gradient(135deg, #c0392b, #e74c3c)' : 'linear-gradient(135deg, #c8a84e, #e8c96e)', fontSize: '1.2rem' }">{{ row.icon || (showId ? '#' + row.id : (row.name || '?')[0]) }}</div>
+        <div v-if="showAvatar" class="char-card-avatar" :style="{ background: row.isHiddenBoss ? 'linear-gradient(135deg, #c0392b, #e74c3c)' : 'linear-gradient(135deg, #c8a84e, #e8c96e)', fontSize: '1.2rem' }">{{ row.icon || (showId ? '#' + row.id : ((row[avatarKey] || '?')[0])) }}</div>
         <div class="char-card-body">
           <div class="char-card-top">
             <span class="char-card-name">{{ showId ? '#' + row.id + ' ' + row.name : row.name }}</span>
@@ -79,6 +79,7 @@ export default {
     emptyText: { type: String, default: "没有找到符合条件的战斗" },
     showId: { type: Boolean, default: true },
     showAvatar: { type: Boolean, default: true },
+    avatarKey: { type: String, default: "name" },
     twoColumnDetail: { type: Boolean, default: false }
   },
   emits: ["update:sortKey", "update:sortDir", "row-click", "clear-filters"],

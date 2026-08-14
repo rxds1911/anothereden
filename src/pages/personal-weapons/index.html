@@ -13,12 +13,18 @@
       <app-sidebar current-page="personal-weapons"></app-sidebar>
     </aside>
     <main class="main-content">
-      <div class="page-header">
-        <breadcrumb current="专武"></breadcrumb>
-        <h1>专武</h1>
+      <div class="char-page-header">
+        <div>
+          <h1 class="char-page-title">专武</h1>
+          <p class="char-page-count">共 <strong>{{ filteredData.length }}</strong> 件专武</p>
+        </div>
       </div>
       <search-bar v-model="searchQuery" placeholder="搜索专武..." :filters="filterOptions" v-model:filter-value="filterValue"></search-bar>
-      <data-table :columns="columns" :data="filteredData" v-model:sort-key="sortKey" v-model:sort-dir="sortDir"></data-table>
+      <div class="tab-bar">
+        <button class="tab-btn" :class="{ active: activeTab === '结果' }" @click="activeTab = '结果'">结果</button>
+        <button class="tab-btn" :class="{ active: activeTab === '显现' }" @click="activeTab = '显现'">显现</button>
+      </div>
+      <data-table :columns="columns" :data="filteredData" empty-text="没有找到符合条件的专武" :show-id="false" avatar-key="character"></data-table>
     </main>
   </div>
   <script type="module">
@@ -26,7 +32,6 @@
     import AppSidebar from "../../components/AppSidebar.vue"
     import SearchBar from "../../components/SearchBar.vue"
     import DataTable from "../../components/DataTable.vue"
-    import Breadcrumb from "../../components/Breadcrumb.vue"
     import { samplePersonalWeapons } from "../../data/samples/personal-weapons.js"
     import "../../assets/styles/variables.css"
     import "../../assets/styles/reset.css"
@@ -34,22 +39,21 @@
     import "../../assets/styles/sidebar.css"
     import "../../assets/styles/table.css"
 
-    const columns = [{ label: '角色', key: 'character', sortable: true }, { label: '武器名', key: 'weapon', sortable: true }, { label: '攻击力', key: 'atk', sortable: true }, { label: '特效', key: 'effect', sortable: true }, { label: '解锁条件', key: 'unlock', sortable: true }]
+    const columns = [
+      { label: '专武名称', key: 'name', sortable: false },
+      { label: '效果', key: 'effect', sortable: false }
+    ]
 
     const app = createApp({
       data() {
-        return { searchQuery: "", filterValue: "", sortKey: "", sortDir: "", columns, filterOptions: [], sidebarOpen: false }
+        return { searchQuery: "", filterValue: "", activeTab: "结果", columns, filterOptions: [], sidebarOpen: false }
       },
       computed: {
-        allData() { return samplePersonalWeapons },
         filteredData() {
-          let list = this.allData
-          if (this.filterValue) {
-            list = list.filter(r => r.element === this.filterValue || r.type === this.filterValue)
-          }
+          let list = samplePersonalWeapons.filter(r => r.tab === this.activeTab)
           if (this.searchQuery) {
             const q = this.searchQuery.toLowerCase()
-            list = list.filter(r => Object.values(r).some(v => v.toString().toLowerCase().includes(q)))
+            list = list.filter(r => ['name', 'character', 'effect'].some(k => r[k] && r[k].toString().toLowerCase().includes(q)))
           }
           return list
         }
@@ -61,7 +65,6 @@
     app.component("app-sidebar", AppSidebar)
     app.component("search-bar", SearchBar)
     app.component("data-table", DataTable)
-    app.component("breadcrumb", Breadcrumb)
     app.mount("#app")
   </script>
 </body>

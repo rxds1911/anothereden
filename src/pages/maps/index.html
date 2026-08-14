@@ -28,7 +28,7 @@
             @click="filterEra = filterEra === t ? '' : t">{{ t }}</span>
         </div>
       </div>
-      <data-table :columns="columns" :data="filteredData" empty-text="没有找到符合条件的地图" :show-id="false"></data-table>
+      <data-table :columns="columns" :data="filteredData" empty-text="没有找到符合条件的地图" :show-id="false" :show-avatar="false"></data-table>
     </main>
   </div>
   <script type="module">
