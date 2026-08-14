@@ -12,6 +12,6 @@ export const navItems = [
   { id: 'diary', name: '日记', icon: '📖', path: '/src/pages/diary/index.html' },
   { id: 'personal-weapons', name: '专武', icon: '🌟', path: '/src/pages/personal-weapons/index.html' },
   { id: 'reincarnation', name: '回生', icon: '♻️', path: '/src/pages/reincarnation/index.html' },
-  { id: 'dungeons', name: '副本', icon: '🏰', path: '/src/pages/dungeons/index.html' },
+  { id: 'dungeons', name: '迷宫', icon: '🏰', path: '/src/pages/dungeons/index.html' },
   { id: 'events', name: '活动', icon: '🎉', path: '/src/pages/events/index.html' }
 ]
