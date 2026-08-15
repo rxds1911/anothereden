@@ -49,6 +49,7 @@
         <div class="char-card-body">
           <div class="char-card-top">
             <span class="char-card-name">{{ showId ? '#' + row.id + ' ' + row.name : row.name }}</span>
+            <span v-if="badgeKey && row[badgeKey]" class="event-type-badge">{{ row[badgeKey] }}</span>
             <span v-if="row.difficulty" class="difficulty-badge" :class="'difficulty-badge--' + row.difficulty">{{ row.difficulty }}</span>
             <span v-if="row.character && row.name" class="task-category-badge">{{ row.character }}</span>
             <span v-if="row.isHiddenBoss" class="hidden-boss-badge">隐王</span>
@@ -58,7 +59,10 @@
             <template v-for="col in detailColumns(row)" :key="col.key">
               <div class="generic-card-row" :class="{ 'generic-card-row--full': col.full }" v-if="col.value !== undefined && col.value !== null && col.value !== ''">
                 <span class="generic-card-label">{{ col.label }}</span>
-                <span class="generic-card-value">{{ col.value }}</span>
+                <span class="generic-card-value tags-value" v-if="col.tag">
+                  <span v-for="t in splitValue(col.value)" :key="t" class="tag" :class="'tag-' + t">{{ t }}</span>
+                </span>
+                <span class="generic-card-value" v-else>{{ col.value }}</span>
               </div>
             </template>
           </div>
@@ -82,6 +86,7 @@ export default {
     showId: { type: Boolean, default: true },
     showAvatar: { type: Boolean, default: true },
     avatarKey: { type: String, default: "name" },
+    badgeKey: { type: String, default: "" },
     twoColumnDetail: { type: Boolean, default: false }
   },
   emits: ["update:sortKey", "update:sortDir", "row-click", "clear-filters"],
@@ -101,10 +106,13 @@ export default {
     }
   },
   methods: {
+    splitValue(value) {
+      return String(value).split(/[、,，/]/).map(s => s.trim()).filter(Boolean)
+    },
     detailColumns(row) {
       const cols = this.columns
         .filter(c => c.key !== "name" && c.key !== "id")
-        .map(c => ({ key: c.key, label: c.label, value: c.format ? c.format(row[c.key], row) : row[c.key] }))
+        .map(c => ({ key: c.key, label: c.label, value: c.format ? c.format(row[c.key], row) : row[c.key], tag: c.tag }))
         .filter(d => d.value !== undefined && d.value !== null && d.value !== '')
       if (this.twoColumnDetail && cols.length % 2 === 1) {
         cols[cols.length - 1].full = true

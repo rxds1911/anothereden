@@ -15,7 +15,7 @@
 
     const app = createApp({
       data() {
-        return { searchQuery: "", filterWeapon: [], filterElement: [], filterForm: [], filterPersonality: [], filterLightShadow: [], showPersonality: false, sortKey: "", sortDir: "", columns, filterOptions: [], personalityOptions, weaponTypes, elementOptions, formOptions, lightShadowOptions, sidebarOpen: false }
+        return { searchQuery: "", filterWeapon: [], filterElement: [], filterForm: [], filterPersonality: [], filterLightShadow: [], showPersonality: false, sortKey: "", sortDir: "", columns, filterOptions: [], personalityOptions, weaponTypes, elementOptions, formOptions, lightShadowOptions, sidebarOpen: window.innerWidth > 768 }
       },
       computed: {
         allData() { return sampleCharacters },

@@ -19,7 +19,10 @@
       <div class="carousel-wrap">
         <div class="carousel" @mouseenter="carouselPause" @mouseleave="carouselResume">
           <div v-for="(ev, i) in recentCarousel" :key="i" class="carousel-slide" :class="{ active: carouselIndex === i }">
-            <img :src="ev.img" :alt="ev.name" class="carousel-img" />
+            <a v-if="ev.url" :href="ev.url" target="_blank" rel="noopener" class="carousel-link">
+              <img :src="ev.img" :alt="ev.name" class="carousel-img" />
+            </a>
+            <img v-else :src="ev.img" :alt="ev.name" class="carousel-img" />
           </div>
           <div class="carousel-dots">
             <span v-for="(ev, i) in recentCarousel" :key="i" class="carousel-dot" :class="{ active: carouselIndex === i }" @click="carouselIndex = i"></span>
@@ -55,7 +58,7 @@
       <!-- Quick Links -->
       <h2 class="section-title">板块导航</h2>
       <div class="card-grid">
-        <a v-for="item in navItems" :key="item.id" :href="item.path" class="home-card">
+        <a v-for="item in gridNavItems" :key="item.id" :href="item.path" class="home-card">
           <div class="home-card-icon">{{ item.icon }}</div>
           <div class="home-card-name">{{ item.name }}</div>
           <div class="home-card-count">{{ getItemCount(item.name) }} 条数据</div>
@@ -68,6 +71,19 @@
     import AppSidebar from './src/components/AppSidebar.vue'
     import { navItems } from './src/data/nav.js'
     import { sampleEvents } from './src/data/samples/events.js'
+    import { sampleCharacters } from './src/data/samples/characters.js'
+    import { sampleBattles } from './src/data/samples/battle.js'
+    import { sampleWeapons } from './src/data/samples/weapons.js'
+    import { sampleArmor } from './src/data/samples/armor.js'
+    import { sampleBadges } from './src/data/samples/badges.js'
+    import { sampleMaps } from './src/data/samples/maps.js'
+    import { sampleGrasta } from './src/data/samples/grasta.js'
+    import { sampleBookshelf } from './src/data/samples/bookshelf.js'
+    import { sampleCats } from './src/data/samples/cats.js'
+    import { sampleDiary } from './src/data/samples/diary.js'
+    import { samplePersonalWeapons } from './src/data/samples/personal-weapons.js'
+    import { sampleReincarnation } from './src/data/samples/reincarnation.js'
+    import { sampleDungeons } from './src/data/samples/dungeons.js'
     import './src/assets/styles/variables.css'
     import './src/assets/styles/reset.css'
     import './src/assets/styles/layout.css'
@@ -76,20 +92,33 @@
     import './src/assets/styles/cards.css'
 
     const countMap = {
-      '角色': 5, '战斗': 5, '武器': 5, '防具': 5, '徽章': 5,
-      '地图': 5, '灵晶': 5, '书架': 5, '猫': 5, '日记': 5,
-      '专武': 5, '回生': 5, '副本': 5, '活动': 5
+      '角色': sampleCharacters.length,
+      '战斗': sampleBattles.length,
+      '武器': sampleWeapons.length,
+      '防具': sampleArmor.length,
+      '徽章': sampleBadges.length,
+      '地图': sampleMaps.length,
+      '灵晶': sampleGrasta.length,
+      '书架': sampleBookshelf.length,
+      '猫': sampleCats.length,
+      '日记': sampleDiary.length,
+      '专武': samplePersonalWeapons.length,
+      '回生': sampleReincarnation.length,
+      '迷宫': sampleDungeons.length,
+      '活动': sampleEvents.length
     }
 
     const app = createApp({
-      data() { return { navItems, sidebarOpen: false, carouselIndex: 0, carouselTimer: null } },
+      data() { return { navItems, sidebarOpen: window.innerWidth > 768, carouselIndex: 0, carouselTimer: null } },
       computed: {
-        recentCarousel() { return [
-          { name: '星之引导', img: 'https://picsum.photos/seed/star1/800/300' },
-          { name: '龙神降临', img: 'https://picsum.photos/seed/dragon1/800/300' },
-          { name: '异境讨伐', img: 'https://picsum.photos/seed/dimension1/800/300' },
-          { name: '星导祭', img: 'https://picsum.photos/seed/festival1/800/300' }
-        ] }
+        gridNavItems() { return navItems.filter(i => i.id !== 'index') },
+        recentCarousel() {
+          const slides = [
+            { name: '首页推荐', img: '/screenshots/home/MuMu-20260808-102622-244.png', url: '/src/pages/events/index.html' }
+          ]
+          sampleEvents.forEach(ev => slides.push({ name: ev.name, img: ev.image, url: ev.url }))
+          return slides
+        }
       },
       mounted() { this.carouselStart() },
       beforeUnmount() { clearInterval(this.carouselTimer) },

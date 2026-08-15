@@ -70,6 +70,7 @@
   flex: 1;
   padding: 24px 32px 40px;
   min-height: 100vh;
+  transition: margin-left var(--transition-speed);
 }
 
 .page-header {
@@ -101,7 +102,7 @@
 
 /* Mobile toggle */
 .sidebar-toggle {
-  display: none;
+  display: block;
   position: fixed;
   top: 12px;
   left: 12px;
@@ -136,4 +137,18 @@
     margin-left: 0;
     padding: 60px 16px 24px;
   }
+}
+
+/* Desktop collapse */
+@media (min-width: 769px) {
+  .sidebar:not(.open) {
+    transform: translateX(-100%);
+  }
+  .sidebar:not(.open) ~ .main-content {
+    margin-left: 0;
+    padding-top: 60px;
+  }
+}
+.sidebar-header {
+  padding-left: 56px;
 }

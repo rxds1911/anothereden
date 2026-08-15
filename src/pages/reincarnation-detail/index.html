@@ -62,7 +62,7 @@
 
     const app = createApp({
       data() {
-        return { trial, difficulty, sidebarOpen: false }
+        return { trial, difficulty, sidebarOpen: window.innerWidth > 768 }
       },
       computed: {
         flatRows() {

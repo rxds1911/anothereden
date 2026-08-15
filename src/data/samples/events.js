@@ -1,7 +1,5 @@
 export const sampleEvents = [
-  { name: "星之引导", type: "剧情活动", time: "永久", reward: "星之碎片、角色", status: "常驻" },
-  { name: "龙神降临", type: "限时活动", time: "2026.05.15-06.15", reward: "龙神武器、灵晶", status: "进行中" },
-  { name: "异境讨伐", type: "周回活动", time: "每周五-周日", reward: "异节掉落UP", status: "定期" },
-  { name: "钓鱼大赛", type: "限时活动", time: "2026.05.01-05.31", reward: "限定鱼竿、猫石", status: "已结束" },
-  { name: "星导祭", type: "剧情活动", time: "永久", reward: "星导碎片、抽卡券", status: "常驻" }
+  { id: 1, name: "幻灵之剑与褪色的拳头", type: "外史", image: "/screenshots/events/图片1_580x186_保留标题.png", url: "https://www.taptap.cn/moment/835307047149898964?share_id=ed3e0d5976c0&utm_medium=share&utm_source=mobile_qq" },
+  { id: 2, name: "幻灵之剑与暗溟的残光", type: "外史", image: "/screenshots/events/2026y06m09d_1009053709.png", url: "https://www.taptap.cn/moment/811952987747387043?group_id=179938" },
+  { id: 3, name: "幻灵之剑与祈誓的灯火", type: "外史", image: "/screenshots/events/2026y04m14d_1652400224.png", url: "https://www.taptap.cn/moment/792530340844406836?group_id=179938" }
 ]

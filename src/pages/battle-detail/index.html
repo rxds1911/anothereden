@@ -151,7 +151,7 @@
     const battle = sampleBattles.find(b => String(b.id) === battleId) || null
 
     const app = createApp({
-      data() { return { battle, sidebarOpen: false } },
+      data() { return { battle, sidebarOpen: window.innerWidth > 768 } },
       methods: { toggleSidebar() { this.sidebarOpen = !this.sidebarOpen } }
     })
     app.component("app-sidebar", AppSidebar)

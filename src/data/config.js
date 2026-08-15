@@ -25,3 +25,6 @@ export const bookTypes = ['主线剧情第1部', '主线剧情第1.5部', '主�
 
 // 迷宫页类型
 export const dungeonTypes = ['主线', '外典', '外传', '断章', '协奏', '群像', '外史', '封域', '异境']
+
+// 活动页类型
+export const eventTypes = ['主线', '外典', '外传', '断章', '协奏', '群像', '外史', '邂逅']

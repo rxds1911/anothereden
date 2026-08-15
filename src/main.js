@@ -11,7 +11,7 @@ const app = createApp({
   data() {
     return {
       navItems,
-      sidebarOpen: false,
+        sidebarOpen: window.innerWidth > 768,
       itemCounts: {
         '角色': 5, '战斗': 3, '武器': 5, '防具': 4, '徽章': 4,
         '地图': 4, '灵晶': 5, '书架': 4, '猫': 4, '日记': 4,

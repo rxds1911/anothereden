@@ -16,7 +16,7 @@ const app = createApp({
   data() {
     return {
       character,
-      sidebarOpen: false,
+        sidebarOpen: window.innerWidth > 768,
       skillTypes: ['战斗宣言', '固有技能', '习得技能']
     }
   },

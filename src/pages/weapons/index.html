@@ -57,7 +57,7 @@
 
     const app = createApp({
       data() {
-        return { searchQuery: "", filterValue: "", filterType: "", columns, filterOptions: [], weaponTypes, sidebarOpen: false }
+        return { searchQuery: "", filterValue: "", filterType: "", columns, filterOptions: [], weaponTypes, sidebarOpen: window.innerWidth > 768 }
       },
       computed: {
         filteredData() {

@@ -52,7 +52,7 @@
 
     const app = createApp({
       data() {
-        return { searchQuery: "", filterValue: "", filterEra: "", columns, filterOptions: [], storyEras, sidebarOpen: false }
+        return { searchQuery: "", filterValue: "", filterEra: "", columns, filterOptions: [], storyEras, sidebarOpen: window.innerWidth > 768 }
       },
       computed: {
         filteredData() {

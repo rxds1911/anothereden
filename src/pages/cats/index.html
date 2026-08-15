@@ -45,7 +45,7 @@
 
     const app = createApp({
       data() {
-        return { searchQuery: "", filterValue: "", columns, filterOptions: [], sidebarOpen: false }
+        return { searchQuery: "", filterValue: "", columns, filterOptions: [], sidebarOpen: window.innerWidth > 768 }
       },
       computed: {
         filteredData() {

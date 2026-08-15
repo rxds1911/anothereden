@@ -47,15 +47,16 @@
     const columns = [
       { label: '名称', key: 'name', sortable: false },
       { label: '类型', key: 'type', sortable: false },
-      { label: '弱点', key: 'weakness', sortable: false },
-      { label: '耐性', key: 'resist', sortable: false },
+      { label: '弱点', key: 'weakness', sortable: false, tag: true },
+      { label: '耐性', key: 'resist', sortable: false, tag: true },
       { label: '推荐等级', key: 'recLevel', sortable: false },
-      { label: '奖励', key: 'reward', sortable: false }
+      { label: '奖励', key: 'reward', sortable: false },
+      { label: '记忆之书', key: 'memoryBook', sortable: false }
     ]
 
     const app = createApp({
       data() {
-        return { searchQuery: "", filterValue: "", filterType: "", columns, filterOptions: [], dungeonTypes, sidebarOpen: false }
+        return { searchQuery: "", filterValue: "", filterType: "", columns, filterOptions: [], dungeonTypes, sidebarOpen: window.innerWidth > 768 }
       },
       computed: {
         filteredData() {
@@ -65,7 +66,7 @@
           }
           if (this.searchQuery) {
             const q = this.searchQuery.toLowerCase()
-            list = list.filter(r => ['name', 'type', 'weakness', 'resist', 'recLevel', 'reward'].some(k => r[k] && r[k].toString().toLowerCase().includes(q)))
+            list = list.filter(r => ['name', 'type', 'weakness', 'resist', 'recLevel', 'reward', 'memoryBook'].some(k => r[k] && r[k].toString().toLowerCase().includes(q)))
           }
           return list
         }

@@ -49,7 +49,7 @@
 
     const app = createApp({
       data() {
-        return { searchQuery: "", filterValue: "", filterCategory: "", columns, filterOptions: [], taskCategories, sidebarOpen: false }
+        return { searchQuery: "", filterValue: "", filterCategory: "", columns, filterOptions: [], taskCategories, sidebarOpen: window.innerWidth > 768 }
       },
       computed: {
         allData() { return sampleBattles },
