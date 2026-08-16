@@ -1,30 +1,30 @@
 export const sampleMaps = [
   // 现代（席尔贝利亚大陆 / 米古尼娜大陆 / 嘉路雷亚大陆）
-  { id: 1, name: "埃尔吉昂", era: "现代", area: "席尔贝利亚大陆" },
-  { id: 2, name: "王城", era: "现代", area: "席尔贝利亚大陆" },
-  { id: 3, name: "魔兽城", era: "现代", area: "席尔贝利亚大陆" },
-  { id: 4, name: "米古尼娜港", era: "现代", area: "米古尼娜大陆" },
-  { id: 5, name: "嘉路雷亚要塞", era: "现代", area: "嘉路雷亚大陆" },
+  { id: 1, name: "埃尔吉昂", era: "现代", area: "席尔贝利亚大陆", category: "城镇·村庄" },
+  { id: 2, name: "王城", era: "现代", area: "席尔贝利亚大陆", category: "城镇·村庄" },
+  { id: 3, name: "魔兽城", era: "现代", area: "席尔贝利亚大陆", category: "野外·迷宫" },
+  { id: 4, name: "米古尼娜港", era: "现代", area: "米古尼娜大陆", category: "城镇·村庄" },
+  { id: 5, name: "嘉路雷亚要塞", era: "现代", area: "嘉路雷亚大陆", category: "野外·迷宫" },
   // 未来
-  { id: 6, name: "未来工业都市", era: "未来", area: "米古尼娜大陆" },
-  { id: 7, name: "时空回廊", era: "未来", area: "席尔贝利亚大陆" },
-  { id: 8, name: "浮游都市", era: "未来", area: "嘉路雷亚大陆" },
+  { id: 6, name: "未来工业都市", era: "未来", area: "米古尼娜大陆", category: "城镇·村庄" },
+  { id: 7, name: "时空回廊", era: "未来", area: "席尔贝利亚大陆", category: "野外·迷宫" },
+  { id: 8, name: "浮游都市", era: "未来", area: "嘉路雷亚大陆", category: "城镇·村庄" },
   // 古代
-  { id: 9, name: "古代遗迹", era: "古代", area: "席尔贝利亚大陆" },
-  { id: 10, name: "龙宫城", era: "古代", area: "米古尼娜大陆" },
-  { id: 11, name: "魔兽洞穴", era: "古代", area: "嘉路雷亚大陆" },
+  { id: 9, name: "古代遗迹", era: "古代", area: "席尔贝利亚大陆", category: "野外·迷宫" },
+  { id: 10, name: "龙宫城", era: "古代", area: "米古尼娜大陆", category: "城镇·村庄" },
+  { id: 11, name: "魔兽洞穴", era: "古代", area: "嘉路雷亚大陆", category: "野外·迷宫" },
   // 次元夹缝（幻象界 / 冥峡界）
-  { id: 12, name: "次元夹缝·入口", era: "次元夹缝", area: "幻象界" },
-  { id: 13, name: "次元夹缝·深处", era: "次元夹缝", area: "幻象界" },
-  { id: 14, name: "冥峡界·边境", era: "次元夹缝", area: "冥峡界" },
-  { id: 15, name: "冥峡界·最深处", era: "次元夹缝", area: "冥峡界" },
+  { id: 12, name: "次元夹缝·入口", era: "次元夹缝", area: "幻象界", category: "城镇·村庄" },
+  { id: 13, name: "次元夹缝·深处", era: "次元夹缝", area: "幻象界", category: "野外·迷宫" },
+  { id: 14, name: "冥峡界·边境", era: "次元夹缝", area: "冥峡界", category: "野外·迷宫" },
+  { id: 15, name: "冥峡界·最深处", era: "次元夹缝", area: "冥峡界", category: "野外·迷宫" },
   // 虚时层（蚀时领域 / 石华人世界 / 猫人世界 / 机人世界）
-  { id: 16, name: "蚀时领域·平原", era: "虚时层", area: "蚀时领域" },
-  { id: 17, name: "蚀时领域·遗迹", era: "虚时层", area: "蚀时领域" },
-  { id: 18, name: "石华人村", era: "虚时层", area: "石华人世界" },
-  { id: 19, name: "石华人大圣堂", era: "虚时层", area: "石华人世界" },
-  { id: 20, name: "猫人集市", era: "虚时层", area: "猫人世界" },
-  { id: 21, name: "猫人王宫", era: "虚时层", area: "猫人世界" },
-  { id: 22, name: "机人工厂", era: "虚时层", area: "机人世界" },
-  { id: 23, name: "机人核心城", era: "虚时层", area: "机人世界" }
+  { id: 16, name: "蚀时领域·平原", era: "虚时层", area: "蚀时领域", category: "野外·迷宫" },
+  { id: 17, name: "蚀时领域·遗迹", era: "虚时层", area: "蚀时领域", category: "野外·迷宫" },
+  { id: 18, name: "石华人村", era: "虚时层", area: "石华人世界", category: "城镇·村庄" },
+  { id: 19, name: "石华人大圣堂", era: "虚时层", area: "石华人世界", category: "野外·迷宫" },
+  { id: 20, name: "猫人集市", era: "虚时层", area: "猫人世界", category: "城镇·村庄" },
+  { id: 21, name: "猫人王宫", era: "虚时层", area: "猫人世界", category: "城镇·村庄" },
+  { id: 22, name: "机人工厂", era: "虚时层", area: "机人世界", category: "野外·迷宫" },
+  { id: 23, name: "机人核心城", era: "虚时层", area: "机人世界", category: "城镇·村庄" }
 ]

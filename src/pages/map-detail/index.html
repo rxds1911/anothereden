@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>地图详情 - 另一个伊甸攻略站</title>
+</head>
+<body>
+  <div id="app">
+    <button class="sidebar-toggle" @click="toggleSidebar">☰</button>
+    <div class="sidebar-overlay" :class="{ show: sidebarOpen }" @click="toggleSidebar"></div>
+    <aside class="sidebar" :class="{ open: sidebarOpen }">
+      <app-sidebar current-page="maps"></app-sidebar>
+    </aside>
+    <main class="main-content" v-if="detail">
+      <a class="back-link" href="../maps/index.html">← 返回地图列表</a>
+      <div class="char-page-header">
+        <div>
+          <h1 class="char-page-title">{{ detail.name }}</h1>
+          <p class="char-page-count">{{ detail.category }} · {{ detail.era }} · {{ detail.area }}</p>
+        </div>
+      </div>
+      <div class="detail-section">
+        <div class="detail-section-header"><span class="icon">🗺️</span> 地图与拾取物</div>
+        <div class="map-view" :class="{ zoomed: mapZoomed }">
+          <div class="map-view-header">
+            <div>
+              <div class="map-view-title">{{ detail.name }}</div>
+              <div class="map-view-sub">{{ detail.era }} · {{ detail.area }}</div>
+            </div>
+            <button class="map-view-zoom" @click="mapZoomed = !mapZoomed">🔍 {{ mapZoomed ? '缩小' : '放大' }}</button>
+          </div>
+        </div>
+        <div class="pickup-grid">
+          <div v-for="it in detail.items" :key="it.mark" class="pickup-item">
+            <span class="pickup-mark">{{ it.mark }}</span>
+            <span class="pickup-name">{{ it.name }}</span>
+          </div>
+        </div>
+      </div>
+      <div class="detail-section">
+        <div class="detail-section-header"><span class="icon">✨</span> ★闪亮物品</div>
+        <div class="pickup-grid pickup-grid--shiny">
+          <div v-for="it in detail.shiny" :key="it.mark" class="pickup-item">
+            <span class="pickup-mark star">{{ it.mark }}</span>
+            <span class="pickup-name">{{ it.name }}</span>
+          </div>
+        </div>
+      </div>
+      <div class="detail-section" v-if="detail.monsters && detail.monsters.length">
+        <div class="detail-section-header"><span class="icon">⚔️</span> 怪物弱点与掉落</div>
+        <div class="behavior-table-wrap">
+          <table class="ability-table">
+            <thead>
+              <tr>
+                <th>敌人名称</th>
+                <th>弱点</th>
+                <th>耐性</th>
+                <th>素材</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(mo, i) in detail.monsters" :key="i">
+                <td class="monster-name">{{ mo.name }}</td>
+                <td>
+                  <span class="tags-cell">
+                    <span v-for="w in mo.weakness" :key="w" class="tag" :class="'tag-' + w">{{ w }}</span>
+                  </span>
+                </td>
+                <td>
+                  <span class="tags-cell">
+                    <span v-for="r in mo.resist" :key="r" class="tag" :class="'tag-' + r">{{ r }}</span>
+                  </span>
+                </td>
+                <td class="drop-list">
+                  <div v-for="d in mo.drops" :key="d">・{{ d }}</div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+  </div>
+  <script type="module">
+    import { createApp } from "vue"
+    import AppSidebar from "../../components/AppSidebar.vue"
+    import { mapDetails } from "../../data/samples/map-details.js"
+    import "../../assets/styles/variables.css"
+    import "../../assets/styles/reset.css"
+    import "../../assets/styles/layout.css"
+    import "../../assets/styles/sidebar.css"
+    import "../../assets/styles/table.css"
+    import "../../assets/styles/detail.css"
+
+    const params = new URLSearchParams(window.location.search)
+    const mapId = params.get('id')
+    const detail = mapDetails.find(r => String(r.id) === mapId) || null
+
+    const app = createApp({
+      data() { return { detail, mapZoomed: false, sidebarOpen: window.innerWidth > 768 } },
+      methods: { toggleSidebar() { this.sidebarOpen = !this.sidebarOpen } }
+    })
+    app.component("app-sidebar", AppSidebar)
+    app.mount("#app")
+  </script>
+</body>
+</html>

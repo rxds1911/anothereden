@@ -159,12 +159,30 @@
 }
 .tag-火, .tag-fire { background: #e74c3c; }
 .tag-水, .tag-water { background: #3498db; }
-.tag-风, .tag-wind { background: #2ecc71; }
-.tag-地, .tag-earth { background: #8e44ad; }
-.tag-雷, .tag-thunder { background: #f39c12; }
-.tag-阴, .tag-shade { background: #6c5ce7; }
-.tag-晶, .tag-crystal { background: #00cec9; }
-.tag-无, .tag-none { background: #95a5a6; }
+.tag-风, .tag-wind { background: #27ae60; }
+.tag-地, .tag-earth { background: #8a7430; }
+.tag-雷, .tag-thunder { background: #f1c40f; }
+.tag-阴, .tag-shade { background: #9b8fd0; }
+.tag-晶, .tag-crystal { background: #7fd4e8; }
+.tag-无, .tag-none { background: #1a1a1a; }
+.tag-打 { background: #8fa3b0; }
+.tag-突 { background: #8f9650; }
+.tag-斩 { background: #7a6a4f; }
+.tag-魔 { background: #7d3c98; }
+.tag-雷, .tag-thunder, .tag-阴, .tag-shade, .tag-晶, .tag-crystal { color: #1a1a1a; }
+/* Character page element tags (game icon style) */
+.char-card-tag.tag-火, .char-card-tag.tag-水, .char-card-tag.tag-风, .char-card-tag.tag-地,
+.char-card-tag.tag-雷, .char-card-tag.tag-阴, .char-card-tag.tag-晶, .char-card-tag.tag-无 {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 26px;
+  height: 26px;
+  padding: 0 6px;
+  border-radius: 6px;
+  font-size: .78rem;
+}
+.char-card-tag.tag-雷, .char-card-tag.tag-阴, .char-card-tag.tag-晶 { color: #1a1a1a; }
 .char-card-tag.tag-weapon { background: #eef2f7; color: #2c3e5a; }
 
 
@@ -254,11 +272,15 @@
 
 /* ---- Shared tag base (detail page) ---- */
 .tag {
-  display: inline-block;
-  padding: 2px 10px;
-  border-radius: 10px;
-  font-size: .72rem;
-  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 26px;
+  height: 26px;
+  padding: 0 6px;
+  border-radius: 6px;
+  font-size: .78rem;
+  font-weight: 700;
   color: #fff;
   white-space: nowrap;
 }
@@ -329,6 +351,29 @@
 }
 .char-card-tag.tag-ls { background: #eef2f7; color: #2c3e5a; }
 
+/* ---- Light/Shadow icons (game style) ---- */
+.ls-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  background: #fff;
+  border: 1px solid #e0dcd2;
+  font-size: 1rem;
+  font-weight: 800;
+  line-height: 1;
+  text-shadow:
+    -1px -1px 0 rgba(0, 0, 0, 0.9),
+    1px -1px 0 rgba(0, 0, 0, 0.9),
+    -1px 1px 0 rgba(0, 0, 0, 0.9),
+    1px 1px 0 rgba(0, 0, 0, 0.9);
+}
+.ls-icon--天 { color: #f1c40f; }
+.ls-icon--冥 { color: #2c3e6b; }
+.ls-value { display: inline-flex; align-items: center; gap: 4px; }
+
 
 /* ---- Generic Card Detail ---- */
 .generic-card-detail { display: flex; flex-direction: column; gap: 4px; margin-top: 8px; }
@@ -363,8 +408,9 @@
   letter-spacing: 0.3px;
   white-space: nowrap;
 }
-.difficulty-badge--Normal { background: linear-gradient(135deg, #e67e22, #f39c12); }
-.difficulty-badge--Extreme { background: linear-gradient(135deg, #c0392b, #e74c3c); }
+.difficulty-badge--normal { background: linear-gradient(135deg, #e67e22, #f39c12); }
+.difficulty-badge--hard { background: linear-gradient(135deg, #27ae60, #2ecc71); }
+.difficulty-badge--extreme, .difficulty-badge--very-hard { background: linear-gradient(135deg, #c0392b, #e74c3c); }
 
 /* ---- Event Type Badge ---- */
 .event-type-badge {

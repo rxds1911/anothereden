@@ -38,7 +38,7 @@
         <div class="stats-grid">
           <div class="stat-item"><div class="stat-label">星级</div><div class="stat-value">{{ character.stars }} ★</div></div>
           <div class="stat-item"><div class="stat-label">头衔</div><div class="stat-value">{{ character.title }}</div></div>
-          <div class="stat-item"><div class="stat-label">天冥</div><div class="stat-value">{{ character.lightShadow }}</div></div>
+          <div class="stat-item"><div class="stat-label">天冥</div><div class="stat-value"><span class="ls-icon" :class="'ls-icon--' + character.lightShadow">{{ character.lightShadow }}</span></div></div>
           <div class="stat-item"><div class="stat-label">性别</div><div class="stat-value">{{ character.gender }}</div></div>
           <div class="stat-item"><div class="stat-label">星导</div><div class="stat-value">{{ character.starGuide }}</div></div>
           <div class="stat-item"><div class="stat-label">属性</div><div class="stat-value"><span :class="'tag tag-' + character.element.toLowerCase()">{{ character.element }}</span></div></div>

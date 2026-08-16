@@ -50,7 +50,7 @@
       { label: '弱点', key: 'weakness', sortable: false, tag: true },
       { label: '耐性', key: 'resist', sortable: false, tag: true },
       { label: '推荐等级', key: 'recLevel', sortable: false },
-      { label: '奖励', key: 'reward', sortable: false },
+      { label: '奖励', key: 'reward', sortable: false, ls: true },
       { label: '记忆之书', key: 'memoryBook', sortable: false }
     ]
 
@@ -66,7 +66,7 @@
           }
           if (this.searchQuery) {
             const q = this.searchQuery.toLowerCase()
-            list = list.filter(r => ['name', 'type', 'weakness', 'resist', 'recLevel', 'reward', 'memoryBook'].some(k => r[k] && r[k].toString().toLowerCase().includes(q)))
+            list = list.filter(r => ['name', 'type', 'difficulties', 'weakness', 'resist', 'recLevel', 'reward', 'memoryBook'].some(k => r[k] && r[k].toString().toLowerCase().includes(q)))
           }
           return list
         }

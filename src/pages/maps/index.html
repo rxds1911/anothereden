@@ -22,13 +22,25 @@
       <search-bar v-model="searchQuery" placeholder="搜索地图..." :filters="filterOptions" v-model:filter-value="filterValue"></search-bar>
       <div class="filter-bar">
         <div class="filter-group">
+          <span class="filter-label">分类</span>
+          <span v-for="c in mapCategories" :key="c"
+            class="filter-chip" :class="{ active: filterCategory === c }"
+            @click="filterCategory = filterCategory === c ? '' : c">{{ c }}</span>
+        </div>
+        <div class="filter-group">
           <span class="filter-label">时代</span>
           <span v-for="t in storyEras" :key="t"
             class="filter-chip" :class="{ active: filterEra === t }"
             @click="filterEra = filterEra === t ? '' : t">{{ t }}</span>
         </div>
+        <div class="filter-group">
+          <span class="filter-label">区域</span>
+          <span v-for="a in mapAreas" :key="a"
+            class="filter-chip" :class="{ active: filterArea === a }"
+            @click="filterArea = filterArea === a ? '' : a">{{ a }}</span>
+        </div>
       </div>
-      <data-table :columns="columns" :data="filteredData" empty-text="没有找到符合条件的地图" :show-id="false" :show-avatar="false"></data-table>
+      <data-table :columns="columns" :data="filteredData" empty-text="没有找到符合条件的地图" :show-id="false" :show-avatar="false" @row-click="goToDetail"></data-table>
     </main>
   </div>
   <script type="module">
@@ -37,7 +49,7 @@
     import SearchBar from "../../components/SearchBar.vue"
     import DataTable from "../../components/DataTable.vue"
     import { sampleMaps } from "../../data/samples/maps.js"
-    import { storyEras } from "../../data/config.js"
+    import { storyEras, mapAreas, mapCategories } from "../../data/config.js"
     import "../../assets/styles/variables.css"
     import "../../assets/styles/reset.css"
     import "../../assets/styles/layout.css"
@@ -46,29 +58,37 @@
 
     const columns = [
       { label: '地图', key: 'name', sortable: false },
+      { label: '分类', key: 'category', sortable: false },
       { label: '时代', key: 'era', sortable: false },
       { label: '区域', key: 'area', sortable: false }
     ]
 
     const app = createApp({
       data() {
-        return { searchQuery: "", filterValue: "", filterEra: "", columns, filterOptions: [], storyEras, sidebarOpen: window.innerWidth > 768 }
+        return { searchQuery: "", filterValue: "", filterCategory: "", filterEra: "", filterArea: "", columns, filterOptions: [], storyEras, mapAreas, mapCategories, sidebarOpen: window.innerWidth > 768 }
       },
       computed: {
         filteredData() {
           let list = sampleMaps
+          if (this.filterCategory) {
+            list = list.filter(r => r.category === this.filterCategory)
+          }
           if (this.filterEra) {
             list = list.filter(r => r.era === this.filterEra)
           }
+          if (this.filterArea) {
+            list = list.filter(r => r.area === this.filterArea)
+          }
           if (this.searchQuery) {
             const q = this.searchQuery.toLowerCase()
-            list = list.filter(r => ['name', 'era', 'area'].some(k => r[k] && r[k].toString().toLowerCase().includes(q)))
+            list = list.filter(r => ['name', 'category', 'era', 'area'].some(k => r[k] && r[k].toString().toLowerCase().includes(q)))
           }
           return list
         }
       },
       methods: {
-        toggleSidebar() { this.sidebarOpen = !this.sidebarOpen }
+        toggleSidebar() { this.sidebarOpen = !this.sidebarOpen },
+        goToDetail(row) { window.location.href = "../map-detail/index.html?id=" + row.id }
       }
     })
     app.component("app-sidebar", AppSidebar)

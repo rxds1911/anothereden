@@ -483,6 +483,117 @@
   white-space: nowrap;
 }
 
+/* ---- Map Detail ---- */
+.map-view {
+  position: relative;
+  height: 260px;
+  margin: 20px 24px;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid #e2dccb;
+  background: #1a2940 url('/screenshots/maps/shokujivasyumap.jpg') center / contain no-repeat;
+  transition: height .3s ease;
+}
+.map-view.zoomed {
+  height: 440px;
+}
+.map-view-header {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 14px 16px;
+  background: linear-gradient(180deg, rgba(26, 41, 64, 0.78), rgba(26, 41, 64, 0));
+}
+.map-view-title {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #fff;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
+}
+.map-view-sub {
+  font-size: .72rem;
+  color: rgba(255, 255, 255, 0.85);
+  margin-top: 2px;
+}
+.map-view-zoom {
+  background: rgba(52, 152, 219, 0.92);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-size: .75rem;
+  font-family: inherit;
+  cursor: pointer;
+  transition: filter .2s;
+}
+.map-view-zoom:hover {
+  filter: brightness(1.1);
+}
+/* Pickup items (two-row grid) */
+.pickup-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  padding: 16px 24px 20px;
+}
+.pickup-grid--shiny {
+  grid-template-columns: repeat(2, 1fr);
+}
+.pickup-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #fafbfc;
+  border: 1px solid #edf0f4;
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: .82rem;
+}
+.pickup-mark {
+  font-weight: 700;
+  color: #1a2940;
+  min-width: 26px;
+  flex-shrink: 0;
+}
+.pickup-mark.star {
+  color: #f39c12;
+}
+.pickup-name {
+  color: #444;
+}
+@media (max-width: 768px) {
+  .pickup-grid { grid-template-columns: 1fr; padding: 14px 16px 16px; }
+  .pickup-grid--shiny { grid-template-columns: 1fr; }
+}
+@media (max-width: 768px) {
+  .map-view { height: 200px; margin: 16px; }
+  .map-view.zoomed { height: 340px; }
+}
+.map-mark {
+  text-align: center;
+  font-weight: 700;
+  color: #1a2940;
+}
+.map-mark.star {
+  color: #f39c12;
+}
+.tags-cell {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+.monster-name {
+  font-weight: 700;
+  color: #1a2940;
+  white-space: nowrap;
+}
+.drop-list {
+  color: #555;
+  line-height: 1.7;
+}
+
 /* ---- Team Section ---- */
 .team-section { padding: 28px 24px; display: flex; flex-direction: column; gap: 16px; }
 .team-row { display: flex; align-items: center; gap: 16px; }

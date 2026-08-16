@@ -32,7 +32,7 @@
         <div class="char-card-tags">
           <span class="char-card-tag" :class="'tag-' + (row.element || '').toLowerCase()">{{ row.element }}</span>
           <span class="char-card-tag tag-weapon">{{ row.weapon }}</span>
-          <span class="char-card-tag tag-ls">{{ row.lightShadow }}</span>
+          <span class="ls-icon" :class="'ls-icon--' + row.lightShadow">{{ row.lightShadow }}</span>
         </div>
         <div class="char-card-personality" v-if="row.personality && row.personality.length">
           <span v-for="p in row.personality.slice(0, 4)" :key="p" class="char-card-pers">{{ p }}</span>
@@ -50,7 +50,10 @@
           <div class="char-card-top">
             <span class="char-card-name">{{ showId ? '#' + row.id + ' ' + row.name : row.name }}</span>
             <span v-if="badgeKey && row[badgeKey]" class="event-type-badge">{{ row[badgeKey] }}</span>
-            <span v-if="row.difficulty" class="difficulty-badge" :class="'difficulty-badge--' + row.difficulty">{{ row.difficulty }}</span>
+            <span v-if="row.difficulty" class="difficulty-badge" :class="'difficulty-badge--' + difficultyKey(row.difficulty)">{{ row.difficulty }}</span>
+            <template v-if="row.difficulties && row.difficulties.length">
+              <span v-for="d in row.difficulties" :key="d" class="difficulty-badge" :class="'difficulty-badge--' + difficultyKey(d)">{{ d }}</span>
+            </template>
             <span v-if="row.character && row.name" class="task-category-badge">{{ row.character }}</span>
             <span v-if="row.isHiddenBoss" class="hidden-boss-badge">隐王</span>
             <span v-if="row.taskCategory" class="task-category-badge">{{ row.taskCategory }}</span>
@@ -59,10 +62,13 @@
             <template v-for="col in detailColumns(row)" :key="col.key">
               <div class="generic-card-row" :class="{ 'generic-card-row--full': col.full }" v-if="col.value !== undefined && col.value !== null && col.value !== ''">
                 <span class="generic-card-label">{{ col.label }}</span>
-                <span class="generic-card-value tags-value" v-if="col.tag">
+                <span class="generic-card-value ls-value" v-if="col.ls">
+                  <span v-for="c in splitChars(col.value)" :key="c" class="ls-icon" :class="'ls-icon--' + c">{{ c }}</span>
+                </span>
+                <span class="generic-card-value tags-value" v-if="col.tag && !col.ls">
                   <span v-for="t in splitValue(col.value)" :key="t" class="tag" :class="'tag-' + t">{{ t }}</span>
                 </span>
-                <span class="generic-card-value" v-else>{{ col.value }}</span>
+                <span class="generic-card-value" v-if="!col.ls && !col.tag">{{ col.value }}</span>
               </div>
             </template>
           </div>
@@ -106,13 +112,19 @@ export default {
     }
   },
   methods: {
+    splitChars(value) {
+      return Array.from(String(value))
+    },
+    difficultyKey(value) {
+      return String(value).toLowerCase().replace(/[^a-z0-9]+/g, '-')
+    },
     splitValue(value) {
       return String(value).split(/[、,，/]/).map(s => s.trim()).filter(Boolean)
     },
     detailColumns(row) {
       const cols = this.columns
         .filter(c => c.key !== "name" && c.key !== "id")
-        .map(c => ({ key: c.key, label: c.label, value: c.format ? c.format(row[c.key], row) : row[c.key], tag: c.tag }))
+        .map(c => ({ key: c.key, label: c.label, value: c.format ? c.format(row[c.key], row) : row[c.key], tag: c.tag, ls: c.ls }))
         .filter(d => d.value !== undefined && d.value !== null && d.value !== '')
       if (this.twoColumnDetail && cols.length % 2 === 1) {
         cols[cols.length - 1].full = true
