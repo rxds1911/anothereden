@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>搭档 - 另一个伊甸攻略站</title>
+</head>
+<body>
+  <div id="app">
+    <button class="sidebar-toggle" @click="toggleSidebar">☰</button>
+    <div class="sidebar-overlay" :class="{ show: sidebarOpen }" @click="toggleSidebar"></div>
+    <aside class="sidebar" :class="{ open: sidebarOpen }">
+      <app-sidebar current-page="partner"></app-sidebar>
+    </aside>
+    <main class="main-content">
+      <div class="char-page-header">
+        <div>
+          <h1 class="char-page-title">搭档</h1>
+          <p class="char-page-count">共 <strong>{{ filteredData.length }}</strong> 位搭档</p>
+        </div>
+      </div>
+      <search-bar v-model="searchQuery" placeholder="搜索搭档..." :filters="filterOptions" v-model:filter-value="filterValue"></search-bar>
+      <data-table :columns="columns" :data="filteredData" empty-text="没有找到符合条件的搭档" :show-id="false" @row-click="goToDetail"></data-table>
+    </main>
+  </div>
+  <script type="module">
+    import { createApp } from "vue"
+    import AppSidebar from "../../components/AppSidebar.vue"
+    import SearchBar from "../../components/SearchBar.vue"
+    import DataTable from "../../components/DataTable.vue"
+    import { samplePartners } from "../../data/samples/partner.js"
+    import "../../assets/styles/variables.css"
+    import "../../assets/styles/reset.css"
+    import "../../assets/styles/layout.css"
+    import "../../assets/styles/sidebar.css"
+    import "../../assets/styles/table.css"
+
+    const columns = [
+      { label: '名称', key: 'name', sortable: false },
+      { label: '稀有度', key: 'rarity', sortable: false },
+      { label: '入手方法', key: 'source', sortable: false }
+    ]
+
+    const app = createApp({
+      data() {
+        return { searchQuery: "", filterValue: "", columns, filterOptions: [], sidebarOpen: window.innerWidth > 768 }
+      },
+      computed: {
+        filteredData() {
+          let list = samplePartners
+          if (this.searchQuery) {
+            const q = this.searchQuery.toLowerCase()
+            list = list.filter(r => ['name', 'rarity', 'source'].some(k => r[k] && r[k].toString().toLowerCase().includes(q)))
+          }
+          return list
+        }
+      },
+      methods: {
+        toggleSidebar() { this.sidebarOpen = !this.sidebarOpen },
+        goToDetail(row) { window.location.href = "../partner-detail/index.html?id=" + row.id }
+      }
+    })
+    app.component("app-sidebar", AppSidebar)
+    app.component("search-bar", SearchBar)
+    app.component("data-table", DataTable)
+    app.mount("#app")
+  </script>
+</body>
+</html>

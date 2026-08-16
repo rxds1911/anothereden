@@ -8,7 +8,7 @@
 
 ## 板块结构（导航）
 
-项目包含以下 15 个板块，所有板块均在 src/pages/ 下有对应的目录和 index.html：
+项目包含以下 16 个板块，所有板块均在 src/pages/ 下有对应的目录和 index.html：
 
 | ID | 中文名 | 说明 |
 |---|---|---|
@@ -18,6 +18,7 @@
 | weapons | 武器 | 武器数据/图鉴 |
 | armor | 防具 | 防具数据/图鉴 |
 | badges | 徽章 | 徽章数据/图鉴 |
+| partner | 搭档 | 搭档数据/图鉴 |
 | maps | 地图 | 地图攻略 |
 | grasta | 灵晶 | 灵晶数据/图鉴 |
 | bookshelf | 书架 | 书架相关 |
@@ -25,7 +26,7 @@
 | diary | 日记 | 日记相关 |
 | personal-weapons | 专武 | 专武数据/图鉴 |
 | reincarnation | 回生 | 回生相关 |
-| dungeons | 副本 | 副本攻略 |
+| dungeons | 迷宫 | 迷宫攻略 |
 | events | 活动 | 活动攻略 |
 
 板块路由 / 导航信息维护在 src/data/nav.js 中。

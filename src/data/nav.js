@@ -5,6 +5,7 @@ export const navItems = [
   { id: 'weapons', name: '武器', icon: '🗡️', path: '/src/pages/weapons/index.html' },
   { id: 'armor', name: '防具', icon: '🛡️', path: '/src/pages/armor/index.html' },
   { id: 'badges', name: '徽章', icon: '🎖️', path: '/src/pages/badges/index.html' },
+  { id: 'partner', name: '搭档', icon: '🤝', path: '/src/pages/partner/index.html' },
   { id: 'maps', name: '地图', icon: '🗺️', path: '/src/pages/maps/index.html' },
   { id: 'grasta', name: '灵晶', icon: '💎', path: '/src/pages/grasta/index.html' },
   { id: 'bookshelf', name: '书架', icon: '📚', path: '/src/pages/bookshelf/index.html' },

@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>搭档详情 - 另一个伊甸攻略站</title>
+</head>
+<body>
+  <div id="app">
+    <button class="sidebar-toggle" @click="toggleSidebar">☰</button>
+    <div class="sidebar-overlay" :class="{ show: sidebarOpen }" @click="toggleSidebar"></div>
+    <aside class="sidebar" :class="{ open: sidebarOpen }">
+      <app-sidebar current-page="partner"></app-sidebar>
+    </aside>
+    <main class="main-content" v-if="detail">
+      <a class="back-link" href="../partner/index.html">← 返回搭档列表</a>
+      <div class="char-page-header">
+        <div>
+          <h1 class="char-page-title">{{ detail.name }}</h1>
+          <p class="char-page-count">{{ detail.rarity }}</p>
+        </div>
+      </div>
+
+      <!-- 稀有度 / 属性 / 入手方法 -->
+      <div class="detail-section">
+        <div class="detail-section-header"><span class="icon">📋</span> 基本信息</div>
+        <div class="behavior-table-wrap">
+          <table class="ability-table info-table">
+            <tbody>
+              <tr>
+                <td class="info-label">稀有度（星）</td>
+                <td class="info-value">{{ detail.rarity }}</td>
+              </tr>
+              <tr>
+                <td class="info-label">得意属性</td>
+                <td class="info-value"><span class="tag" :class="'tag-' + detail.attribute">{{ detail.attribute }}</span></td>
+              </tr>
+              <tr>
+                <td class="info-label">入手方法</td>
+                <td class="info-value info-link">{{ detail.source }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 自动技能 -->
+      <div class="detail-section">
+        <div class="detail-section-header"><span class="icon">🐱</span> 自动技能</div>
+        <div class="behavior-table-wrap">
+          <table class="ability-table">
+            <thead>
+              <tr>
+                <th style="width: 150px;">技能</th>
+                <th>充能消耗/效果</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="s in detail.autoSkills" :key="s.name">
+                <td class="skill-name">{{ s.name }}</td>
+                <td class="skill-detail">
+                  <div class="skill-effect-line"><span class="skill-label">【充能积蓄】</span>{{ s.charge }}</div>
+                  <div class="skill-effect-line">{{ s.desc }}</div>
+                  <div v-if="s.bonus" class="skill-effect-line skill-bonus">{{ s.bonus }}</div>
+                  <div v-if="s.note" class="skill-effect-line skill-note">（{{ s.note }}）</div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 充能技能 -->
+      <div class="detail-section">
+        <div class="detail-section-header"><span class="icon">🐱</span> 充能技能</div>
+        <div class="behavior-table-wrap">
+          <table class="ability-table">
+            <thead>
+              <tr>
+                <th style="width: 150px;">技能</th>
+                <th>充能消耗/效果</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="s in detail.chargeSkills" :key="s.name">
+                <td class="skill-name">{{ s.name }}</td>
+                <td class="skill-detail">
+                  <div class="skill-effect-line"><span class="skill-label">【充能消耗】</span>{{ s.charge }}</div>
+                  <div class="skill-effect-line">{{ s.desc }}</div>
+                  <div class="skill-effect-divider"></div>
+                  <div class="skill-effect-line"><span class="skill-label">【{{ s.condition }}】</span></div>
+                  <div class="skill-effect-line">{{ s.condDesc }}</div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 光环 -->
+      <div class="detail-section">
+        <div class="detail-section-header"><span class="icon">✨</span> 光环</div>
+        <div class="behavior-table-wrap">
+          <table class="ability-table">
+            <thead>
+              <tr>
+                <th style="width: 150px;">光环</th>
+                <th>对象/条件/效果</th>
+              </tr>
+            </thead>
+            <tbody v-for="a in detail.auras" :key="a.name">
+              <tr>
+                <td :rowspan="3" class="aura-name">{{ a.name }}</td>
+                <td><span class="skill-label">【光环对象】</span>{{ a.target }}</td>
+              </tr>
+              <tr>
+                <td><span class="skill-label">【发动条件】</span>{{ a.condition }}</td>
+              </tr>
+              <tr>
+                <td><span class="skill-label">【光环效果】</span>{{ a.effect }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+  </div>
+  <script type="module">
+    import { createApp } from "vue"
+    import AppSidebar from "../../components/AppSidebar.vue"
+    import { partnerDetails } from "../../data/samples/partner-details.js"
+    import "../../assets/styles/variables.css"
+    import "../../assets/styles/reset.css"
+    import "../../assets/styles/layout.css"
+    import "../../assets/styles/sidebar.css"
+    import "../../assets/styles/table.css"
+    import "../../assets/styles/detail.css"
+
+    const params = new URLSearchParams(window.location.search)
+    const partnerId = params.get('id')
+    const detail = partnerDetails.find(r => String(r.id) === partnerId) || null
+
+    const app = createApp({
+      data() { return { detail, sidebarOpen: window.innerWidth > 768 } },
+      methods: { toggleSidebar() { this.sidebarOpen = !this.sidebarOpen } }
+    })
+    app.component("app-sidebar", AppSidebar)
+    app.mount("#app")
+  </script>
+</body>
+</html>

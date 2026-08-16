@@ -838,6 +838,57 @@
   margin-top: 3px;
 }
 
+/* ---- Partner Detail ---- */
+.info-table tbody td {
+  text-align: center;
+}
+.info-label {
+  width: 140px;
+  background: #e8eef5;
+  color: #333;
+  font-weight: 700;
+}
+.info-value {
+  color: #444;
+}
+.info-link {
+  color: #2c6bb5;
+  font-weight: 600;
+}
+.skill-name {
+  font-weight: 700;
+  color: #1a2940;
+  text-align: center;
+  white-space: nowrap;
+}
+.skill-detail {
+  color: #444;
+}
+.skill-effect-line {
+  line-height: 1.7;
+}
+.skill-label {
+  font-weight: 700;
+  color: #1a2940;
+}
+.skill-bonus {
+  color: #c0392b;
+}
+.skill-note {
+  color: #999;
+  font-size: .78rem;
+}
+.skill-effect-divider {
+  border-top: 1px solid #e8e8e8;
+  margin: 6px 0;
+}
+.aura-name {
+  font-weight: 700;
+  color: #1a2940;
+  text-align: center;
+  white-space: nowrap;
+}
+
 /* ---- Guide Search ---- */
 .vow-filter {
   display: flex;
