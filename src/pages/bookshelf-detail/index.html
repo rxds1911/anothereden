@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>书架详情 - 另一个伊甸攻略站</title>
+</head>
+<body>
+  <div id="app">
+    <button class="sidebar-toggle" @click="toggleSidebar">☰</button>
+    <div class="sidebar-overlay" :class="{ show: sidebarOpen }" @click="toggleSidebar"></div>
+    <aside class="sidebar" :class="{ open: sidebarOpen }">
+      <app-sidebar current-page="bookshelf"></app-sidebar>
+    </aside>
+    <main class="main-content" v-if="detail">
+      <a class="back-link" href="../bookshelf/index.html">← 返回书架列表</a>
+      <div class="char-page-header">
+        <div>
+          <h1 class="char-page-title">{{ detail.name }}</h1>
+          <p class="char-page-count">{{ detail.type }}</p>
+        </div>
+      </div>
+
+      <!-- 修复条件 -->
+      <div class="detail-section">
+        <div class="detail-section-header"><span class="icon">📜</span> 修复条件一览</div>
+        <div class="behavior-table-wrap">
+          <table class="ability-table">
+            <thead>
+              <tr>
+                <th>修复条件</th>
+                <th>修复报酬</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(row, i) in detail.repairConditions" :key="i" :class="{ 'contract-alt': row.alt }">
+                <td class="contract-condition">{{ row.condition }}</td>
+                <td class="drop-list contract-reward">
+                  <div v-for="r in row.rewards" :key="r">・{{ r }}</div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 报酬阶段 -->
+      <div class="detail-section">
+        <div class="detail-section-header"><span class="icon">🎁</span> 报酬阶段</div>
+        <div class="behavior-table-wrap">
+          <table class="ability-table">
+            <thead>
+              <tr>
+                <th style="width: 120px;">报酬阶段</th>
+                <th>报酬</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="s in detail.rewardStages" :key="s.stage">
+                <td class="stage-no">{{ s.stage }}</td>
+                <td>{{ s.reward }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 加成角色 -->
+      <div class="detail-section">
+        <div class="detail-section-header"><span class="icon">⭐</span> 加成角色编成提升分数</div>
+        <div class="behavior-table-wrap">
+          <table class="ability-table">
+            <thead>
+              <tr>
+                <th style="width: 360px;">加成对象</th>
+                <th style="width: 140px;">点数</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(bc, i) in detail.bonusCharacters" :key="i">
+                <td>{{ bc.target }}</td>
+                <td class="points">・{{ bc.points }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 攻略查找 -->
+      <div class="detail-section" v-if="guides.length">
+        <div class="detail-section-header"><span class="icon">🔍</span> 攻略查找</div>
+        <div class="guide-list">
+          <div v-for="g in guides" :key="g.title" class="guide-item">
+            <div class="guide-info">
+              <div class="guide-title">{{ g.title }}</div>
+            </div>
+            <div class="guide-team">
+              <span class="guide-team-label">前排</span>
+              <span v-for="name in g.team.front" :key="name" class="guide-avatar">
+                <span class="guide-avatar-icon">{{ name[0] }}</span>
+                <span class="guide-avatar-name">{{ name }}</span>
+              </span>
+              <span class="guide-team-label">后排</span>
+              <span v-for="name in g.team.back" :key="name" class="guide-avatar">
+                <span class="guide-avatar-icon">{{ name[0] }}</span>
+                <span class="guide-avatar-name">{{ name }}</span>
+              </span>
+              <span class="guide-team-label">搭档</span>
+              <span v-for="name in g.team.partner" :key="name" class="guide-avatar">
+                <span class="guide-avatar-icon">{{ name[0] }}</span>
+                <span class="guide-avatar-name">{{ name }}</span>
+              </span>
+            </div>
+            <a class="guide-watch" :href="g.url" target="_blank" rel="noopener">▶ 观看</a>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+  <script type="module">
+    import { createApp } from "vue"
+    import AppSidebar from "../../components/AppSidebar.vue"
+    import { bookshelfDetails } from "../../data/samples/bookshelf-details.js"
+    import "../../assets/styles/variables.css"
+    import "../../assets/styles/reset.css"
+    import "../../assets/styles/layout.css"
+    import "../../assets/styles/sidebar.css"
+    import "../../assets/styles/table.css"
+    import "../../assets/styles/detail.css"
+
+    const params = new URLSearchParams(window.location.search)
+    const bookId = params.get('id')
+    const detail = bookshelfDetails.find(r => String(r.id) === bookId) || null
+
+    const app = createApp({
+      data() { return { detail, sidebarOpen: window.innerWidth > 768 } },
+      computed: {
+        guides() {
+          if (!this.detail) return []
+          return ['平民队', '低配', '速通'].map(label => ({
+            title: `「${this.detail.name}」${label}攻略`,
+            url: this.detail.videoUrl,
+            team: this.detail.team
+          }))
+        }
+      },
+      methods: { toggleSidebar() { this.sidebarOpen = !this.sidebarOpen } }
+    })
+    app.component("app-sidebar", AppSidebar)
+    app.mount("#app")
+  </script>
+</body>
+</html>

@@ -28,7 +28,7 @@
             @click="filterType = filterType === t ? '' : t">{{ t }}</span>
         </div>
       </div>
-      <data-table :columns="columns" :data="filteredData" empty-text="没有找到符合条件的书" :show-id="false" :show-avatar="false"></data-table>
+      <data-table :columns="columns" :data="filteredData" empty-text="没有找到符合条件的书" :show-id="false" :show-avatar="false" @row-click="goToDetail"></data-table>
     </main>
   </div>
   <script type="module">
@@ -68,7 +68,8 @@
         }
       },
       methods: {
-        toggleSidebar() { this.sidebarOpen = !this.sidebarOpen }
+        toggleSidebar() { this.sidebarOpen = !this.sidebarOpen },
+        goToDetail(row) { window.location.href = "../bookshelf-detail/index.html?id=" + row.id }
       }
     })
     app.component("app-sidebar", AppSidebar)

@@ -90,51 +90,35 @@
         </div>
       </div>
 
-          <div class="video-team-container">
-      <!-- Strategy Video -->
-      <div class="detail-section" v-if="battle.isHiddenBoss && battle.videoUrl">
-        <div class="detail-section-header"><span class="icon">▶</span> 攻略视频</div>
-        <div style="padding: 20px 24px;">
-          <div style="font-size: .85rem; font-weight: 600; color: #1a2940; margin-bottom: 12px;">{{ battle.videoTitle }}</div>
-          <div class="video-wrapper">
-            <iframe :src="battle.videoUrl" frameborder="0" allowfullscreen style="width: 100%; height: 100%; border-radius: 8px;"></iframe>
+      <!-- 攻略查找 -->
+      <div class="detail-section" v-if="guides.length">
+        <div class="detail-section-header"><span class="icon">🔍</span> 攻略查找</div>
+        <div class="guide-list">
+          <div v-for="g in guides" :key="g.title" class="guide-item">
+            <div class="guide-info">
+              <div class="guide-title">{{ g.title }}</div>
+            </div>
+            <div class="guide-team">
+              <span class="guide-team-label">前排</span>
+              <span v-for="name in g.team.front" :key="name" class="guide-avatar">
+                <span class="guide-avatar-icon">{{ name[0] }}</span>
+                <span class="guide-avatar-name">{{ name }}</span>
+              </span>
+              <span class="guide-team-label">后排</span>
+              <span v-for="name in g.team.back" :key="name" class="guide-avatar">
+                <span class="guide-avatar-icon">{{ name[0] }}</span>
+                <span class="guide-avatar-name">{{ name }}</span>
+              </span>
+              <span class="guide-team-label">搭档</span>
+              <span v-for="name in g.team.partner" :key="name" class="guide-avatar">
+                <span class="guide-avatar-icon">{{ name[0] }}</span>
+                <span class="guide-avatar-name">{{ name }}</span>
+              </span>
+            </div>
+            <a class="guide-watch" :href="g.url" target="_blank" rel="noopener">▶ 观看</a>
           </div>
         </div>
       </div>
-      <!-- Team Comp -->
-      <div class="detail-section" v-if="battle.team">
-        <div class="detail-section-header"><span class="icon">👥</span> 推荐组队</div>
-        <div class="team-section">
-          <div class="team-row">
-            <div class="team-row-label">前排</div>
-            <div class="team-slots">
-              <div v-for="name in battle.team.front" :key="name" class="team-avatar">
-                <div class="team-avatar-icon">{{ name[0] }}</div>
-                <div class="team-avatar-name">{{ name }}</div>
-              </div>
-            </div>
-          </div>
-          <div class="team-row">
-            <div class="team-row-label">后排</div>
-            <div class="team-slots">
-              <div v-for="name in battle.team.back" :key="name" class="team-avatar">
-                <div class="team-avatar-icon">{{ name[0] }}</div>
-                <div class="team-avatar-name">{{ name }}</div>
-              </div>
-            </div>
-          </div>
-          <div class="team-row">
-            <div class="team-row-label">搭档</div>
-            <div class="team-slots">
-              <div v-for="name in battle.team.partner" :key="name" class="team-avatar">
-                <div class="team-avatar-icon">{{ name[0] }}</div>
-                <div class="team-avatar-name">{{ name }}</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
 
 <script type="module">
     import { createApp } from "vue"
@@ -152,6 +136,17 @@
 
     const app = createApp({
       data() { return { battle, sidebarOpen: window.innerWidth > 768 } },
+      computed: {
+        guides() {
+          if (!this.battle || !this.battle.videoUrl) return []
+          const team = this.battle.team
+          return ['平民队', '低配', '速通'].map(label => ({
+            title: `「${this.battle.name}」${label}攻略`,
+            url: this.battle.videoUrl,
+            team
+          }))
+        }
+      },
       methods: { toggleSidebar() { this.sidebarOpen = !this.sidebarOpen } }
     })
     app.component("app-sidebar", AppSidebar)

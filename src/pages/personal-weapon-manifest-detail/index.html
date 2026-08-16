@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>显现专武详情 - 另一个伊甸攻略站</title>
+</head>
+<body>
+  <div id="app">
+    <button class="sidebar-toggle" @click="toggleSidebar">☰</button>
+    <div class="sidebar-overlay" :class="{ show: sidebarOpen }" @click="toggleSidebar"></div>
+    <aside class="sidebar" :class="{ open: sidebarOpen }">
+      <app-sidebar current-page="personal-weapons"></app-sidebar>
+    </aside>
+    <main class="main-content" v-if="detail">
+      <a class="back-link" href="../personal-weapons/index.html">← 返回专武列表</a>
+      <div class="char-page-header">
+        <div>
+          <h1 class="char-page-title">{{ detail.name }}</h1>
+          <p class="char-page-count"><span class="task-category-badge">{{ detail.character }}</span> 显现</p>
+        </div>
+      </div>
+
+      <!-- 显现武器效果 -->
+      <div class="detail-section">
+        <div class="detail-section-header"><span class="icon">✨</span> 显现武器效果</div>
+        <div class="behavior-table-wrap">
+          <table class="ability-table">
+            <thead>
+              <tr>
+                <th>专用武器</th>
+                <th>最终性能</th>
+                <th>发动效果</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="manifest-weapon">{{ detail.name }}<br /><span class="manifest-char">（{{ detail.character }}）</span></td>
+                <td class="manifest-stats">
+                  <div>Lv.{{ detail.finalStats.level }}</div>
+                  <div>攻击{{ detail.finalStats.atk }}</div>
+                  <div>魔力{{ detail.finalStats.magic }}</div>
+                </td>
+                <td class="manifest-effects">
+                  <div v-for="e in detail.effects" :key="e">・{{ e }}</div>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="3" class="manifest-skills">
+                  <div class="manifest-subtitle">技能性能强化</div>
+                  <div v-for="s in detail.skills" :key="s.name" class="skill-block">
+                    <div class="skill-title">【{{ s.name }}】MP:{{ s.mp }}</div>
+                    <div class="skill-desc">{{ s.desc }}</div>
+                    <div class="skill-bonus">{{ s.bonus }}</div>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 攻略查找 -->
+      <div class="detail-section" v-if="guides.length">
+        <div class="detail-section-header"><span class="icon">🔍</span> 攻略查找</div>
+        <div class="guide-list">
+          <div v-for="g in guides" :key="g.title" class="guide-item">
+            <div class="guide-info">
+              <div class="guide-title">{{ g.title }}</div>
+            </div>
+            <div class="guide-team">
+              <span class="guide-team-label">前排</span>
+              <span v-for="name in g.team.front" :key="name" class="guide-avatar">
+                <span class="guide-avatar-icon">{{ name[0] }}</span>
+                <span class="guide-avatar-name">{{ name }}</span>
+              </span>
+              <span class="guide-team-label">后排</span>
+              <span v-for="name in g.team.back" :key="name" class="guide-avatar">
+                <span class="guide-avatar-icon">{{ name[0] }}</span>
+                <span class="guide-avatar-name">{{ name }}</span>
+              </span>
+              <span class="guide-team-label">搭档</span>
+              <span v-for="name in g.team.partner" :key="name" class="guide-avatar">
+                <span class="guide-avatar-icon">{{ name[0] }}</span>
+                <span class="guide-avatar-name">{{ name }}</span>
+              </span>
+            </div>
+            <a class="guide-watch" :href="g.url" target="_blank" rel="noopener">▶ 观看</a>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+  <script type="module">
+    import { createApp } from "vue"
+    import AppSidebar from "../../components/AppSidebar.vue"
+    import { personalWeaponManifestDetails } from "../../data/samples/personal-weapon-details.js"
+    import "../../assets/styles/variables.css"
+    import "../../assets/styles/reset.css"
+    import "../../assets/styles/layout.css"
+    import "../../assets/styles/sidebar.css"
+    import "../../assets/styles/table.css"
+    import "../../assets/styles/detail.css"
+
+    const params = new URLSearchParams(window.location.search)
+    const weaponId = params.get('id')
+    const detail = personalWeaponManifestDetails.find(r => String(r.id) === weaponId) || null
+
+    const app = createApp({
+      data() { return { detail, sidebarOpen: window.innerWidth > 768 } },
+      computed: {
+        guides() {
+          if (!this.detail) return []
+          return ['平民队', '低配', '速通'].map(label => ({
+            title: `「${this.detail.name}」${label}攻略`,
+            url: this.detail.videoUrl,
+            team: this.detail.team
+          }))
+        }
+      },
+      methods: { toggleSidebar() { this.sidebarOpen = !this.sidebarOpen } }
+    })
+    app.component("app-sidebar", AppSidebar)
+    app.mount("#app")
+  </script>
+</body>
+</html>

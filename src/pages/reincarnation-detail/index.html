@@ -33,7 +33,10 @@
             </thead>
             <tbody>
               <tr v-for="(m, i) in flatRows" :key="i">
-                <td v-if="m.rowspan" :rowspan="m.rowspan" class="stage-num">第{{ m.stage }}关</td>
+                <td v-if="m.rowspan" :rowspan="m.rowspan" class="stage-num">
+                  <a v-if="difficulty === 'Extreme'" class="stage-link" :href="'../reincarnation-stage-detail/index.html?id=' + trial.id + '&difficulty=' + difficulty + '&stage=' + m.stage">第{{ m.stage }}关</a>
+                  <span v-else>第{{ m.stage }}关</span>
+                </td>
                 <td>{{ m.condition }}</td>
                 <td>{{ m.reward }}</td>
               </tr>

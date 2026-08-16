@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>专武详情 - 另一个伊甸攻略站</title>
+</head>
+<body>
+  <div id="app">
+    <button class="sidebar-toggle" @click="toggleSidebar">☰</button>
+    <div class="sidebar-overlay" :class="{ show: sidebarOpen }" @click="toggleSidebar"></div>
+    <aside class="sidebar" :class="{ open: sidebarOpen }">
+      <app-sidebar current-page="personal-weapons"></app-sidebar>
+    </aside>
+    <main class="main-content" v-if="detail">
+      <a class="back-link" href="../personal-weapons/index.html">← 返回专武列表</a>
+      <div class="char-page-header">
+        <div>
+          <h1 class="char-page-title">{{ detail.name }}</h1>
+          <p class="char-page-count"><span class="task-category-badge">{{ detail.character }}</span> 结果</p>
+        </div>
+      </div>
+
+      <!-- 结果效果 -->
+      <div class="detail-section">
+        <div class="detail-section-header"><span class="icon">✨</span> 结果效果</div>
+        <div class="pw-effect-panel">
+          <div class="pw-effect-title">
+            <span>结果武器的</span>
+            <span>发动效果</span>
+          </div>
+          <div class="pw-effect-content">
+            <div v-for="st in detail.effectStages" :key="st.level" class="pw-effect-stage">
+              <div class="pw-effect-level">【武器等级{{ st.level }}】</div>
+              <div v-for="e in st.effects" :key="e" class="pw-effect-item">・{{ e }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 结果报酬 -->
+      <div class="detail-section">
+        <div class="detail-section-header"><span class="icon">🎁</span> 结果报酬</div>
+        <div class="behavior-table-wrap">
+          <table class="ability-table">
+            <thead>
+              <tr>
+                <th style="width: 130px;">难度</th>
+                <th>初回报酬</th>
+                <th>稀有报酬</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="r in detail.rewards" :key="r.difficulty">
+                <td class="difficulty-name">{{ r.difficulty }}</td>
+                <td class="drop-list">
+                  <div v-for="it in r.first" :key="it">・{{ it }}</div>
+                </td>
+                <td class="drop-list">
+                  <div v-for="it in r.rare" :key="it">・{{ it }}</div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 攻略查找 -->
+      <div class="detail-section">
+        <div class="detail-section-header"><span class="icon">🔍</span> 攻略查找</div>
+        <div class="vow-filter">
+          <span class="vow-filter-label">满足誓约</span>
+          <span v-for="v in vowOptions" :key="v"
+            class="filter-chip" :class="{ active: selectedVows.includes(v) }"
+            @click="toggleVow(v)">{{ v }}</span>
+        </div>
+        <div class="guide-list">
+          <div v-for="g in filteredGuides" :key="g.title" class="guide-item">
+            <div class="guide-info">
+              <div class="guide-title">{{ g.title }}</div>
+              <div class="guide-vows">
+                <span v-for="v in g.vows" :key="v" class="vow-item">✓ {{ v }}</span>
+              </div>
+            </div>
+            <div class="guide-team">
+              <span class="guide-team-label">前排</span>
+              <span v-for="name in g.team.front" :key="name" class="guide-avatar">
+                <span class="guide-avatar-icon">{{ name[0] }}</span>
+                <span class="guide-avatar-name">{{ name }}</span>
+              </span>
+              <span class="guide-team-label">后排</span>
+              <span v-for="name in g.team.back" :key="name" class="guide-avatar">
+                <span class="guide-avatar-icon">{{ name[0] }}</span>
+                <span class="guide-avatar-name">{{ name }}</span>
+              </span>
+              <span class="guide-team-label">搭档</span>
+              <span v-for="name in g.team.partner" :key="name" class="guide-avatar">
+                <span class="guide-avatar-icon">{{ name[0] }}</span>
+                <span class="guide-avatar-name">{{ name }}</span>
+              </span>
+            </div>
+            <a class="guide-watch" :href="g.url" target="_blank" rel="noopener">▶ 观看</a>
+          </div>
+          <div v-if="filteredGuides.length === 0" class="guide-empty">没有找到满足所选誓约的攻略视频</div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+  <script type="module">
+    import { createApp } from "vue"
+    import AppSidebar from "../../components/AppSidebar.vue"
+    import { personalWeaponDetails } from "../../data/samples/personal-weapon-details.js"
+    import { vowOptions } from "../../data/config.js"
+    import "../../assets/styles/variables.css"
+    import "../../assets/styles/reset.css"
+    import "../../assets/styles/layout.css"
+    import "../../assets/styles/sidebar.css"
+    import "../../assets/styles/table.css"
+    import "../../assets/styles/detail.css"
+
+    const params = new URLSearchParams(window.location.search)
+    const weaponId = params.get('id')
+    const detail = personalWeaponDetails.find(r => String(r.id) === weaponId) || null
+
+    const app = createApp({
+      data() { return { detail, vowOptions, selectedVows: [], sidebarOpen: window.innerWidth > 768 } },
+      computed: {
+        filteredGuides() {
+          const sel = this.selectedVows
+          if (sel.length === 0) return this.detail.guides
+          return this.detail.guides.filter(g => sel.every(v => g.vows.includes(v)))
+        }
+      },
+      methods: {
+        toggleSidebar() { this.sidebarOpen = !this.sidebarOpen },
+        toggleVow(v) {
+          if (this.selectedVows.includes(v)) {
+            this.selectedVows = this.selectedVows.filter(x => x !== v)
+          } else {
+            this.selectedVows = [...this.selectedVows, v]
+          }
+        }
+      }
+    })
+    app.component("app-sidebar", AppSidebar)
+    app.mount("#app")
+  </script>
+</body>
+</html>

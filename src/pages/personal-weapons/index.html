@@ -24,7 +24,7 @@
         <button class="tab-btn" :class="{ active: activeTab === '结果' }" @click="activeTab = '结果'">结果</button>
         <button class="tab-btn" :class="{ active: activeTab === '显现' }" @click="activeTab = '显现'">显现</button>
       </div>
-      <data-table :columns="columns" :data="filteredData" empty-text="没有找到符合条件的专武" :show-id="false" avatar-key="character"></data-table>
+      <data-table :columns="columns" :data="filteredData" empty-text="没有找到符合条件的专武" :show-id="false" avatar-key="character" @row-click="goToDetail"></data-table>
     </main>
   </div>
   <script type="module">
@@ -59,7 +59,11 @@
         }
       },
       methods: {
-        toggleSidebar() { this.sidebarOpen = !this.sidebarOpen }
+        toggleSidebar() { this.sidebarOpen = !this.sidebarOpen },
+        goToDetail(row) {
+          if (row.tab === '结果') { window.location.href = "../personal-weapon-detail/index.html?id=" + row.id }
+          if (row.tab === '显现') { window.location.href = "../personal-weapon-manifest-detail/index.html?id=" + row.id }
+        }
       }
     })
     app.component("app-sidebar", AppSidebar)

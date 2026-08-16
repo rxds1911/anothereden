@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>回生关卡详情 - 另一个伊甸攻略站</title>
+</head>
+<body>
+  <div id="app">
+    <button class="sidebar-toggle" @click="toggleSidebar">☰</button>
+    <div class="sidebar-overlay" :class="{ show: sidebarOpen }" @click="toggleSidebar"></div>
+    <aside class="sidebar" :class="{ open: sidebarOpen }">
+      <app-sidebar current-page="reincarnation"></app-sidebar>
+    </aside>
+    <main class="main-content" v-if="stage && trial">
+      <a class="back-link" :href="'../reincarnation-detail/index.html?id=' + trial.id + '&difficulty=' + difficulty">← 返回关卡列表</a>
+      <div class="char-page-header">
+        <div>
+          <h1 class="char-page-title">{{ trial.name }}</h1>
+          <p class="char-page-count">第{{ stageNo }}关 · {{ difficulty }}</p>
+        </div>
+      </div>
+
+      <!-- 回生报酬 -->
+      <div class="detail-section">
+        <div class="detail-section-header"><span class="icon">🎁</span> 回生报酬</div>
+        <div class="reward-panel">
+          <div class="reward-bar">通关奖励</div>
+          <div class="clear-reward">{{ clearReward }}</div>
+          <div class="reward-bar">任务条件/奖励</div>
+          <div v-for="(m, i) in stage.missions" :key="i" class="mission-block">
+            <div class="mission-condition">【{{ m.condition }}】</div>
+            <div class="mission-reward">・{{ m.reward }}</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 回生敌人 -->
+      <div class="detail-section">
+        <div class="detail-section-header"><span class="icon">👹</span> 出现Boss弱点与行动模式</div>
+        <div class="behavior-table-wrap">
+          <table class="ability-table">
+            <thead>
+              <tr>
+                <th style="width: 80px;">Wave</th>
+                <th>Boss</th>
+                <th>弱点</th>
+                <th>耐性</th>
+              </tr>
+            </thead>
+            <tbody>
+              <template v-for="(w, wi) in waves" :key="w.wave">
+                <tr v-for="(b, bi) in w.bosses" :key="bi">
+                  <td v-if="bi === 0" :rowspan="w.bosses.length" class="wave-no">{{ w.wave }}</td>
+                  <td class="boss-name">{{ b.name }}</td>
+                  <td>
+                    <span class="tags-cell">
+                      <span v-for="tag in splitTags(b.weakness)" :key="tag" class="tag" :class="'tag-' + tag">{{ tag }}</span>
+                    </span>
+                  </td>
+                  <td>
+                    <span class="tags-cell">
+                      <span v-for="tag in splitTags(b.resist)" :key="tag" class="tag" :class="'tag-' + tag">{{ tag }}</span>
+                      <span v-if="b.note" class="resist-note">({{ b.note }})</span>
+                    </span>
+                  </td>
+                </tr>
+              </template>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 攻略查找 -->
+      <div class="detail-section" v-if="guides.length">
+        <div class="detail-section-header"><span class="icon">🔍</span> 攻略查找</div>
+        <div class="guide-list">
+          <div v-for="g in guides" :key="g.title" class="guide-item">
+            <div class="guide-info">
+              <div class="guide-title">{{ g.title }}</div>
+            </div>
+            <div class="guide-team">
+              <span class="guide-team-label">前排</span>
+              <span v-for="name in g.team.front" :key="name" class="guide-avatar">
+                <span class="guide-avatar-icon">{{ name[0] }}</span>
+                <span class="guide-avatar-name">{{ name }}</span>
+              </span>
+              <span class="guide-team-label">后排</span>
+              <span v-for="name in g.team.back" :key="name" class="guide-avatar">
+                <span class="guide-avatar-icon">{{ name[0] }}</span>
+                <span class="guide-avatar-name">{{ name }}</span>
+              </span>
+              <span class="guide-team-label">搭档</span>
+              <span v-for="name in g.team.partner" :key="name" class="guide-avatar">
+                <span class="guide-avatar-icon">{{ name[0] }}</span>
+                <span class="guide-avatar-name">{{ name }}</span>
+              </span>
+            </div>
+            <a class="guide-watch" :href="g.url" target="_blank" rel="noopener">▶ 观看</a>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+  <script type="module">
+    import { createApp } from "vue"
+    import AppSidebar from "../../components/AppSidebar.vue"
+    import { sampleReincarnation } from "../../data/samples/reincarnation.js"
+    import { reincarnationStages } from "../../data/samples/reincarnation-stages.js"
+    import { reincarnationBosses } from "../../data/samples/reincarnation-bosses.js"
+    import "../../assets/styles/variables.css"
+    import "../../assets/styles/reset.css"
+    import "../../assets/styles/layout.css"
+    import "../../assets/styles/sidebar.css"
+    import "../../assets/styles/table.css"
+    import "../../assets/styles/detail.css"
+
+    const params = new URLSearchParams(window.location.search)
+    const trialId = params.get('id')
+    const difficulty = params.get('difficulty') === 'Extreme' ? 'Extreme' : 'Normal'
+    const stageNo = parseInt(params.get('stage') || '1', 10)
+    const trial = sampleReincarnation.find(r => String(r.id) === trialId) || null
+    const stage = (reincarnationStages[difficulty] || [])[stageNo - 1] || null
+    const team = {
+      front: ['阿尔德', '菲奈', '茜', '艾米'],
+      back: ['莉卡', '塞温'],
+      partner: ['帕蒂', '克罗德']
+    }
+
+    const app = createApp({
+      data() { return { trial, stage, difficulty, stageNo, team, sidebarOpen: window.innerWidth > 768 } },
+      computed: {
+        guides() {
+          if (!this.trial || !this.stage) return []
+          return ['平民队', '低配', '速通'].map(label => ({
+            title: `「${this.trial.name}」第${this.stageNo}关${label}攻略`,
+            url: this.videoUrl,
+            team: this.team
+          }))
+        },
+        clearReward() {
+          const base = difficulty === 'Extreme' ? 30 : 20
+          return '克罗诺斯之石×' + (base + stageNo * 5)
+        },
+        waves() {
+          const pool = reincarnationBosses[difficulty] || []
+          return pool.map((w, i) => ({ ...w, bosses: w.bosses.map(b => ({ ...b, name: b.name + '·' + ['序', '终', '深'][(stageNo - 1 + i) % 3] })) }))
+        },
+        videoUrl() {
+          return 'https://player.bilibili.com/player.html?bvid=BV1GJ411x7y7&autoplay=0'
+        }
+      },
+      methods: {
+        toggleSidebar() { this.sidebarOpen = !this.sidebarOpen },
+        splitTags(value) {
+          return String(value).split(/[、,，/]/).map(s => s.trim()).filter(Boolean)
+        }
+      }
+    })
+    app.component("app-sidebar", AppSidebar)
+    app.mount("#app")
+  </script>
+</body>
+</html>

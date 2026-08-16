@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>迷宫详情 - 另一个伊甸攻略站</title>
+</head>
+<body>
+  <div id="app">
+    <button class="sidebar-toggle" @click="toggleSidebar">☰</button>
+    <div class="sidebar-overlay" :class="{ show: sidebarOpen }" @click="toggleSidebar"></div>
+    <aside class="sidebar" :class="{ open: sidebarOpen }">
+      <app-sidebar current-page="dungeons"></app-sidebar>
+    </aside>
+    <main class="main-content" v-if="detail">
+      <a class="back-link" href="../dungeons/index.html">← 返回迷宫列表</a>
+      <div class="char-page-header">
+        <div>
+          <h1 class="char-page-title">{{ detail.name }}</h1>
+          <p class="char-page-count">{{ detail.type }} · {{ detail.difficulties.join(' / ') }}</p>
+        </div>
+      </div>
+
+      <!-- 地图 -->
+      <div class="detail-section">
+        <div class="detail-section-header"><span class="icon">🗺️</span> 地图</div>
+        <div class="dungeon-map-image">
+          <img src="/screenshots/dungeons/zeruberiyakaminari.jpg" alt="地图" />
+        </div>
+      </div>
+
+      <!-- 宝箱 -->
+      <div class="detail-section">
+        <div class="detail-section-header"><span class="icon">📦</span> 宝箱内容一览</div>
+        <div class="behavior-table-wrap">
+          <table class="ability-table">
+            <thead>
+              <tr>
+                <th style="width: 70px;">序号</th>
+                <th>区域</th>
+                <th v-for="diff in detail.difficulties" :key="diff">宝箱内容（{{ diff }}）</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="c in detail.chests" :key="c.no">
+                <td class="chest-no">{{ c.no }}</td>
+                <td>{{ c.area }}</td>
+                <td v-for="diff in detail.difficulties" :key="diff" class="drop-list">
+                  <div v-for="it in c.items[diff]" :key="it">・{{ it }}</div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 出现敌人 -->
+      <div class="detail-section">
+        <div class="detail-section-header"><span class="icon">⚔️</span> 出现怪物弱点与入手道具</div>
+        <div class="behavior-table-wrap">
+          <table class="ability-table">
+            <thead>
+              <tr>
+                <th>敌人名称</th>
+                <th>弱点</th>
+                <th>耐性</th>
+                <th v-for="diff in detail.difficulties" :key="diff">掉落（{{ diff }}）</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(e, i) in detail.enemies" :key="i" :class="{ 'boss-row': e.boss }">
+                <td class="monster-name">{{ e.name }}</td>
+                <td>
+                  <span class="tags-cell">
+                    <span v-if="e.weakness.length === 0" class="enemy-none">无</span>
+                    <template v-else>
+                      <span v-for="w in splitTags(e.weakness)" :key="w" class="tag" :class="'tag-' + w">{{ w }}</span>
+                    </template>
+                  </span>
+                </td>
+                <td>
+                  <span class="tags-cell">
+                    <span v-if="e.resist.length === 0" class="enemy-none">无</span>
+                    <template v-else>
+                      <span v-for="r in splitTags(e.resist)" :key="r" class="tag" :class="'tag-' + r">{{ r }}</span>
+                    </template>
+                  </span>
+                </td>
+                <td v-for="diff in detail.difficulties" :key="diff" class="drop-list">
+                  <div v-for="d in e.drops[diff]" :key="d">・{{ d }}</div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+  </div>
+  <script type="module">
+    import { createApp } from "vue"
+    import AppSidebar from "../../components/AppSidebar.vue"
+    import { dungeonDetails } from "../../data/samples/dungeon-details.js"
+    import "../../assets/styles/variables.css"
+    import "../../assets/styles/reset.css"
+    import "../../assets/styles/layout.css"
+    import "../../assets/styles/sidebar.css"
+    import "../../assets/styles/table.css"
+    import "../../assets/styles/detail.css"
+
+    const params = new URLSearchParams(window.location.search)
+    const dungeonId = params.get('id')
+    const detail = dungeonDetails.find(r => String(r.id) === dungeonId) || null
+
+    const app = createApp({
+      data() { return { detail, sidebarOpen: window.innerWidth > 768 } },
+      methods: {
+        toggleSidebar() { this.sidebarOpen = !this.sidebarOpen },
+        difficultyKey(value) {
+          return String(value).toLowerCase().replace(/[^a-z0-9]+/g, '-')
+        },
+        splitTags(value) {
+          return String(value).split(/[、,，/]/).map(s => s.trim()).filter(Boolean)
+        }
+      }
+    })
+    app.component("app-sidebar", AppSidebar)
+    app.mount("#app")
+  </script>
+</body>
+</html>
