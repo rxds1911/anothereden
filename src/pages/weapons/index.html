@@ -38,6 +38,7 @@
     import DataTable from "../../components/DataTable.vue"
     import { sampleWeapons } from "../../data/samples/weapons.js"
     import { weaponTypes } from "../../data/config.js"
+    import { filterRows } from "../../utils/filter.js"
     import "../../assets/styles/variables.css"
     import "../../assets/styles/reset.css"
     import "../../assets/styles/layout.css"
@@ -61,15 +62,11 @@
       },
       computed: {
         filteredData() {
-          let list = sampleWeapons
-          if (this.filterType) {
-            list = list.filter(r => r.type === this.filterType)
-          }
-          if (this.searchQuery) {
-            const q = this.searchQuery.toLowerCase()
-            list = list.filter(r => ['name', 'character', 'type', 'equipLevel', 'atk', 'matk', 'condition', 'source', 'effect'].some(k => r[k] && r[k].toString().toLowerCase().includes(q)))
-          }
-          return list
+          return filterRows(sampleWeapons, {
+            filters: [{ field: 'type', values: this.filterType ? [this.filterType] : [] }],
+            searchFields: ['name', 'character', 'type', 'equipLevel', 'atk', 'matk', 'condition', 'source', 'effect'],
+            query: this.searchQuery
+          })
         }
       },
       methods: {

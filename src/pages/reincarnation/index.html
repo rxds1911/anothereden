@@ -29,6 +29,7 @@
     import SearchBar from "../../components/SearchBar.vue"
     import DataTable from "../../components/DataTable.vue"
     import { sampleReincarnation } from "../../data/samples/reincarnation.js"
+    import { filterRows } from "../../utils/filter.js"
     import "../../assets/styles/variables.css"
     import "../../assets/styles/reset.css"
     import "../../assets/styles/layout.css"
@@ -45,12 +46,10 @@
       },
       computed: {
         filteredData() {
-          let list = sampleReincarnation
-          if (this.searchQuery) {
-            const q = this.searchQuery.toLowerCase()
-            list = list.filter(r => ['name'].some(k => r[k] && r[k].toString().toLowerCase().includes(q)))
-          }
-          return list
+          return filterRows(sampleReincarnation, {
+            searchFields: ['name'],
+            query: this.searchQuery
+          })
         }
       },
       methods: {

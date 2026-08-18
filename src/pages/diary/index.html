@@ -44,6 +44,7 @@
     import DataTable from "../../components/DataTable.vue"
     import { sampleDiary } from "../../data/samples/diary.js"
     import { storyEras, mapAreas } from "../../data/config.js"
+    import { filterRows } from "../../utils/filter.js"
     import "../../assets/styles/variables.css"
     import "../../assets/styles/reset.css"
     import "../../assets/styles/layout.css"
@@ -62,18 +63,14 @@
       },
       computed: {
         filteredData() {
-          let list = sampleDiary
-          if (this.filterEra) {
-            list = list.filter(r => r.era === this.filterEra)
-          }
-          if (this.filterArea) {
-            list = list.filter(r => r.area === this.filterArea)
-          }
-          if (this.searchQuery) {
-            const q = this.searchQuery.toLowerCase()
-            list = list.filter(r => ['name', 'era', 'area'].some(k => r[k] && r[k].toString().toLowerCase().includes(q)))
-          }
-          return list
+          return filterRows(sampleDiary, {
+            filters: [
+              { field: 'era', values: this.filterEra ? [this.filterEra] : [] },
+              { field: 'area', values: this.filterArea ? [this.filterArea] : [] }
+            ],
+            searchFields: ['name', 'era', 'area'],
+            query: this.searchQuery
+          })
         }
       },
       methods: {

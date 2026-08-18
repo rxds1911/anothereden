@@ -29,6 +29,7 @@
     import SearchBar from "../../components/SearchBar.vue"
     import DataTable from "../../components/DataTable.vue"
     import { sampleBadges } from "../../data/samples/badges.js"
+    import { filterRows } from "../../utils/filter.js"
     import "../../assets/styles/variables.css"
     import "../../assets/styles/reset.css"
     import "../../assets/styles/layout.css"
@@ -47,12 +48,10 @@
       },
       computed: {
         filteredData() {
-          let list = sampleBadges
-          if (this.searchQuery) {
-            const q = this.searchQuery.toLowerCase()
-            list = list.filter(r => ['name', 'effect', 'source'].some(k => r[k] && r[k].toString().toLowerCase().includes(q)))
-          }
-          return list
+          return filterRows(sampleBadges, {
+            searchFields: ['name', 'effect', 'source'],
+            query: this.searchQuery
+          })
         }
       },
       methods: {

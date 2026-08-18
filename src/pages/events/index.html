@@ -38,6 +38,7 @@
     import DataTable from "../../components/DataTable.vue"
     import { sampleEvents } from "../../data/samples/events.js"
     import { eventTypes } from "../../data/config.js"
+    import { filterRows } from "../../utils/filter.js"
     import "../../assets/styles/variables.css"
     import "../../assets/styles/reset.css"
     import "../../assets/styles/layout.css"
@@ -54,15 +55,11 @@
       },
       computed: {
         filteredData() {
-          let list = sampleEvents
-          if (this.filterType) {
-            list = list.filter(r => r.type === this.filterType)
-          }
-          if (this.searchQuery) {
-            const q = this.searchQuery.toLowerCase()
-            list = list.filter(r => ['name', 'type'].some(k => r[k] && r[k].toString().toLowerCase().includes(q)))
-          }
-          return list
+          return filterRows(sampleEvents, {
+            filters: [{ field: 'type', values: this.filterType ? [this.filterType] : [] }],
+            searchFields: ['name', 'type'],
+            query: this.searchQuery
+          })
         }
       },
       methods: {

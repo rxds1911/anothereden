@@ -33,6 +33,7 @@
     import SearchBar from "../../components/SearchBar.vue"
     import DataTable from "../../components/DataTable.vue"
     import { samplePersonalWeapons } from "../../data/samples/personal-weapons.js"
+    import { filterRows } from "../../utils/filter.js"
     import "../../assets/styles/variables.css"
     import "../../assets/styles/reset.css"
     import "../../assets/styles/layout.css"
@@ -50,12 +51,10 @@
       },
       computed: {
         filteredData() {
-          let list = samplePersonalWeapons.filter(r => r.tab === this.activeTab)
-          if (this.searchQuery) {
-            const q = this.searchQuery.toLowerCase()
-            list = list.filter(r => ['name', 'character', 'effect'].some(k => r[k] && r[k].toString().toLowerCase().includes(q)))
-          }
-          return list
+          return filterRows(samplePersonalWeapons.filter((r) => r.tab === this.activeTab), {
+            searchFields: ['name', 'character', 'effect'],
+            query: this.searchQuery
+          })
         }
       },
       methods: {

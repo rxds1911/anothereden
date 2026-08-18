@@ -5,6 +5,7 @@
     import Breadcrumb from "../../components/Breadcrumb.vue"
     import { sampleCharacters } from "../../data/samples/characters.js"
     import { weaponTypes, elementOptions, formOptions, lightShadowOptions, personalityOptions } from "../../data/config.js"
+    import { filterCharacters, hasActiveCharacterFilters } from "../../utils/characters-filter.js"
     import "../../assets/styles/variables.css"
     import "../../assets/styles/reset.css"
     import "../../assets/styles/layout.css"
@@ -20,30 +21,24 @@
       computed: {
         allData() { return sampleCharacters },
         hasActiveFilters() {
-          return this.filterWeapon.length > 0 || this.filterElement.length > 0 || this.filterForm.length > 0 || this.filterLightShadow.length > 0 || this.filterPersonality.length > 0 || this.searchQuery.trim() !== ""
+          return hasActiveCharacterFilters({
+            weapon: this.filterWeapon,
+            element: this.filterElement,
+            form: this.filterForm,
+            personality: this.filterPersonality,
+            lightShadow: this.filterLightShadow,
+            query: this.searchQuery
+          })
         },
         filteredData() {
-          let list = this.allData
-          if (this.filterWeapon.length) {
-            list = list.filter(r => this.filterWeapon.includes(r.weapon))
-          }
-          if (this.filterElement.length) {
-            list = list.filter(r => this.filterElement.includes(r.element))
-          }
-          if (this.filterForm.length) {
-            list = list.filter(r => this.filterForm.includes(r.form))
-          }
-          if (this.filterPersonality.length) {
-            list = list.filter(r => r.personality && r.personality.some(p => this.filterPersonality.includes(p)))
-          }
-          if (this.filterLightShadow.length) {
-            list = list.filter(r => this.filterLightShadow.includes(r.lightShadow))
-          }
-          if (this.searchQuery) {
-            const q = this.searchQuery.toLowerCase()
-            list = list.filter(r => Object.values(r).some(v => v.toString().toLowerCase().includes(q)))
-          }
-          return list
+          return filterCharacters(this.allData, {
+            weapon: this.filterWeapon,
+            element: this.filterElement,
+            form: this.filterForm,
+            personality: this.filterPersonality,
+            lightShadow: this.filterLightShadow,
+            query: this.searchQuery
+          })
         }
       },
       methods: {

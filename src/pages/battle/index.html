@@ -36,8 +36,9 @@
     import AppSidebar from "../../components/AppSidebar.vue"
     import SearchBar from "../../components/SearchBar.vue"
     import DataTable from "../../components/DataTable.vue"
-        import { taskCategories } from '../../data/config.js'
+    import { taskCategories } from '../../data/config.js'
     import { sampleBattles } from '../../data/samples/battle.js'
+    import { filterRows } from '../../utils/filter.js'
     import "../../assets/styles/variables.css"
     import "../../assets/styles/reset.css"
     import "../../assets/styles/layout.css"
@@ -54,18 +55,14 @@
       computed: {
         allData() { return sampleBattles },
         filteredData() {
-          let list = this.allData
-          if (this.filterCategory) {
-            list = list.filter(r => r.taskCategory === this.filterCategory)
-          }
-          if (this.filterValue) {
-            list = list.filter(r => r.element === this.filterValue || r.type === this.filterValue)
-          }
-          if (this.searchQuery) {
-            const q = this.searchQuery.toLowerCase()
-            list = list.filter(r => ['id','name','startCondition','location','reward','note','taskCategory'].some(k => r[k] && r[k].toString().toLowerCase().includes(q)))
-          }
-          return list
+          return filterRows(this.allData, {
+            filters: [
+              { field: 'taskCategory', values: this.filterCategory ? [this.filterCategory] : [] },
+              { fields: ['element', 'type'], values: this.filterValue ? [this.filterValue] : [] }
+            ],
+            searchFields: ['id', 'name', 'startCondition', 'location', 'reward', 'note', 'taskCategory'],
+            query: this.searchQuery
+          })
         }
       },
       methods: {

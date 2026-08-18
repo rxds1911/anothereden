@@ -38,6 +38,7 @@
     import DataTable from "../../components/DataTable.vue"
     import { sampleDungeons } from "../../data/samples/dungeons.js"
     import { dungeonTypes } from "../../data/config.js"
+    import { filterRows } from "../../utils/filter.js"
     import "../../assets/styles/variables.css"
     import "../../assets/styles/reset.css"
     import "../../assets/styles/layout.css"
@@ -60,15 +61,11 @@
       },
       computed: {
         filteredData() {
-          let list = sampleDungeons
-          if (this.filterType) {
-            list = list.filter(r => r.type === this.filterType)
-          }
-          if (this.searchQuery) {
-            const q = this.searchQuery.toLowerCase()
-            list = list.filter(r => ['name', 'type', 'difficulties', 'weakness', 'resist', 'recLevel', 'reward', 'memoryBook'].some(k => r[k] && r[k].toString().toLowerCase().includes(q)))
-          }
-          return list
+          return filterRows(sampleDungeons, {
+            filters: [{ field: 'type', values: this.filterType ? [this.filterType] : [] }],
+            searchFields: ['name', 'type', 'difficulties', 'weakness', 'resist', 'recLevel', 'reward', 'memoryBook'],
+            query: this.searchQuery
+          })
         }
       },
       methods: {
