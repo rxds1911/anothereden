@@ -71,40 +71,19 @@
         </div>
       </div>
 
-      <!-- 攻略查找 -->
-      <div class="detail-section" v-if="guides.length">
-        <div class="detail-section-header"><span class="icon">🔍</span> 攻略查找</div>
-        <div class="guide-list">
-          <div v-for="g in guides" :key="g.title" class="guide-item">
-            <div class="guide-info">
-              <div class="guide-title">{{ g.title }}</div>
-            </div>
-            <div class="guide-team">
-              <span class="guide-team-label">前排</span>
-              <span v-for="name in g.team.front" :key="name" class="guide-avatar">
-                <span class="guide-avatar-icon">{{ name[0] }}</span>
-                <span class="guide-avatar-name">{{ name }}</span>
-              </span>
-              <span class="guide-team-label">后排</span>
-              <span v-for="name in g.team.back" :key="name" class="guide-avatar">
-                <span class="guide-avatar-icon">{{ name[0] }}</span>
-                <span class="guide-avatar-name">{{ name }}</span>
-              </span>
-              <span class="guide-team-label">搭档</span>
-              <span v-for="name in g.team.partner" :key="name" class="guide-avatar">
-                <span class="guide-avatar-icon">{{ name[0] }}</span>
-                <span class="guide-avatar-name">{{ name }}</span>
-              </span>
-            </div>
-            <a class="guide-watch" :href="g.url" target="_blank" rel="noopener">▶ 观看</a>
-          </div>
-        </div>
-      </div>
+      <!-- 攻略查找 + 投稿 -->
+      <guide-section
+        v-if="stage && trial"
+        :item-id="'reincarnation-' + trial.id + '-' + difficulty + '-' + stageNo"
+        :item-name="trial.name"
+        :builtin-guide="builtinGuide"
+      ></guide-section>
     </main>
   </div>
   <script type="module">
     import { createApp } from "vue"
     import AppSidebar from "../../components/AppSidebar.vue"
+    import GuideSection from "../../components/GuideSection.vue"
     import { sampleReincarnation } from "../../data/samples/reincarnation.js"
     import { reincarnationStages } from "../../data/samples/reincarnation-stages.js"
     import { reincarnationBosses } from "../../data/samples/reincarnation-bosses.js"
@@ -126,18 +105,14 @@
       back: ['莉卡', '塞温'],
       partner: ['帕蒂', '克罗德']
     }
+    const videoUrl = 'https://player.bilibili.com/player.html?bvid=BV1GJ411x7y7&autoplay=0'
+    const builtinGuide = trial
+      ? { title: `「${trial.name}」第${stageNo}关示例攻略`, url: videoUrl, team }
+      : null
 
     const app = createApp({
-      data() { return { trial, stage, difficulty, stageNo, team, sidebarOpen: window.innerWidth > 768 } },
+      data() { return { trial, stage, difficulty, stageNo, builtinGuide, sidebarOpen: window.innerWidth > 768 } },
       computed: {
-        guides() {
-          if (!this.trial || !this.stage) return []
-          return ['平民队', '低配', '速通'].map(label => ({
-            title: `「${this.trial.name}」第${this.stageNo}关${label}攻略`,
-            url: this.videoUrl,
-            team: this.team
-          }))
-        },
         clearReward() {
           const base = difficulty === 'Extreme' ? 30 : 20
           return '克罗诺斯之石×' + (base + stageNo * 5)
@@ -145,9 +120,6 @@
         waves() {
           const pool = reincarnationBosses[difficulty] || []
           return pool.map((w, i) => ({ ...w, bosses: w.bosses.map(b => ({ ...b, name: b.name + '·' + ['序', '终', '深'][(stageNo - 1 + i) % 3] })) }))
-        },
-        videoUrl() {
-          return 'https://player.bilibili.com/player.html?bvid=BV1GJ411x7y7&autoplay=0'
         }
       },
       methods: {
@@ -158,6 +130,7 @@
       }
     })
     app.component("app-sidebar", AppSidebar)
+    app.component("guide-section", GuideSection)
     app.mount("#app")
   </script>
 </body>

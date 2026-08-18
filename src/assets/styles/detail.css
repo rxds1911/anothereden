@@ -1004,6 +1004,304 @@
   font-size: .85rem;
 }
 
+/* ---- Guide Toolbar / Search ---- */
+.guide-count {
+  margin-left: auto;
+  font-size: .72rem;
+  font-weight: 600;
+  color: #a8862f;
+  background: rgba(200,168,78,0.12);
+  padding: 2px 10px;
+  border-radius: 10px;
+  letter-spacing: 0.3px;
+}
+.guide-header-btn {
+  margin-left: 12px;
+  padding: 5px 14px;
+  border: 1px solid rgba(200,168,78,0.55);
+  background: linear-gradient(135deg, #c8a84e, #e8c96e);
+  color: #fff;
+  font-size: .76rem;
+  font-weight: 700;
+  border-radius: 14px;
+  cursor: pointer;
+  font-family: inherit;
+  letter-spacing: 0.3px;
+  transition: all .2s;
+}
+.guide-header-btn:hover {
+  filter: brightness(1.08);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(200,168,78,0.3);
+}
+.guide-header-btn:active {
+  transform: translateY(0);
+}
+.guide-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 24px 0;
+}
+.guide-search-box {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  padding: 8px 12px;
+  min-width: 220px;
+  flex: 1;
+  max-width: 420px;
+  transition: all .2s;
+}
+.guide-search-box:focus-within {
+  border-color: #c8a84e;
+  box-shadow: 0 0 0 3px rgba(200,168,78,0.1);
+}
+.guide-search-box .search-icon { font-size: .85rem; opacity: .4; flex-shrink: 0; }
+.guide-search-input {
+  flex: 1;
+  border: none;
+  outline: none;
+  font-size: .84rem;
+  font-family: inherit;
+  color: #2c2c2c;
+  background: transparent;
+}
+.guide-search-input::placeholder { color: #bbb; }
+.guide-search-box .search-clear {
+  font-size: .72rem;
+  color: #ccc;
+  cursor: pointer;
+  padding: 1px 5px;
+  border-radius: 50%;
+  transition: all .15s;
+}
+.guide-search-box .search-clear:hover { color: #c8a84e; background: rgba(200,168,78,0.08); }
+/* ---- Guide Badge / Meta / Actions ---- */
+.guide-badge {
+  display: inline-block;
+  font-size: .68rem;
+  font-weight: 600;
+  padding: 1px 8px;
+  border-radius: 8px;
+  margin-left: 6px;
+  vertical-align: 1px;
+}
+.guide-badge--builtin { background: #eef2f7; color: #2c3e5a; }
+.guide-badge--user { background: rgba(200,168,78,0.15); color: #a8862f; }
+.guide-meta {
+  font-size: .7rem;
+  color: #bbb;
+  margin-top: 2px;
+}
+.guide-actions {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 6px;
+}
+.guide-delete {
+  border: 1px solid #f0d8d8;
+  background: #fff7f7;
+  color: #c0392b;
+  font-size: .74rem;
+  font-weight: 600;
+  padding: 6px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all .2s;
+}
+.guide-delete:hover {
+  background: #c0392b;
+  color: #fff;
+  border-color: #c0392b;
+}
+
+/* ---- Guide Submission Form ---- */
+.guide-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 20px 24px 24px;
+  margin-top: 4px;
+  border-top: 1px dashed #e8e4dc;
+}
+.guide-form-row {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.guide-form-label {
+  font-size: .82rem;
+  font-weight: 700;
+  color: #4a5a72;
+}
+.guide-form-label em {
+  color: #c0392b;
+  font-style: normal;
+}
+.guide-form-input {
+  padding: 10px 14px;
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  font-size: .84rem;
+  font-family: inherit;
+  color: #2c2c2c;
+  outline: none;
+  transition: all .2s;
+}
+.guide-form-input:focus {
+  border-color: #c8a84e;
+  box-shadow: 0 0 0 3px rgba(200,168,78,0.1);
+}
+.guide-form-url-row {
+  display: flex;
+  gap: 8px;
+}
+.guide-form-url-row .guide-form-input {
+  flex: 1;
+  min-width: 0;
+}
+.guide-title-btn {
+  flex-shrink: 0;
+  padding: 9px 16px;
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  background: #fafbfc;
+  color: #4a5a72;
+  font-size: .8rem;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  white-space: nowrap;
+  transition: all .2s;
+}
+.guide-title-btn:hover {
+  border-color: #c8a84e;
+  color: #1a2940;
+  background: #fffdf7;
+}
+.guide-title-btn:disabled {
+  opacity: .6;
+  cursor: default;
+}
+.guide-form-title-hint {
+  font-size: .74rem;
+  line-height: 1.6;
+}
+.guide-form-title-hint--ok {
+  color: #1e6b34;
+}
+.guide-form-title-hint--error {
+  color: #c0392b;
+}
+.guide-form-slots {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 8px;
+}
+.guide-form-vows {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.guide-vow-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 14px;
+  cursor: pointer;
+  user-select: none;
+  border: 1px solid #e0e0e0;
+  background: #fafbfc;
+  color: #666;
+  font-size: .8rem;
+  transition: all .2s;
+}
+.guide-vow-chip:hover {
+  border-color: #c8a84e;
+  color: #1a2940;
+}
+.guide-vow-chip.checked {
+  background: #eef7ef;
+  border-color: #b9dcc0;
+  color: #1e6b34;
+  font-weight: 600;
+}
+.guide-vow-checkbox {
+  display: none;
+}
+.guide-form-section {
+  overflow: visible;
+}
+.guide-form-section .detail-section-header {
+  border-radius: 16px 16px 0 0;
+}
+.guide-info .guide-vows {
+  margin-top: 6px;
+}
+.guide-form-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 4px;
+}
+.guide-submit {
+  background: linear-gradient(135deg, #1a2940, #2c3e5a);
+  color: #fff;
+  font-size: .85rem;
+  font-weight: 700;
+  padding: 10px 28px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-family: inherit;
+  transition: filter .2s, transform .2s;
+}
+.guide-submit:hover {
+  filter: brightness(1.15);
+  transform: translateY(-1px);
+}
+.guide-form-hint {
+  font-size: .74rem;
+  color: #bbb;
+}
+.guide-form-msg {
+  font-size: .8rem;
+  padding: 10px 14px;
+  border-radius: 10px;
+}
+.guide-form-msg--error {
+  background: #fdf0f0;
+  color: #c0392b;
+  border: 1px solid #f0d8d8;
+}
+.guide-form-msg--ok {
+  background: #eff7f1;
+  color: #1e6b34;
+  border: 1px solid #d3e8d6;
+}
+
+@media (max-width: 768px) {
+  .guide-toolbar { padding: 12px 16px 0; }
+  .guide-form { padding: 16px; }
+  .guide-item { flex-wrap: wrap; }
+  .guide-team { flex-wrap: wrap; }
+  .guide-actions {
+    flex-direction: row;
+    justify-content: flex-end;
+    width: 100%;
+  }
+}
+
 /* ---- Team Section ---- */
 .team-section { padding: 28px 24px; display: flex; flex-direction: column; gap: 16px; }
 .team-row { display: flex; align-items: center; gap: 16px; }

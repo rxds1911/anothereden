@@ -34,7 +34,7 @@
       </div>
 
       <!-- Basic Info -->
-      <div class="detail-section">
+      <div class="detail-section" v-if="battle.hp || battle.strength || battle.intelligence">
         <div class="detail-section-header"><span class="icon">📋</span> 基本信息</div>
         <div class="stats-grid">
           <div class="stat-item"><div class="stat-label">HP</div><div class="stat-value">{{ battle.hp }}</div></div>
@@ -90,39 +90,20 @@
         </div>
       </div>
 
-      <!-- 攻略查找 -->
-      <div class="detail-section" v-if="guides.length">
-        <div class="detail-section-header"><span class="icon">🔍</span> 攻略查找</div>
-        <div class="guide-list">
-          <div v-for="g in guides" :key="g.title" class="guide-item">
-            <div class="guide-info">
-              <div class="guide-title">{{ g.title }}</div>
-            </div>
-            <div class="guide-team">
-              <span class="guide-team-label">前排</span>
-              <span v-for="name in g.team.front" :key="name" class="guide-avatar">
-                <span class="guide-avatar-icon">{{ name[0] }}</span>
-                <span class="guide-avatar-name">{{ name }}</span>
-              </span>
-              <span class="guide-team-label">后排</span>
-              <span v-for="name in g.team.back" :key="name" class="guide-avatar">
-                <span class="guide-avatar-icon">{{ name[0] }}</span>
-                <span class="guide-avatar-name">{{ name }}</span>
-              </span>
-              <span class="guide-team-label">搭档</span>
-              <span v-for="name in g.team.partner" :key="name" class="guide-avatar">
-                <span class="guide-avatar-icon">{{ name[0] }}</span>
-                <span class="guide-avatar-name">{{ name }}</span>
-              </span>
-            </div>
-            <a class="guide-watch" :href="g.url" target="_blank" rel="noopener">▶ 观看</a>
-          </div>
-        </div>
-      </div>
+      <!-- 攻略查找 + 投稿 -->
+      <guide-section
+        v-if="battle"
+        :item-id="String(battle.id)"
+        :item-name="battle.name"
+        :builtin-guide="battle.videoUrl ? battle : null"
+      ></guide-section>
+    </main>
+  </div>
 
 <script type="module">
     import { createApp } from "vue"
     import AppSidebar from "../../components/AppSidebar.vue"
+    import GuideSection from "../../components/GuideSection.vue"
     import { sampleBattles } from "../../data/samples/battle.js"
     import "../../assets/styles/variables.css"
     import "../../assets/styles/reset.css"
@@ -136,20 +117,10 @@
 
     const app = createApp({
       data() { return { battle, sidebarOpen: window.innerWidth > 768 } },
-      computed: {
-        guides() {
-          if (!this.battle || !this.battle.videoUrl) return []
-          const team = this.battle.team
-          return ['平民队', '低配', '速通'].map(label => ({
-            title: `「${this.battle.name}」${label}攻略`,
-            url: this.battle.videoUrl,
-            team
-          }))
-        }
-      },
       methods: { toggleSidebar() { this.sidebarOpen = !this.sidebarOpen } }
     })
     app.component("app-sidebar", AppSidebar)
+    app.component("guide-section", GuideSection)
     app.mount("#app")
   </script>
 </body>

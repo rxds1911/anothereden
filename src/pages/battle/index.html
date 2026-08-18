@@ -70,7 +70,7 @@
       },
       methods: {
         toggleSidebar() { this.sidebarOpen = !this.sidebarOpen },
-        goToDetail(row) { if (row.isHiddenBoss) { window.location.href = "../battle-detail/index.html?id=" + row.id } }
+        goToDetail(row) { window.location.href = "../battle-detail/index.html?id=" + row.id }
       }
     })
     app.component("app-sidebar", AppSidebar)
