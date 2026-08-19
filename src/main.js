@@ -7,7 +7,7 @@ import '/src/assets/styles/layout.css'
 import '/src/assets/styles/sidebar.css'
 import '/src/assets/styles/cards.css'
 
-const app = createApp({
+export const appOptions = {
   data() {
     return {
       navItems,
@@ -23,6 +23,10 @@ const app = createApp({
     toggleSidebar() { this.sidebarOpen = !this.sidebarOpen },
     getItemCount(name) { return this.itemCounts[name] || '' }
   }
-})
+}
+
+const app = createApp(appOptions)
 app.component('app-sidebar', AppSidebar)
-app.mount('#app')
+if (document.getElementById('app')) {
+  app.mount('#app')
+}

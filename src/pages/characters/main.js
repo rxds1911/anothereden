@@ -14,7 +14,7 @@
 
     const columns = [{ label: '', key: 'name', sortable: false, type: 'avatar' }, { label: '名称', key: 'name', sortable: true }, { label: '头衔', key: 'form', sortable: true }, { label: '武器', key: 'weapon', sortable: true }, { label: '属性', key: 'element', sortable: true, tag: true }, { label: '天冥', key: 'lightShadow', sortable: true }]
 
-    const app = createApp({
+    export const appOptions = {
       data() {
         return { searchQuery: "", filterWeapon: [], filterElement: [], filterForm: [], filterPersonality: [], filterLightShadow: [], showPersonality: false, sortKey: "", sortDir: "", columns, filterOptions: [], personalityOptions, weaponTypes, elementOptions, formOptions, lightShadowOptions, sidebarOpen: window.innerWidth > 768 }
       },
@@ -61,10 +61,12 @@
         },
         goToDetail(row) { window.location.href = "../character-detail/index.html?id=" + row.id }
       }
-    })
+    }
+    const app = createApp(appOptions)
     app.component("app-sidebar", AppSidebar)
     app.component("search-bar", SearchBar)
     app.component("data-table", DataTable)
     app.component("breadcrumb", Breadcrumb)
-    app.mount("#app")
-
+    if (document.getElementById("app")) {
+      app.mount("#app")
+    }

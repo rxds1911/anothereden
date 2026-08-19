@@ -26,6 +26,21 @@ describe('filterRows', () => {
     expect(result.map((r) => r.id).sort()).toEqual(['asami', 'kikyo'])
   })
 
+  it('excludes rows whose array field is missing or not an array under arrayMatch', () => {
+    const list = [
+      { id: 'a', tags: ['龙'] },
+      { id: 'b', tags: [] },
+      { id: 'c' }
+    ]
+    const result = filterRows(list, { filters: [{ field: 'tags', values: ['龙'], arrayMatch: true }] })
+    expect(result.map((r) => r.id)).toEqual(['a'])
+  })
+
+  it('drops every row when a filter group has values but no target field', () => {
+    expect(filterRows(items, { filters: [{ values: ['火'] }] })).toEqual([])
+    expect(filterRows(items, { filters: [{ values: ['火'], arrayMatch: true }] })).toEqual([])
+  })
+
   it('matches across multiple fields with OR semantics', () => {
     expect(filterRows(items, { filters: [{ fields: ['element', 'type'], values: ['刀'] }] }).map((r) => r.id)).toEqual(['alde'])
     expect(filterRows(items, { filters: [{ fields: ['element', 'type'], values: ['剑', '风'] }] }).map((r) => r.id).sort()).toEqual(['asami', 'kikyo'])
@@ -61,6 +76,22 @@ describe('filterRows', () => {
     expect(filterRows(items, { query: '龙', searchFields: ['name', 'type'] })).toEqual([])
   })
 
+  it('skips rows whose search field is missing or falsy', () => {
+    const list = [
+      { id: 'a', name: '阿尔德' },
+      { id: 'b', name: '', extra: '阿尔德' }
+    ]
+    expect(filterRows(list, { query: '阿尔德', searchFields: ['name'] }).map((r) => r.id)).toEqual(['a'])
+  })
+
+  it('skips falsy field values during default search', () => {
+    const list = [
+      { id: 'a', name: '阿尔德', extra: '' },
+      { id: 'b', name: '浅见', num: 0 }
+    ]
+    expect(filterRows(list, { query: '浅见' }).map((r) => r.id)).toEqual(['b'])
+  })
+
   it('treats blank or whitespace-only queries as inactive', () => {
     expect(filterRows(items, { query: '   ' })).toHaveLength(3)
   })
@@ -70,6 +101,7 @@ describe('hasActiveFilters', () => {
   it('is false when nothing is selected and query is blank', () => {
     expect(hasActiveFilters({})).toBe(false)
     expect(hasActiveFilters({ query: '   ', filters: [{ field: 'type', values: [] }] })).toBe(false)
+    expect(hasActiveFilters({ filters: [{ field: 'type' }] })).toBe(false)
   })
 
   it('is true when any filter group has values or query is non-blank', () => {

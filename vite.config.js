@@ -45,4 +45,13 @@ export default defineConfig({
       vue: "vue/dist/vue.esm-bundler.js",
     },
   },
+  test: {
+    environment: "happy-dom",
+    include: ["tests/**/*.test.js"],
+    coverage: {
+      provider: "v8",
+      reporter: ["text", "json", "html"],
+      include: ["src/**/*.{js,vue}"],
+    },
+  },
 });

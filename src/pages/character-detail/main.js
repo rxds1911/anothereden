@@ -12,7 +12,7 @@ const params = new URLSearchParams(window.location.search)
 const charId = params.get('id')
 const character = sampleCharacters.find(c => c.id === charId) || null
 
-const app = createApp({
+export const appOptions = {
   data() {
     return {
       character,
@@ -49,6 +49,9 @@ const app = createApp({
       return colors[type] || '#888'
     }
   }
-})
+}
+const app = createApp(appOptions)
 app.component('app-sidebar', AppSidebar)
-app.mount('#app')
+if (document.getElementById('app')) {
+  app.mount('#app')
+}
