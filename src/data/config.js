@@ -1,4 +1,4 @@
-﻿// 全局可配置项
+// 全局可配置项
 // 角色筛选
 export const elementOptions = ['火', '水', '风', '地', '无', '阴', '雷', '晶']
 export const formOptions = ['NS', 'AS', 'ES', 'AC']
@@ -24,7 +24,7 @@ export const storyEras = ['现代', '未来', '古代', '次元夹缝', '虚时�
 export const mapAreas = ['席尔贝利亚大陆', '米古尼娜大陆', '嘉路雷亚大陆', '幻象界', '冥峡界', '蚀时领域', '石华人世界', '猫人世界', '机人世界']
 
 // 地图页分类
-export const mapCategories = ['城镇·村庄', '野外·迷宫']
+export const mapCategories = ['城镇·村庄', '野外·迷宫', '异时层']
 
 // 书架页书籍分类
 export const bookTypes = ['主线剧情第1部', '主线剧情第1.5部', '主线剧情第2部', '主线剧情第3部', '外传/协奏', '外典', '群像', '伙伴', '豪杰']
