@@ -1,4 +1,4 @@
-﻿import { createApp } from "vue"
+import { createApp } from "vue"
     import AppSidebar from "../../components/AppSidebar.vue"
     import SearchBar from "../../components/SearchBar.vue"
     import DataTable from "../../components/DataTable.vue"
@@ -6,6 +6,7 @@
     import { sampleCharacters } from "../../data/samples/characters.js"
     import { weaponTypes, elementOptions, formOptions, lightShadowOptions, personalityOptions } from "../../data/config.js"
     import { filterCharacters, hasActiveCharacterFilters } from "../../utils/characters-filter.js"
+    import { resolveCharacterName, characterSearchText } from "../../utils/name-display.js"
     import "../../assets/styles/variables.css"
     import "../../assets/styles/reset.css"
     import "../../assets/styles/layout.css"
@@ -19,7 +20,11 @@
         return { searchQuery: "", filterWeapon: [], filterElement: [], filterForm: [], filterPersonality: [], filterLightShadow: [], showPersonality: false, sortKey: "", sortDir: "", columns, filterOptions: [], personalityOptions, weaponTypes, elementOptions, formOptions, lightShadowOptions, sidebarOpen: window.innerWidth > 768 }
       },
       computed: {
-        allData() { return sampleCharacters },
+        // 按全局名称显示模式（国际服译名 / 国服译名 / 日文名）从术语表取名
+        displayData() {
+          return sampleCharacters.map((c) => ({ ...c, name: resolveCharacterName(c), nameVariants: characterSearchText(c) }))
+        },
+        allData() { return this.displayData },
         hasActiveFilters() {
           return hasActiveCharacterFilters({
             weapon: this.filterWeapon,
@@ -31,7 +36,7 @@
           })
         },
         filteredData() {
-          return filterCharacters(this.allData, {
+          return filterCharacters(this.displayData, {
             weapon: this.filterWeapon,
             element: this.filterElement,
             form: this.filterForm,

@@ -11,6 +11,8 @@ import {
   storyEras,
   mapAreas,
   mapCategories,
+  nameDisplayModes,
+  defaultNameDisplayMode,
   bookTypes,
   dungeonTypes,
   eventTypes,
@@ -53,7 +55,13 @@ describe('config option lists', () => {
     expect(armorTypes).toEqual(['手环', '项链', '戒指'])
     expect(grastaTypes).toEqual(['攻击', '生命', '支援', '特殊'])
     expect(storyEras).toEqual(['现代', '未来', '古代', '次元夹缝', '虚时层'])
-    expect(mapCategories).toEqual(['城镇·村庄', '野外·迷宫'])
+    expect(mapCategories).toEqual(['城镇·村庄', '野外·迷宫', '异时层'])
+  })
+
+  it('offers the three glossary name display modes', () => {
+    expect(nameDisplayModes.map((m) => m.key)).toEqual(['internationalName', 'cnName', 'jpName'])
+    expect(nameDisplayModes.map((m) => m.label)).toEqual(['国际服译名', '国服译名', '日文名'])
+    expect(nameDisplayModes.some((m) => m.key === defaultNameDisplayMode)).toBe(true)
   })
 
   it('exposes every configured area for maps/diary data', () => {

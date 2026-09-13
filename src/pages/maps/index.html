@@ -51,6 +51,7 @@
     import { sampleMaps } from "../../data/samples/maps.js"
     import { storyEras, mapAreas, mapCategories } from "../../data/config.js"
     import { filterRows } from "../../utils/filter.js"
+    import { resolveMapName, mapSearchText } from "../../utils/name-display.js"
     import "../../assets/styles/variables.css"
     import "../../assets/styles/reset.css"
     import "../../assets/styles/layout.css"
@@ -69,14 +70,18 @@
         return { searchQuery: "", filterValue: "", filterCategory: "", filterEra: "", filterArea: "", columns, filterOptions: [], storyEras, mapAreas, mapCategories, sidebarOpen: window.innerWidth > 768 }
       },
       computed: {
+        // 按全局名称显示模式（国际服译名 / 国服译名 / 日文名）从地图术语表取名
+        displayData() {
+          return sampleMaps.map((m) => ({ ...m, name: resolveMapName(m), nameVariants: mapSearchText(m) }))
+        },
         filteredData() {
-          return filterRows(sampleMaps, {
+          return filterRows(this.displayData, {
             filters: [
               { field: 'category', values: this.filterCategory ? [this.filterCategory] : [] },
               { field: 'era', values: this.filterEra ? [this.filterEra] : [] },
               { field: 'area', values: this.filterArea ? [this.filterArea] : [] }
             ],
-            searchFields: ['name', 'category', 'era', 'area'],
+            searchFields: ['name', 'nameVariants', 'category', 'era', 'area'],
             query: this.searchQuery
           })
         }

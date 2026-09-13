@@ -37,3 +37,11 @@ export const eventTypes = ['主线', '外典', '外传', '断章', '协奏', '�
 
 // 专武页誓约
 export const vowOptions = ['4人以下队伍', '20回合以内', '15回合以内', '10回合以内', '水属性3人以上', '杖武器3人以上']
+
+// 名称显示模式（角色 / 地图等板块按术语表切换默认显示名）
+export const nameDisplayModes = [
+  { key: 'internationalName', label: '国际服译名' },
+  { key: 'cnName', label: '国服译名' },
+  { key: 'jpName', label: '日文名' }
+]
+export const defaultNameDisplayMode = 'internationalName'

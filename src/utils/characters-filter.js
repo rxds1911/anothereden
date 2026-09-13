@@ -12,7 +12,8 @@ export function filterCharacters(list, filters = {}) {
   } = filters
   return filterRows(list, {
     query,
-    searchFields: ['name', 'title', 'element', 'personality'],
+    // nameVariants 为术语表里的全部名称（日文名 / 国际服译名 / 国服译名 / 别称），任何译名都能搜到
+    searchFields: ['name', 'nameVariants', 'title', 'element', 'personality'],
     filters: [
       { field: 'weapon', values: weapon },
       { field: 'element', values: element },

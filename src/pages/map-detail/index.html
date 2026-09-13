@@ -16,7 +16,7 @@
       <a class="back-link" href="../maps/index.html">← 返回地图列表</a>
       <div class="char-page-header">
         <div>
-          <h1 class="char-page-title">{{ detail.name }}</h1>
+          <h1 class="char-page-title">{{ displayName }}</h1>
           <p class="char-page-count">{{ detail.category }} · {{ detail.era }} · {{ detail.area }}</p>
         </div>
       </div>
@@ -25,7 +25,7 @@
         <div class="map-view" :class="{ zoomed: mapZoomed }">
           <div class="map-view-header">
             <div>
-              <div class="map-view-title">{{ detail.name }}</div>
+              <div class="map-view-title">{{ displayName }}</div>
               <div class="map-view-sub">{{ detail.era }} · {{ detail.area }}</div>
             </div>
             <button class="map-view-zoom" @click="mapZoomed = !mapZoomed">🔍 {{ mapZoomed ? '缩小' : '放大' }}</button>
@@ -86,6 +86,7 @@
     import { createApp } from "vue"
     import AppSidebar from "../../components/AppSidebar.vue"
     import { mapDetails } from "../../data/samples/map-details.js"
+    import { resolveMapName } from "../../utils/name-display.js"
     import "../../assets/styles/variables.css"
     import "../../assets/styles/reset.css"
     import "../../assets/styles/layout.css"
@@ -99,6 +100,10 @@
 
     const app = createApp({
       data() { return { detail, mapZoomed: false, sidebarOpen: window.innerWidth > 768 } },
+      computed: {
+        // 名称按全局显示模式从地图术语表取名
+        displayName() { return resolveMapName(this.detail) }
+      },
       methods: { toggleSidebar() { this.sidebarOpen = !this.sidebarOpen } }
     })
     app.component("app-sidebar", AppSidebar)

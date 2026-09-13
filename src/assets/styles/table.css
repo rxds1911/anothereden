@@ -157,14 +157,14 @@
   font-weight: 600;
   color: #fff;
 }
-.tag-火, .tag-fire { background: #e74c3c; }
-.tag-水, .tag-water { background: #3498db; }
-.tag-风, .tag-wind { background: #27ae60; }
-.tag-地, .tag-earth { background: #8a7430; }
-.tag-雷, .tag-thunder { background: #f1c40f; }
-.tag-阴, .tag-shade { background: #9b8fd0; }
-.tag-晶, .tag-crystal { background: #7fd4e8; }
-.tag-无, .tag-none { background: #1a1a1a; }
+.tag-火, .tag-fire { background: var(--color-element-fire); }
+.tag-水, .tag-water { background: var(--color-element-water); }
+.tag-风, .tag-wind { background: var(--color-element-wind); }
+.tag-地, .tag-earth { background: var(--color-element-earth); }
+.tag-雷, .tag-thunder { background: var(--color-element-thunder); }
+.tag-阴, .tag-shade { background: var(--color-element-shade); }
+.tag-晶, .tag-crystal { background: var(--color-element-crystal); }
+.tag-无, .tag-none { background: var(--color-element-none); }
 .tag-打 { background: #8fa3b0; }
 .tag-突 { background: #8f9650; }
 .tag-斩 { background: #7a6a4f; }

@@ -1,4 +1,51 @@
 /* Sidebar-specific styles, mostly in layout.css */
+
+/* 全局名称显示开关（NameDisplaySwitch.vue） */
+.name-switch {
+  padding: 12px 16px;
+  border-top: 1px solid rgba(255,255,255,0.08);
+}
+.name-switch-title {
+  font-size: 0.75rem;
+  color: var(--color-text-sidebar);
+  opacity: 0.7;
+  margin-bottom: 8px;
+}
+.name-switch-options {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.name-switch-btn {
+  padding: 6px 10px;
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: var(--border-radius);
+  background: transparent;
+  color: var(--color-text-sidebar);
+  font-family: inherit;
+  font-size: 0.8rem;
+  text-align: left;
+  cursor: pointer;
+  transition: all var(--transition-speed);
+}
+.name-switch-btn:hover {
+  background: var(--color-bg-sidebar-hover);
+  color: #fff;
+}
+.name-switch-btn.active {
+  background: var(--color-bg-sidebar-active);
+  border-color: var(--color-accent);
+  color: var(--color-text-sidebar-active);
+  font-weight: 600;
+}
+.name-switch-hint {
+  margin-top: 8px;
+  font-size: 0.68rem;
+  line-height: 1.4;
+  color: var(--color-text-sidebar);
+  opacity: 0.5;
+}
+
 .sidebar-footer {
   padding: 12px 16px;
   border-top: 1px solid rgba(255,255,255,0.08);

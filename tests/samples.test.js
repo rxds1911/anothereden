@@ -93,12 +93,31 @@ describe('sample data lists', () => {
         expect(Array.isArray(c.starGuideAbilities.tenmei)).toBe(true)
         expect(c.starGuideAbilities.tenmei.length).toBeGreaterThan(0)
         expect(Array.isArray(c.starGuideAbilities.starSkills)).toBe(true)
-        expect(Array.isArray(c.starGuideAbilities.abilityGain)).toBe(true)
-        expect(Array.isArray(c.starGuideAbilities.burstEnhance)).toBe(true)
+        expect(Array.isArray(c.starGuideAbilities.awaken)).toBe(true)
+        // 觉醒能力固定三个分类，每个分类一条：条件 + 初期效果 + 强化效果
+        expect(c.starGuideAbilities.awaken.map((a) => a.category))
+          .toEqual(['天冥能力', '星导爆裂强化', '获得能力'])
+        for (const ability of c.starGuideAbilities.awaken) {
+          expect(typeof ability.condition).toBe('string')
+          expectRequiredStrings([ability], ['initialEffect', 'enhancedEffect'])
+        }
       } else if (c.starGuideAbilities) {
         // Not-yet-released characters may still carry tenmei rows
         expect(Array.isArray(c.starGuideAbilities.tenmei)).toBe(true)
         expect(c.starGuideAbilities.tenmei.length).toBeGreaterThan(0)
+      }
+    }
+  })
+
+  it('characters with artwork point at existing image files', () => {
+    const withArt = sampleCharacters.filter((c) => c.art)
+    expect(withArt.length).toBeGreaterThan(0)
+    for (const c of withArt) {
+      expect(Object.keys(c.art).length).toBeGreaterThan(0)
+      expect(Object.keys(c.art).length).toBeLessThanOrEqual(2)
+      for (const urlPath of Object.values(c.art)) {
+        expect(typeof urlPath).toBe('string')
+        expectFileExists(urlPath)
       }
     }
   })

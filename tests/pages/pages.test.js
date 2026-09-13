@@ -1,6 +1,8 @@
 import { afterAll, afterEach, beforeAll, describe, expect, it, vi } from 'vitest'
 import { mount } from '@vue/test-utils'
 import { sampleCharacters } from '../../src/data/samples/characters.js'
+import { defaultNameDisplayMode } from '../../src/data/config.js'
+import { setNameDisplayMode } from '../../src/utils/name-display.js'
 
 let homePage
 let charactersPage
@@ -25,6 +27,7 @@ beforeAll(async () => {
 
 afterEach(() => {
   vi.unstubAllGlobals()
+  setNameDisplayMode(defaultNameDisplayMode)
 })
 
 afterAll(() => {
@@ -116,6 +119,23 @@ describe('characters page (src/pages/characters/main.js)', () => {
     expect(window.location.href).toBe('../character-detail/index.html?id=alde')
   })
 
+  it('跟随全局名称显示模式切换列表里的角色名', () => {
+    const wrapper = mountOptions(charactersPage.appOptions)
+    const nameOf = (id) => wrapper.vm.filteredData.find((c) => c.id === id).name
+    const defaultName = nameOf('alde')
+    expect(defaultName).toBe('阿尔德')
+
+    setNameDisplayMode('jpName')
+    expect(nameOf('alde')).toBe('アルド')
+    wrapper.vm.searchQuery = 'アルド'
+    expect(wrapper.vm.filteredData.map((c) => c.id)).toEqual(['alde'])
+
+    setNameDisplayMode('cnName')
+    expect(nameOf('alde')).toBe('阿鲁多')
+    setNameDisplayMode('internationalName')
+    expect(nameOf('alde')).toBe('阿尔德')
+  })
+
   it('toggles the sidebar from the initial window size', () => {
     const wrapper = mountOptions(charactersPage.appOptions)
     expect(wrapper.vm.sidebarOpen).toBe(window.innerWidth > 768)
@@ -131,6 +151,35 @@ describe('character detail page (src/pages/character-detail/main.js)', () => {
     expect(wrapper.vm.character.name).toBe('阿尔德')
   })
 
+  it('可以在五星与四星立绘之间切换', () => {
+    const qian = sampleCharacters.find((c) => c.id === 'qian')
+    const wrapper = mount({
+      ...detailFound.appOptions,
+      template: '<div/>',
+      data() { return { ...detailFound.appOptions.data(), character: qian } }
+    })
+    expect(wrapper.vm.artOptions.map((o) => o.label)).toEqual(['五星立绘', '四星立绘'])
+    expect(wrapper.vm.activeArtKey).toBe('fiveStar')
+    expect(wrapper.vm.currentArt).toBe(qian.art.fiveStar)
+
+    wrapper.vm.artLevel = 'fourStar'
+    expect(wrapper.vm.activeArtKey).toBe('fourStar')
+    expect(wrapper.vm.currentArt).toBe(qian.art.fourStar)
+
+    wrapper.vm.artZoomed = true
+    expect(wrapper.vm.artZoomed).toBe(true)
+  })
+
+  it('没有立绘数据时不显示立绘', () => {
+    const withoutArt = mount({
+      ...detailFound.appOptions,
+      template: '<div/>',
+      data() { return { ...detailFound.appOptions.data(), character: { id: 'x', name: '无立绘' } } }
+    })
+    expect(withoutArt.vm.artOptions).toEqual([])
+    expect(withoutArt.vm.currentArt).toBe('')
+  })
+
   it('computes star guide flags and star skills', () => {
     const wrapper = mountOptions(detailFound.appOptions)
     expect(wrapper.vm.hasStarGuide).toBeTruthy()
@@ -138,15 +187,38 @@ describe('character detail page (src/pages/character-detail/main.js)', () => {
     expect(wrapper.vm.starSkills[0].name).toBe('星龙斩')
   })
 
-  it('merges star guide abilities into categorized rows', () => {
+  it('觉醒能力固定三个分类且与天冥值、等级无关', () => {
     const wrapper = mountOptions(detailFound.appOptions)
-    const merged = wrapper.vm.mergedStarAbilities
-    expect(merged).toHaveLength(15)
-    expect(merged.slice(0, 10).every((x) => x.category === '天冥能力')).toBe(true)
-    expect(merged[0].cond).toBe('天值 5')
-    expect(merged[10].category).toBe('星导爆裂强化')
-    expect(merged[11].category).toBe('获得能力')
-    expect(merged[11].cond).toBe('Lv.50')
+    const awaken = wrapper.vm.awakenAbilities
+    expect(awaken.map((a) => a.category)).toEqual(['天冥能力', '星导爆裂强化', '获得能力'])
+    expect(awaken.every((a) => a.initialEffect && a.enhancedEffect)).toBe(true)
+    expect(awaken.every((a) => !('unlock' in a))).toBe(true)
+
+    // 天冥奖励是天冥值解锁的独立数据，不再混进觉醒能力
+    expect(wrapper.vm.tenmeiRewards).toHaveLength(10)
+    expect(wrapper.vm.tenmeiRewards[0].condition).toBe('天值 5')
+  })
+
+  it('把觉醒能力整理成图片里的表格行', () => {
+    const wrapper = mountOptions(detailFound.appOptions)
+    const rows = wrapper.vm.awakenRows
+
+    // 三个分类各两行：初期效果一行、强化效果一行
+    expect(rows).toHaveLength(6)
+    expect(rows.filter((r) => r.categoryRowspan).map((r) => r.category))
+      .toEqual(['天冥能力', '星导爆裂强化', '获得能力'])
+    expect(rows.every((r) => r.categoryRowspan === 2 || r.categoryRowspan === null)).toBe(true)
+    expect(rows.map((r) => r.enhanced)).toEqual([false, true, false, true, false, true])
+
+    // 每个分类只有一条固定内容，不会再出现多行
+    expect(rows.every((r) => r.blocks.length === 1)).toBe(true)
+    expect(rows[0].blocks[0].cond).toBe('〈天〉的伙伴3人以上在前卫时发动')
+    expect(rows[0].blocks[0].segments).toEqual([
+      { text: '战斗中自身行动时，累积的天之力增加（小）', diff: false }
+    ])
+
+    // 强化效果里变化的数值标红（20% -> 40%）
+    expect(rows[3].blocks[0].segments).toContainEqual({ text: '40%', diff: true })
   })
 
   it('groups skills by skill type', () => {
@@ -156,11 +228,12 @@ describe('character detail page (src/pages/character-detail/main.js)', () => {
     expect(wrapper.vm.getSkillsByType('习得技能')).toEqual([])
   })
 
-  it('maps element types to colors with a fallback', () => {
+  it('技能属性统一使用 .tag-* 属性色类名', () => {
     const wrapper = mountOptions(detailFound.appOptions)
-    expect(wrapper.vm.getTypeColor('火')).toBe('#e74c3c')
-    expect(wrapper.vm.getTypeColor('水')).toBe('#3498db')
-    expect(wrapper.vm.getTypeColor('未知')).toBe('#888')
+    expect(wrapper.vm.getTypeClass('火')).toBe('tag-火')
+    expect(wrapper.vm.getTypeClass('地')).toBe('tag-地')
+    expect(wrapper.vm.getTypeClass('')).toBe('skill-card-icon--unknown')
+    expect(wrapper.vm.getTypeClass(undefined)).toBe('skill-card-icon--unknown')
   })
 
   it('handles an unknown character id gracefully', () => {
@@ -168,9 +241,9 @@ describe('character detail page (src/pages/character-detail/main.js)', () => {
     expect(wrapper.vm.character).toBeNull()
     expect(wrapper.vm.hasStarGuide).toBeFalsy()
     expect(wrapper.vm.starSkills).toEqual([])
-    expect(wrapper.vm.mergedStarAbilities).toEqual([])
+    expect(wrapper.vm.awakenRows).toEqual([])
     expect(wrapper.vm.getSkillsByType('战斗宣言')).toEqual([])
-    expect(wrapper.vm.getTypeColor('火')).toBe('#e74c3c')
+    expect(wrapper.vm.getTypeClass('火')).toBe('tag-火')
   })
 
   it('toggles the sidebar', () => {
@@ -192,9 +265,8 @@ describe('character detail page (src/pages/character-detail/main.js)', () => {
             id: 'custom',
             name: '自定义',
             starGuideAbilities: {
-              abilityGain: [
-                { name: '能力', unlock: 'Lv.50', initialEffect: 'a', enhancedEffect: 'b' },
-                { name: '无条件能力', initialEffect: 'c', enhancedEffect: 'd' }
+              awaken: [
+                { category: '天冥能力', condition: '条件', initialEffect: 'a', enhancedEffect: 'b' }
               ]
             }
           }
@@ -203,11 +275,10 @@ describe('character detail page (src/pages/character-detail/main.js)', () => {
     })
     expect(wrapper.vm.hasStarGuide).toBeTruthy()
     expect(wrapper.vm.starSkills).toEqual([])
-    const merged = wrapper.vm.mergedStarAbilities
-    expect(merged).toHaveLength(2)
-    expect(merged[0].category).toBe('获得能力')
-    expect(merged[0].cond).toBe('Lv.50')
-    expect(merged[1].cond).toBe('')
+    const rows = wrapper.vm.awakenRows
+    expect(rows).toHaveLength(2)
+    expect(rows[0].category).toBe('天冥能力')
+    expect(rows[0].blocks[0].cond).toBe('条件')
   })
 
   it('handles characters without any star guide data', () => {
@@ -223,10 +294,10 @@ describe('character detail page (src/pages/character-detail/main.js)', () => {
     const withoutAbilities = mountCustom({ id: 'c1', name: '无星导' })
     expect(withoutAbilities.vm.hasStarGuide).toBeFalsy()
     expect(withoutAbilities.vm.starSkills).toEqual([])
-    expect(withoutAbilities.vm.mergedStarAbilities).toEqual([])
+    expect(withoutAbilities.vm.awakenRows).toEqual([])
 
     const emptyAbilities = mountCustom({ id: 'c2', name: '空星导', starGuideAbilities: {} })
     expect(emptyAbilities.vm.hasStarGuide).toBeFalsy()
-    expect(emptyAbilities.vm.mergedStarAbilities).toEqual([])
+    expect(emptyAbilities.vm.awakenRows).toEqual([])
   })
 })

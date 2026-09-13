@@ -19,7 +19,7 @@
       <div class="char-hero">
         <div class="char-hero-avatar">⭐</div>
         <div class="char-hero-info">
-          <h1 class="char-hero-name">{{ character.name }}</h1>
+          <h1 class="char-hero-name">{{ displayName }}</h1>
           <div class="char-hero-tags">
             <span class="char-hero-tag">{{ character.job }}</span>
             <span class="char-hero-tag">{{ character.stars }}★</span>
@@ -30,6 +30,25 @@
             <span v-for="p in character.personality" :key="p">{{ p }}</span>
           </div>
         </div>
+      </div>
+
+      <!-- Artwork -->
+      <div class="detail-section">
+        <div class="detail-section-header"><span class="icon">🖼️</span> 立绘</div>
+        <div class="art-view" v-if="currentArt" :class="{ zoomed: artZoomed }">
+          <div class="art-toolbar">
+            <div class="art-switch">
+              <button v-for="opt in artOptions" :key="opt.key" type="button"
+                class="art-switch-btn" :class="{ active: activeArtKey === opt.key }"
+                @click="artLevel = opt.key">{{ opt.label }}</button>
+            </div>
+            <button class="art-zoom" type="button" @click="artZoomed = !artZoomed">🔍 {{ artZoomed ? '缩小' : '放大' }}</button>
+          </div>
+          <div class="art-frame">
+            <img class="art-image" :src="currentArt" :alt="displayName + ' 立绘'" />
+          </div>
+        </div>
+        <div class="art-empty" v-else>暂无立绘数据</div>
       </div>
 
       <!-- Basic Stats -->
@@ -53,7 +72,7 @@
       <div class="detail-section">
         <div class="detail-section-header"><span class="icon">🎁</span> 天冥奖励</div>
         <div class="tenmei-modern">
-          <div class="tenmei-card" v-for="item in character.starGuideAbilities.tenmei" :key="item.condition">
+          <div class="tenmei-card" v-for="item in tenmeiRewards" :key="item.condition">
             <div class="tenmei-level">{{ item.condition }}</div>
             <div class="tenmei-effect">{{ item.initialEffect }}</div>
           </div>
@@ -68,7 +87,7 @@
             <div class="skill-group-title">{{ st }}</div>
             <div class="skill-cards" v-if="getSkillsByType(st).length">
               <div class="skill-card" v-for="skill in getSkillsByType(st)" :key="skill.name">
-                <div class="skill-card-icon" :style="{ background: skill.type ? getTypeColor(skill.type) : '#888' }">
+                <div class="skill-card-icon" :class="getTypeClass(skill.type)">
                   {{ (skill.type || '?')[0] }}
                 </div>
                 <div class="skill-card-body">
@@ -104,25 +123,34 @@
               </div>
             </div>
           </div>
-          <div class="skill-group-title">觉醒能力</div>
-          <div class="ability-table-wrap" v-if="mergedStarAbilities.length">
-            <table class="ability-table">
+          <div class="awaken-table-wrap" v-if="awakenRows.length">
+            <table class="awaken-table">
               <thead>
                 <tr>
-                  <th>分类</th>
-                  <th>初期效果</th>
-                  <th>强化效果</th>
+                  <th class="awaken-corner" rowspan="2">觉醒能力</th>
+                  <th class="awaken-head">初期效果</th>
+                </tr>
+                <tr>
+                  <th class="awaken-head">强化效果</th>
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="item in mergedStarAbilities" :key="item.category + '-' + item.name">
-                  <td><span class="ability-category-tag">{{ item.category }}</span></td>
-                  <td>{{ item.initialEffect }}</td>
-                  <td>{{ item.enhancedEffect }}</td>
+                <tr v-for="row in awakenRows" :key="row.key" :class="{ 'awaken-row--enhanced': row.enhanced }">
+                  <th v-if="row.categoryRowspan" class="awaken-category" :rowspan="row.categoryRowspan">{{ row.category }}</th>
+                  <td class="awaken-cell">
+                    <div class="awaken-block" v-for="(block, bi) in row.blocks" :key="bi">
+                      <div class="awaken-cond" v-if="block.cond">{{ block.cond }}：</div>
+                      <div class="awaken-effect">
+                        <span class="awaken-bullet">•</span>
+                        <span v-for="(seg, si) in block.segments" :key="si" :class="{ 'awaken-diff': seg.diff }">{{ seg.text }}</span>
+                      </div>
+                    </div>
+                  </td>
                 </tr>
               </tbody>
             </table>
           </div>
+          <p v-else class="no-data">暂无觉醒能力数据</p>
         </div>
       </div>
     </main>

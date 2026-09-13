@@ -13,14 +13,17 @@
         <span>{{ item.name }}</span>
       </a>
     </nav>
+    <name-display-switch></name-display-switch>
     <div class="sidebar-footer">v1.0 — 数据持续更新中</div>
   </div>
 </template>
 
 <script>
 import { navItems } from '../data/nav.js'
+import NameDisplaySwitch from './NameDisplaySwitch.vue'
 export default {
   name: "AppSidebar",
+  components: { NameDisplaySwitch },
   props: { currentPage: { type: String, default: "index" } },
   data() { return { navItems } }
 }

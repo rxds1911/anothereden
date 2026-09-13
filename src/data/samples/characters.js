@@ -118,37 +118,24 @@ export const sampleCharacters = [
           "enhancedEffect": "物理暴击率提升15%"
         }
       ],
-      "abilityGain": [
+      "awaken": [
         {
-          "name": "星导觉醒",
-          "unlock": "Lv.50",
-          "initialEffect": "解锁星导系统",
-          "enhancedEffect": "星导槽增加1格"
+          "category": "天冥能力",
+          "condition": "〈天〉的伙伴3人以上在前卫时发动",
+          "initialEffect": "战斗中自身行动时，累积的天之力增加（小）",
+          "enhancedEffect": "战斗中自身行动时，累积的天之力增加（中）"
         },
         {
-          "name": "能力解放·攻",
-          "unlock": "Lv.60",
-          "initialEffect": "物理攻击+15",
-          "enhancedEffect": "物理攻击+30"
+          "category": "星导爆裂强化",
+          "condition": "星导爆裂发动时，天之力较多时发动",
+          "initialEffect": "全体敌人全属性耐性20%DOWN（效果至回合结束时）",
+          "enhancedEffect": "全体敌人全属性耐性40%DOWN（效果至回合结束时）"
         },
         {
-          "name": "能力解放·防",
-          "unlock": "Lv.70",
-          "initialEffect": "物理防御+15",
-          "enhancedEffect": "物理防御+30"
-        },
-        {
-          "name": "能力解放·极",
-          "unlock": "Lv.80",
-          "initialEffect": "物理攻击+30、速度+15",
-          "enhancedEffect": "物理攻击+50、速度+30"
-        }
-      ],
-      "burstEnhance": [
-        {
-          "name": "星导爆裂强化",
-          "initialEffect": "龙神斩变化为「龙神破天」：给予全体敌人火属性斩攻击（极大）+ 自身力量UP（3回合）",
-          "enhancedEffect": "龙神破天追加：暴击时伤害UP（3回合）"
+          "category": "获得能力",
+          "condition": "",
+          "initialEffect": "战斗开始时，包含自己在内的天的伙伴3人以上在前卫时，AF数值会达到50%",
+          "enhancedEffect": "战斗开始时，包含自己在内的天的伙伴3人以上在前卫时，AF数值会达到100%"
         }
       ],
       "starSkills": [
@@ -189,6 +176,10 @@ export const sampleCharacters = [
     "mDef": "152",
     "speed": "245",
     "description": "来自水之都市的女剑士，性格冷静沉着。",
+    "art": {
+      "fiveStar": "/screenshots/characters/qian-5star.png",
+      "fourStar": "/screenshots/characters/qian-4star.png"
+    },
     "skills": [
       {
         "name": "水流斩",
@@ -541,37 +532,24 @@ export const sampleCharacters = [
           "enhancedEffect": "魔法暴击率提升15%"
         }
       ],
-      "abilityGain": [
+      "awaken": [
         {
-          "name": "星导觉醒",
-          "unlock": "Lv.50",
-          "initialEffect": "解锁星导系统",
-          "enhancedEffect": "星导槽增加1格"
+          "category": "天冥能力",
+          "condition": "〈天〉的伙伴3人以上在前卫时发动",
+          "initialEffect": "战斗中自身行动时，累积的天之力增加（小）",
+          "enhancedEffect": "战斗中自身行动时，累积的天之力增加（中）"
         },
         {
-          "name": "能力解放·攻",
-          "unlock": "Lv.60",
-          "initialEffect": "魔法攻击+15",
-          "enhancedEffect": "魔法攻击+30"
+          "category": "星导爆裂强化",
+          "condition": "星导爆裂发动时，天之力较多时发动",
+          "initialEffect": "全体敌人全属性耐性20%DOWN（效果至回合结束时）",
+          "enhancedEffect": "全体敌人全属性耐性40%DOWN（效果至回合结束时）"
         },
         {
-          "name": "能力解放·防",
-          "unlock": "Lv.70",
-          "initialEffect": "魔法防御+15",
-          "enhancedEffect": "魔法防御+30"
-        },
-        {
-          "name": "能力解放·极",
-          "unlock": "Lv.80",
-          "initialEffect": "魔法攻击+30、MP+40",
-          "enhancedEffect": "魔法攻击+50、MP+80"
-        }
-      ],
-      "burstEnhance": [
-        {
-          "name": "星导爆裂强化",
-          "initialEffect": "陨石风暴变化为「星尘风暴」：给予全体敌人地属性魔法攻击（极大）+ 自身知性UP（3回合）",
-          "enhancedEffect": "星尘风暴追加：魔法暴击时伤害UP（3回合）"
+          "category": "获得能力",
+          "condition": "",
+          "initialEffect": "战斗开始时，包含自己在内的天的伙伴3人以上在前卫时，AF数值会达到50%",
+          "enhancedEffect": "战斗开始时，包含自己在内的天的伙伴3人以上在前卫时，AF数值会达到100%"
         }
       ],
       "starSkills": [
@@ -704,37 +682,24 @@ export const sampleCharacters = [
           "enhancedEffect": "物理暴击率提升15%"
         }
       ],
-      "abilityGain": [
+      "awaken": [
         {
-          "name": "星导觉醒",
-          "unlock": "Lv.50",
-          "initialEffect": "解锁星导系统",
-          "enhancedEffect": "星导槽增加1格"
+          "category": "天冥能力",
+          "condition": "〈天〉的伙伴3人以上在前卫时发动",
+          "initialEffect": "战斗中自身行动时，累积的天之力增加（小）",
+          "enhancedEffect": "战斗中自身行动时，累积的天之力增加（中）"
         },
         {
-          "name": "能力解放·攻",
-          "unlock": "Lv.60",
-          "initialEffect": "物理攻击+15",
-          "enhancedEffect": "物理攻击+30"
+          "category": "星导爆裂强化",
+          "condition": "星导爆裂发动时，天之力较多时发动",
+          "initialEffect": "全体敌人全属性耐性20%DOWN（效果至回合结束时）",
+          "enhancedEffect": "全体敌人全属性耐性40%DOWN（效果至回合结束时）"
         },
         {
-          "name": "能力解放·防",
-          "unlock": "Lv.70",
-          "initialEffect": "物理防御+15",
-          "enhancedEffect": "物理防御+30"
-        },
-        {
-          "name": "能力解放·极",
-          "unlock": "Lv.80",
-          "initialEffect": "物理攻击+30、速度+15",
-          "enhancedEffect": "物理攻击+50、速度+30"
-        }
-      ],
-      "burstEnhance": [
-        {
-          "name": "星导爆裂强化",
-          "initialEffect": "雷霆万钧变化为「万雷奔騰」：给予全体敌人雷属性突攻击（极大）+ 自身力量UP（3回合）",
-          "enhancedEffect": "万雷奔騰追加：暴击时伤害UP（3回合）"
+          "category": "获得能力",
+          "condition": "",
+          "initialEffect": "战斗开始时，包含自己在内的天的伙伴3人以上在前卫时，AF数值会达到50%",
+          "enhancedEffect": "战斗开始时，包含自己在内的天的伙伴3人以上在前卫时，AF数值会达到100%"
         }
       ],
       "starSkills": [

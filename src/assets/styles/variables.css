@@ -27,4 +27,13 @@
   --border-radius: 6px;
   --shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
   --shadow-md: 0 4px 12px rgba(0,0,0,0.1);
+  /* 属性颜色（与游戏内一致：火 / 水 / 风 / 地 / 雷 / 阴 / 晶 / 无） */
+  --color-element-fire: #e74c3c;
+  --color-element-water: #3498db;
+  --color-element-wind: #27ae60;
+  --color-element-earth: #8a7430;
+  --color-element-thunder: #f1c40f;
+  --color-element-shade: #9b8fd0;
+  --color-element-crystal: #7fd4e8;
+  --color-element-none: #1a1a1a;
 }

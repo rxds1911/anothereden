@@ -105,14 +105,6 @@
   background: rgba(255,255,255,0.18);
   transform: translateY(-1px);
 }
-.char-hero-tag.tag-fire { background: rgba(231,76,60,0.3); border-color: rgba(231,76,60,0.3); color: #fff; }
-.char-hero-tag.tag-water { background: rgba(52,152,219,0.3); border-color: rgba(52,152,219,0.3); color: #fff; }
-.char-hero-tag.tag-wind { background: rgba(46,204,113,0.3); border-color: rgba(46,204,113,0.3); color: #fff; }
-.char-hero-tag.tag-earth { background: rgba(142,68,173,0.3); border-color: rgba(142,68,173,0.3); color: #fff; }
-.char-hero-tag.tag-thunder { background: rgba(243,156,18,0.3); border-color: rgba(243,156,18,0.3); color: #fff; }
-.char-hero-tag.tag-shade { background: rgba(108,92,231,0.3); border-color: rgba(108,92,231,0.3); color: #fff; }
-.char-hero-tag.tag-crystal { background: rgba(0,206,201,0.3); border-color: rgba(0,206,201,0.3); color: #fff; }
-.char-hero-tag.tag-none { background: rgba(149,165,166,0.3); border-color: rgba(149,165,166,0.3); color: #fff; }
 .char-hero-personality {
   display: flex;
   flex-wrap: wrap;
@@ -281,6 +273,10 @@
   flex-shrink: 0;
   box-shadow: 0 3px 10px rgba(0,0,0,0.15);
 }
+/* 技能没有属性时用中性灰 */
+.skill-card-icon--unknown {
+  background: #888;
+}
 .skill-card-body {
   flex: 1;
   min-width: 0;
@@ -444,15 +440,63 @@
   .ability-table thead th, .ability-table tbody td { padding: 10px 12px; font-size: .75rem; }
 }
 
-/* Chinese element names in hero tags */
-.char-hero-tag.tag-火 { background: rgba(231,76,60,0.3); border-color: rgba(231,76,60,0.3); color: #fff; }
-.char-hero-tag.tag-水 { background: rgba(52,152,219,0.3); border-color: rgba(52,152,219,0.3); color: #fff; }
-.char-hero-tag.tag-风 { background: rgba(46,204,113,0.3); border-color: rgba(46,204,113,0.3); color: #fff; }
-.char-hero-tag.tag-地 { background: rgba(142,68,173,0.3); border-color: rgba(142,68,173,0.3); color: #fff; }
-.char-hero-tag.tag-雷 { background: rgba(243,156,18,0.3); border-color: rgba(243,156,18,0.3); color: #fff; }
-.char-hero-tag.tag-阴 { background: rgba(108,92,231,0.3); border-color: rgba(108,92,231,0.3); color: #fff; }
-.char-hero-tag.tag-晶 { background: rgba(0,206,201,0.3); border-color: rgba(0,206,201,0.3); color: #fff; }
-.char-hero-tag.tag-无 { background: rgba(149,165,166,0.3); border-color: rgba(149,165,166,0.3); color: #fff; }
+/* 英雄区属性标签：颜色统一取自 variables.css 的属性色变量 */
+.char-hero-tag.tag-火,
+.char-hero-tag.tag-fire {
+  background: var(--color-element-fire);
+  background: color-mix(in srgb, var(--color-element-fire) 30%, transparent);
+  border-color: color-mix(in srgb, var(--color-element-fire) 30%, transparent);
+  color: #fff;
+}
+.char-hero-tag.tag-水,
+.char-hero-tag.tag-water {
+  background: var(--color-element-water);
+  background: color-mix(in srgb, var(--color-element-water) 30%, transparent);
+  border-color: color-mix(in srgb, var(--color-element-water) 30%, transparent);
+  color: #fff;
+}
+.char-hero-tag.tag-风,
+.char-hero-tag.tag-wind {
+  background: var(--color-element-wind);
+  background: color-mix(in srgb, var(--color-element-wind) 30%, transparent);
+  border-color: color-mix(in srgb, var(--color-element-wind) 30%, transparent);
+  color: #fff;
+}
+.char-hero-tag.tag-地,
+.char-hero-tag.tag-earth {
+  background: var(--color-element-earth);
+  background: color-mix(in srgb, var(--color-element-earth) 30%, transparent);
+  border-color: color-mix(in srgb, var(--color-element-earth) 30%, transparent);
+  color: #fff;
+}
+.char-hero-tag.tag-雷,
+.char-hero-tag.tag-thunder {
+  background: var(--color-element-thunder);
+  background: color-mix(in srgb, var(--color-element-thunder) 30%, transparent);
+  border-color: color-mix(in srgb, var(--color-element-thunder) 30%, transparent);
+  color: #fff;
+}
+.char-hero-tag.tag-阴,
+.char-hero-tag.tag-shade {
+  background: var(--color-element-shade);
+  background: color-mix(in srgb, var(--color-element-shade) 30%, transparent);
+  border-color: color-mix(in srgb, var(--color-element-shade) 30%, transparent);
+  color: #fff;
+}
+.char-hero-tag.tag-晶,
+.char-hero-tag.tag-crystal {
+  background: var(--color-element-crystal);
+  background: color-mix(in srgb, var(--color-element-crystal) 30%, transparent);
+  border-color: color-mix(in srgb, var(--color-element-crystal) 30%, transparent);
+  color: #fff;
+}
+.char-hero-tag.tag-无,
+.char-hero-tag.tag-none {
+  background: var(--color-element-none);
+  background: color-mix(in srgb, var(--color-element-none) 30%, transparent);
+  border-color: color-mix(in srgb, var(--color-element-none) 30%, transparent);
+  color: #fff;
+}
 
 
 
@@ -1315,3 +1359,158 @@
 .video-team-container { display: flex; gap: 20px; align-items: stretch; }
 .video-team-container .detail-section:first-child { flex: 1.3; min-width: 0; } .video-team-container .detail-section:last-child { flex: 1; min-width: 0; } .video-team-container .detail-section .team-section { flex: 1; }
 @media (max-width: 768px) { .video-team-container { flex-direction: column; } }
+
+/* ---- Character Artwork (立绘) ---- */
+.art-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding: 16px 24px 0;
+}
+.art-switch {
+  display: inline-flex;
+  gap: 4px;
+  padding: 4px;
+  background: #f5f2ed;
+  border-radius: 22px;
+}
+.art-switch-btn {
+  border: none;
+  background: transparent;
+  color: #999;
+  font-family: inherit;
+  font-size: .8rem;
+  padding: 6px 18px;
+  border-radius: 18px;
+  cursor: pointer;
+  transition: all .2s;
+}
+.art-switch-btn:hover { color: #c8a84e; }
+.art-switch-btn.active {
+  background: linear-gradient(135deg, #c8a84e, #e8c96e);
+  color: #fff;
+  font-weight: 700;
+  box-shadow: 0 2px 8px rgba(200,168,78,0.3);
+}
+.art-zoom {
+  background: rgba(52, 152, 219, 0.92);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-size: .75rem;
+  font-family: inherit;
+  cursor: pointer;
+  transition: filter .2s;
+}
+.art-zoom:hover { filter: brightness(1.1); }
+.art-frame {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 12px 24px 20px;
+  padding: 12px;
+  border: 1px solid #e2dccb;
+  border-radius: 12px;
+  background: #fff;
+  overflow: hidden;
+}
+.art-image {
+  max-width: 100%;
+  max-height: 460px;
+  object-fit: contain;
+  transition: max-height .3s ease;
+}
+.art-view.zoomed .art-image { max-height: 900px; }
+.art-empty {
+  padding: 28px 24px;
+  text-align: center;
+  color: #bbb;
+  font-size: .85rem;
+}
+@media (max-width: 768px) {
+  .art-toolbar { padding: 12px 16px 0; }
+  .art-frame { margin: 10px 16px 16px; }
+  .art-image { max-height: 300px; }
+  .art-view.zoomed .art-image { max-height: 560px; }
+}
+/* ---- 星导觉醒：觉醒能力表格（左列分类 + 初期/强化效果） ---- */
+.awaken-table-wrap {
+  padding: 0 0 4px;
+  overflow-x: auto;
+}
+.awaken-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+  font-size: .82rem;
+}
+.awaken-table thead th {
+  background: #eef2f7;
+  color: #2c3e5a;
+  font-weight: 700;
+  text-align: center;
+  padding: 12px 16px;
+  border: 1px solid #dbe3ec;
+  letter-spacing: 0.3px;
+}
+.awaken-table .awaken-corner {
+  width: 132px;
+  font-size: .95rem;
+  font-weight: 800;
+}
+.awaken-table tbody th.awaken-category {
+  width: 132px;
+  background: #fff;
+  border: 1px solid #e5e9f0;
+  color: #2c3e5a;
+  font-weight: 800;
+  font-size: .9rem;
+  text-align: center;
+  vertical-align: middle;
+  padding: 12px 10px;
+  line-height: 1.5;
+}
+.awaken-table tbody td.awaken-cell {
+  border: 1px solid #e5e9f0;
+  padding: 10px 16px;
+  color: #333;
+  line-height: 1.7;
+  vertical-align: top;
+  text-align: left;
+}
+.awaken-row--enhanced td.awaken-cell {
+  background: #f4f6fa;
+}
+.awaken-block + .awaken-block {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px dashed #e5e9f0;
+}
+.awaken-cond {
+  color: #333;
+  margin-bottom: 4px;
+}
+.awaken-effect {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+}
+.awaken-bullet {
+  flex-shrink: 0;
+  color: #333;
+  line-height: 1.7;
+}
+.awaken-diff {
+  color: #d0021b;
+  font-weight: 700;
+}
+@media (max-width: 768px) {
+  .awaken-table { font-size: .75rem; }
+  .awaken-table thead th { padding: 8px 10px; }
+  .awaken-table tbody td.awaken-cell { padding: 8px 10px; }
+  .awaken-table .awaken-corner,
+  .awaken-table tbody th.awaken-category { width: 84px; font-size: .78rem; }
+}
