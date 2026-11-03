@@ -17,16 +17,16 @@ services:
       retries: 20
 
   directus:
-    image: directus/directus:latest
+    image: directus/directus:11.17.4
     restart: unless-stopped
     depends_on:
       database:
         condition: service_healthy
     ports:
-      - "${DIRECTUS_PORT:-8055}:8055"
+      - "127.0.0.1:${DIRECTUS_PORT:-8055}:8055"
     environment:
       SECRET: ${DIRECTUS_SECRET:-change-this-secret}
-      ADMIN_EMAIL: ${DIRECTUS_ADMIN_EMAIL:-admin@anothereden.local}
+      ADMIN_EMAIL: ${DIRECTUS_ADMIN_EMAIL:-admin@anothereden.dev}
       ADMIN_PASSWORD: ${DIRECTUS_ADMIN_PASSWORD:-change-me-now}
       DB_CLIENT: pg
       DB_HOST: database

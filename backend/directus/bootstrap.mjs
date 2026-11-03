@@ -21,7 +21,7 @@ function loadDotEnv(filePath) {
 loadDotEnv(join(currentDir, ".env"))
 
 const directusUrl = String(process.env.DIRECTUS_URL || `http://localhost:${process.env.DIRECTUS_PORT || 8055}`).replace(/\/+$/, "")
-const adminEmail = process.env.DIRECTUS_ADMIN_EMAIL || "admin@anothereden.local"
+const adminEmail = process.env.DIRECTUS_ADMIN_EMAIL || "admin@anothereden.dev"
 const adminPassword = process.env.DIRECTUS_ADMIN_PASSWORD || "change-me-now"
 
 async function request(path, options = {}) {
@@ -155,8 +155,24 @@ async function ensureFields(token) {
 }
 
 async function ensurePublicReadPermission(token) {
+  const policyQuery = new URLSearchParams({
+    "filter[name][_eq]": "$t:public_label",
+    limit: "1"
+  })
+  let publicPolicyId = null
+  try {
+    const policies = await request(`/policies?${policyQuery}`, { token })
+    publicPolicyId = policies && Array.isArray(policies.data) && policies.data[0]
+      ? policies.data[0].id
+      : null
+  } catch (error) {
+    if (![403, 404].includes(error.status)) throw error
+  }
+
   const query = new URLSearchParams({
-    "filter[role][_null]": "true",
+    ...(publicPolicyId
+      ? { "filter[policy][_eq]": publicPolicyId }
+      : { "filter[role][_null]": "true" }),
     "filter[collection][_eq]": COLLECTION,
     "filter[action][_eq]": "read",
     limit: "1"
@@ -168,7 +184,7 @@ async function ensurePublicReadPermission(token) {
     method: "POST",
     token,
     body: {
-      role: null,
+      ...(publicPolicyId ? { policy: publicPolicyId } : { role: null }),
       collection: COLLECTION,
       action: "read",
       permissions: {

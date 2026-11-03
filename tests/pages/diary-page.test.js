@@ -1,10 +1,14 @@
 import { readFileSync } from 'node:fs'
 import { resolve } from 'node:path'
-import { describe, expect, it } from 'vitest'
+import { afterEach, describe, expect, it, vi } from 'vitest'
 import { flushPromises, mount } from '@vue/test-utils'
 import { nextTick } from 'vue'
 import { sampleDiary } from '../../src/data/samples/diary.js'
 import { createDiaryAppOptions } from '../../src/pages/diary/main.js'
+
+afterEach(() => {
+  vi.unstubAllEnvs()
+})
 
 function mountDiaryPage(entries = sampleDiary) {
   const options = createDiaryAppOptions({
@@ -51,6 +55,7 @@ describe('diary page data loading', () => {
   })
 
   it('renders the full diary template with all cards and the location column', async () => {
+    vi.stubEnv('VITE_DIRECTUS_URL', '')
     const html = readFileSync(resolve(process.cwd(), 'src/pages/diary/index.html'), 'utf8')
     const appStart = html.indexOf('<div id="app">')
     const scriptStart = html.indexOf('<script type="module"', appStart)
