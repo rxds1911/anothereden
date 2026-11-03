@@ -45,3 +45,6 @@ export const nameDisplayModes = [
   { key: 'jpName', label: '日文名' }
 ]
 export const defaultNameDisplayMode = 'internationalName'
+
+// 通用列表分页数量
+export const listPageSize = 12

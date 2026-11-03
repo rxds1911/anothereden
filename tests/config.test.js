@@ -16,7 +16,8 @@ import {
   bookTypes,
   dungeonTypes,
   eventTypes,
-  vowOptions
+  vowOptions,
+  listPageSize
 } from '../src/data/config.js'
 
 const optionSets = {
@@ -78,5 +79,6 @@ describe('config option lists', () => {
     expect(vowOptions.length).toBeGreaterThanOrEqual(4)
     expect(bookTypes).toContain('主线剧情第1部')
     expect(taskCategories).toContain('主线第1部')
+    expect(listPageSize).toBe(12)
   })
 })

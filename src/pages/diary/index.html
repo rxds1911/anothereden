@@ -58,7 +58,13 @@
               @click="filterArea = filterArea === a ? '' : a">{{ a }}</span>
           </div>
         </div>
-        <data-table :columns="columns" :data="filteredData" empty-text="没有找到符合条件的日记" :show-id="false" :show-avatar="false"></data-table>
+        <data-table :columns="columns" :data="paginatedData" empty-text="没有找到符合条件的日记" :show-id="false" :show-avatar="false"></data-table>
+        <pagination-bar
+          v-model:current-page="currentPage"
+          :total-pages="totalPages"
+          :total-items="filteredData.length"
+          :page-size="pageSize"
+        ></pagination-bar>
       </template>
     </main>
   </div>

@@ -2,8 +2,9 @@ import { createApp } from "vue"
 import AppSidebar from "../../components/AppSidebar.vue"
 import SearchBar from "../../components/SearchBar.vue"
 import DataTable from "../../components/DataTable.vue"
+import Pagination from "../../components/Pagination.vue"
 import { loadDiaryEntries } from "../../services/diary-content.js"
-import { mapAreas, storyEras } from "../../data/config.js"
+import { listPageSize, mapAreas, storyEras } from "../../data/config.js"
 import { filterRows } from "../../utils/filter.js"
 import "../../assets/styles/variables.css"
 import "../../assets/styles/reset.css"
@@ -30,6 +31,8 @@ export function createDiaryAppOptions({ loader = loadDiaryEntries } = {}) {
         filterValue: "",
         filterEra: "",
         filterArea: "",
+        currentPage: 1,
+        pageSize: listPageSize,
         columns,
         filterOptions: [],
         mapAreas,
@@ -47,7 +50,21 @@ export function createDiaryAppOptions({ loader = loadDiaryEntries } = {}) {
           searchFields: ["name", "location", "area", "era"],
           query: this.searchQuery
         })
+      },
+      totalPages() {
+        return Math.max(1, Math.ceil(this.filteredData.length / this.pageSize))
+      },
+      paginatedData() {
+        const page = Math.min(Math.max(1, this.currentPage), this.totalPages)
+        const start = (page - 1) * this.pageSize
+        return this.filteredData.slice(start, start + this.pageSize)
       }
+    },
+    watch: {
+      searchQuery() { this.currentPage = 1 },
+      filterEra() { this.currentPage = 1 },
+      filterArea() { this.currentPage = 1 },
+      diaryEntries() { this.currentPage = 1 }
     },
     methods: {
       toggleSidebar() {
@@ -80,5 +97,6 @@ if (document.getElementById("app")) {
   app.component("app-sidebar", AppSidebar)
   app.component("search-bar", SearchBar)
   app.component("data-table", DataTable)
+  app.component("pagination-bar", Pagination)
   app.mount("#app")
 }

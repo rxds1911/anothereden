@@ -30,6 +30,8 @@ describe('diary page data loading', () => {
       location: '火之村 拉多路',
       era: '古代'
     })
+    expect(wrapper.vm.totalPages).toBe(7)
+    expect(wrapper.vm.paginatedData).toHaveLength(12)
   })
 
   it('filters by era and searches both narrative and location', async () => {
@@ -54,7 +56,21 @@ describe('diary page data loading', () => {
     expect(wrapper.vm.filteredData.every((entry) => entry.area === '冥峡界')).toBe(true)
   })
 
-  it('renders the full diary template with all cards and the location column', async () => {
+  it('paginates entries and resets to page one after filtering', async () => {
+    const wrapper = mountDiaryPage()
+    await flushPromises()
+
+    wrapper.vm.currentPage = 2
+    expect(wrapper.vm.paginatedData[0].slug).toBe('cat-diary-013')
+
+    wrapper.vm.filterArea = '冥峡界'
+    await nextTick()
+    expect(wrapper.vm.currentPage).toBe(1)
+    expect(wrapper.vm.totalPages).toBe(1)
+    expect(wrapper.vm.paginatedData).toHaveLength(3)
+  })
+
+  it('renders one page of cards with pagination controls', async () => {
     vi.stubEnv('VITE_DIRECTUS_URL', '')
     const html = readFileSync(resolve(process.cwd(), 'src/pages/diary/index.html'), 'utf8')
     const appStart = html.indexOf('<div id="app">')
@@ -65,10 +81,13 @@ describe('diary page data loading', () => {
     await flushPromises()
     await nextTick()
 
-    expect(document.querySelectorAll('.char-card')).toHaveLength(74)
+    expect(document.querySelectorAll('.char-card')).toHaveLength(12)
     expect(document.querySelector('.char-page-count').textContent.replace(/\s+/g, ' ').trim())
       .toBe('共 74 篇日记')
     expect([...document.querySelectorAll('.generic-card-label')].some((label) => label.textContent.trim() === '地点'))
       .toBe(true)
+    expect(document.querySelector('.pagination')).not.toBeNull()
+    expect(document.querySelectorAll('.pagination-page-btn')).toHaveLength(7)
+    expect(document.querySelector('[aria-current="page"]').textContent.trim()).toBe('1')
   })
 })
