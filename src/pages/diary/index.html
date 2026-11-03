@@ -4,6 +4,22 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>日记 - 另一个伊甸攻略站</title>
+  <style>
+    .diary-data-notice {
+      margin: -8px 0 18px;
+      padding: 10px 14px;
+      border: 1px solid var(--color-border);
+      border-radius: var(--border-radius);
+      background: var(--color-bg-card);
+      color: var(--color-text-light);
+      font-size: .82rem;
+      line-height: 1.6;
+    }
+    .diary-data-notice--warning {
+      border-color: var(--color-accent);
+      color: var(--color-primary-light);
+    }
+  </style>
 </head>
 <body>
   <div id="app">
@@ -16,71 +32,36 @@
       <div class="char-page-header">
         <div>
           <h1 class="char-page-title">日记</h1>
-          <p class="char-page-count">共 <strong>{{ filteredData.length }}</strong> 篇日记</p>
+          <p class="char-page-count">
+            <template v-if="loading">正在读取日记数据</template>
+            <template v-else>共 <strong>{{ filteredData.length }}</strong> 篇日记</template>
+          </p>
         </div>
       </div>
-      <search-bar v-model="searchQuery" placeholder="搜索日记..." :filters="filterOptions" v-model:filter-value="filterValue"></search-bar>
-      <div class="filter-bar">
-        <div class="filter-group">
-          <span class="filter-label">时代</span>
-          <span v-for="t in storyEras" :key="t"
-            class="filter-chip" :class="{ active: filterEra === t }"
-            @click="filterEra = filterEra === t ? '' : t">{{ t }}</span>
-        </div>
-        <div class="filter-group">
-          <span class="filter-label">区域</span>
-          <span v-for="a in mapAreas" :key="a"
-            class="filter-chip" :class="{ active: filterArea === a }"
-            @click="filterArea = filterArea === a ? '' : a">{{ a }}</span>
-        </div>
+      <div v-if="loading" class="diary-data-notice" role="status">正在从内容服务加载日记...</div>
+      <div v-else-if="loadState === 'fallback'" class="diary-data-notice diary-data-notice--warning" role="status">
+        内容服务暂时不可用，当前显示内置日记数据。管理员可以检查 Directus 服务和网络连接。
       </div>
-      <data-table :columns="columns" :data="filteredData" empty-text="没有找到符合条件的日记" :show-id="false" :show-avatar="false"></data-table>
+      <template v-if="!loading">
+        <search-bar v-model="searchQuery" placeholder="搜索猫咪叙述或地点..." :filters="filterOptions" v-model:filter-value="filterValue"></search-bar>
+        <div class="filter-bar">
+          <div class="filter-group">
+            <span class="filter-label">时代</span>
+            <span v-for="t in storyEras" :key="t"
+              class="filter-chip" :class="{ active: filterEra === t }"
+              @click="filterEra = filterEra === t ? '' : t">{{ t }}</span>
+          </div>
+          <div class="filter-group">
+            <span class="filter-label">区域</span>
+            <span v-for="a in mapAreas" :key="a"
+              class="filter-chip" :class="{ active: filterArea === a }"
+              @click="filterArea = filterArea === a ? '' : a">{{ a }}</span>
+          </div>
+        </div>
+        <data-table :columns="columns" :data="filteredData" empty-text="没有找到符合条件的日记" :show-id="false" :show-avatar="false"></data-table>
+      </template>
     </main>
   </div>
-  <script type="module">
-    import { createApp } from "vue"
-    import AppSidebar from "../../components/AppSidebar.vue"
-    import SearchBar from "../../components/SearchBar.vue"
-    import DataTable from "../../components/DataTable.vue"
-    import { sampleDiary } from "../../data/samples/diary.js"
-    import { storyEras, mapAreas } from "../../data/config.js"
-    import { filterRows } from "../../utils/filter.js"
-    import "../../assets/styles/variables.css"
-    import "../../assets/styles/reset.css"
-    import "../../assets/styles/layout.css"
-    import "../../assets/styles/sidebar.css"
-    import "../../assets/styles/table.css"
-
-    const columns = [
-      { label: '猫咪叙述', key: 'name', sortable: false },
-      { label: '时代', key: 'era', sortable: false },
-      { label: '区域', key: 'area', sortable: false }
-    ]
-
-    const app = createApp({
-      data() {
-        return { searchQuery: "", filterValue: "", filterEra: "", filterArea: "", columns, filterOptions: [], storyEras, mapAreas, sidebarOpen: window.innerWidth > 768 }
-      },
-      computed: {
-        filteredData() {
-          return filterRows(sampleDiary, {
-            filters: [
-              { field: 'era', values: this.filterEra ? [this.filterEra] : [] },
-              { field: 'area', values: this.filterArea ? [this.filterArea] : [] }
-            ],
-            searchFields: ['name', 'era', 'area'],
-            query: this.searchQuery
-          })
-        }
-      },
-      methods: {
-        toggleSidebar() { this.sidebarOpen = !this.sidebarOpen }
-      }
-    })
-    app.component("app-sidebar", AppSidebar)
-    app.component("search-bar", SearchBar)
-    app.component("data-table", DataTable)
-    app.mount("#app")
-  </script>
+  <script type="module" src="./main.js"></script>
 </body>
 </html>

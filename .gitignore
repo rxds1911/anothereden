@@ -8,6 +8,9 @@ server.out
 server2.log
 srv.log
 vite_*.log
+.env
+.env.local
+backend/directus/.env
 .DS_Store
 Thumbs.db
 

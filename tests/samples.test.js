@@ -190,13 +190,19 @@ describe('sample data lists', () => {
     for (const b of sampleBookshelf) expect(bookTypes).toContain(b.type)
   })
 
-  it('diary entries have unique ids and valid era/area values', () => {
+  it('diary entries have unique ids and valid era/location values', () => {
     expectUniqueIds(sampleDiary)
-    expectRequiredStrings(sampleDiary, ['name', 'era', 'area'])
+    expect(sampleDiary).toHaveLength(74)
+    expectRequiredStrings(sampleDiary, ['name', 'era', 'location', 'area'])
     for (const d of sampleDiary) {
       expect(storyEras).toContain(d.era)
       expect(mapAreas).toContain(d.area)
+      expect(typeof d.sort).toBe('number')
+      expect(d.sourceRow).toBeGreaterThanOrEqual(2)
     }
+    expect(sampleDiary.filter((d) => d.area === '米古尼娜大陆')).toHaveLength(40)
+    expect(sampleDiary.filter((d) => d.area === '冥峡界')).toHaveLength(3)
+    expect(sampleDiary.filter((d) => d.area === '嘉路雷亚大陆')).toHaveLength(31)
   })
 
   it('maps have unique ids and valid era/area/category values', () => {

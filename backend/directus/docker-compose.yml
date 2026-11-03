@@ -1,0 +1,48 @@
+name: anothereden-content
+
+services:
+  database:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-anothereden}
+      POSTGRES_USER: ${POSTGRES_USER:-directus}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-change-me}
+    volumes:
+      - directus_database:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  directus:
+    image: directus/directus:latest
+    restart: unless-stopped
+    depends_on:
+      database:
+        condition: service_healthy
+    ports:
+      - "${DIRECTUS_PORT:-8055}:8055"
+    environment:
+      SECRET: ${DIRECTUS_SECRET:-change-this-secret}
+      ADMIN_EMAIL: ${DIRECTUS_ADMIN_EMAIL:-admin@anothereden.local}
+      ADMIN_PASSWORD: ${DIRECTUS_ADMIN_PASSWORD:-change-me-now}
+      DB_CLIENT: pg
+      DB_HOST: database
+      DB_PORT: 5432
+      DB_DATABASE: ${POSTGRES_DB:-anothereden}
+      DB_USER: ${POSTGRES_USER:-directus}
+      DB_PASSWORD: ${POSTGRES_PASSWORD:-change-me}
+      PUBLIC_URL: ${DIRECTUS_PUBLIC_URL:-http://localhost:8055}
+      CORS_ENABLED: "true"
+      CORS_ORIGIN: ${CORS_ORIGIN:-http://localhost:5173}
+      WEBSOCKETS_ENABLED: "true"
+    volumes:
+      - directus_uploads:/directus/uploads
+      - directus_extensions:/directus/extensions
+
+volumes:
+  directus_database:
+  directus_uploads:
+  directus_extensions:
