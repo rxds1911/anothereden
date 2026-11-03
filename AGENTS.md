@@ -2,7 +2,7 @@
 
 ## 项目简介
 
-**anothereden**（另一个伊甸攻略站）是一个仿照 FGO 素材规划风格生成的《另一个伊甸》攻略查询网站。使用 **Vue 3 + Vite** 构建，纯静态页面，数据在前端以 JS 文件形式管理。
+**anothereden**（另一个伊甸攻略站）是一个仿照 FGO 素材规划风格生成的《另一个伊甸》攻略查询网站。前端使用 **Vue 3 + Vite** 构建，内容逐步迁移到 **Directus + PostgreSQL**，由 Directus 提供管理后台和只读 API。迁移期间保留前端内置数据快照，作为测试 fixtures 和接口异常时的回退。
 
 ---
 
@@ -42,6 +42,8 @@ anothereden/
 ├── package.json            ← 依赖管理
 ├── public/                 ← 静态资源（不会被打包处理）
 ├── dist/                   ← 构建产物
+├── backend/
+│   └── directus/           ← Directus、PostgreSQL、数据导入脚本
 ├── src/
 │   ├── main.js             ← 应用入口 JS
 │   ├── assets/
@@ -50,6 +52,7 @@ anothereden/
 │   ├── data/
 │   │   ├── nav.js          ← 导航配置
 │   │   └── samples/        ← 各板块示例数据
+│   ├── services/           ← Directus 数据读取与前端字段映射
 │   └── pages/              ← 各板块页面
 │       ├── character-detail/ ← 角色详情页
 │       └── characters/     ← 角色列表页
@@ -75,8 +78,10 @@ anothereden/
 - 底部面包屑导航
 
 ### 数据管理
-- 各板块的示例/真实数据放在 src/data/samples/ 下
-- 数据以 ES Module 方式导出 JS 对象数组
+- 尚未迁移到 Directus 的板块继续使用 src/data/samples/ 下的 ES Module 数据。
+- 已迁移板块通过 src/services/ 读取 Directus，不应在页面中直接请求 Directus。
+- 已迁移板块的 sample 数据仍需保留，用作自动测试和接口异常时的回退。
+- Directus/API 字段使用 snake_case，页面视图对象使用 camelCase，字段转换统一放在 service 层。
 - 每份数据通常包含 id、name、rarity 等字段，根据板块特性增减
 
 ### 配置管理
@@ -118,6 +123,103 @@ anothereden/
 - characters 数据量较大（约 23KB），编辑时注意不要破坏原有结构。
 - character-detail 是独立页面，有单独 main.js，与角色列表共用 src/data/samples/characters.js 数据。
 - 新增任意板块数据时，建议先在 src/data/samples/ 下创建对应 板块名.js，然后在页面中导入使用。
+
+---
+
+## 数据迁移计划
+
+### 目标架构
+
+```text
+Vue 页面 -> src/services -> Directus REST API -> PostgreSQL
+                              ↑
+                         Directus 管理后台
+```
+
+- Directus 是内容源，PostgreSQL 保存结构化数据。
+- 页面只依赖 src/services/，不得直接写 `fetch()` 或引入 Directus SDK。
+- Directus 公开读取权限只允许 `status = published` 的记录。
+- 草稿、归档和所有写操作必须经过登录后的 Directus 后台。
+- 数据服务失败时自动使用内置数据快照，并在页面上给出明确提示。
+- 筛选选项仍集中维护在 src/data/config.js，不因迁移写入页面。
+- 已有页面 URL 和稳定标识尽量保持不变；新增主键时使用独立 `slug` 或 UUID，并保留旧 ID 映射。
+
+### 本地运行方式
+
+- 后台配置位于 backend/directus/。
+- 本地使用 Docker Desktop、Directus 11.17.4 和 PostgreSQL 16。
+- Directus 固定为 11.17.4：当前迁移方案依赖免费版自定义权限规则，不允许无评估升级到 Directus 12。
+- 本地容器只监听 `127.0.0.1:8055`，PostgreSQL 仅暴露在 Docker 内部网络。
+- 前端通过根目录 `.env` 的 `VITE_DIRECTUS_URL` 连接 Directus。
+- `.env`、`backend/directus/.env` 和数据库卷不得提交到 Git。
+
+常用命令：
+
+```powershell
+docker compose -f backend/directus/docker-compose.yml up -d
+node backend/directus/bootstrap.mjs
+npm run dev
+```
+
+初始化脚本必须可重复执行：新增缺失记录、更新内容变化、不重复创建，也不自动删除源文件中已经移除的记录。
+
+### 当前迁移状态
+
+| 模块 | 状态 | 说明 |
+|---|---|---|
+| diary | 已完成 | 74 条数据，Directus 集合 `diary_entries`，保留时代和区域筛选 |
+| characters | 待迁移 | 优先迁移角色列表和角色详情 |
+| weapons / armor / badges / grasta | 待迁移 | 数据结构相近，可统一样式和 service 模式 |
+| personal-weapons / partner | 待迁移 | 包含列表、详情和关联角色 |
+| maps / dungeons / battle | 待迁移 | 包含详情、嵌套技能/怪物/队伍数据 |
+| bookshelf / reincarnation / events / cats | 待迁移 | 按详情复杂度和运营更新频率安排 |
+| index | 最后处理 | 首页统计应改为读取各集合汇总，不继续导入全部 sample 数据 |
+
+### 后续迁移顺序
+
+1. **characters**：先迁移角色主表，再拆分技能、天冥奖励和星导觉醒数据，同时保持角色列表/详情 ID 兼容。
+2. **equipment**：迁移 weapons、armor、badges、grasta 和 personal-weapons，优先复用列表筛选和详情组件。
+3. **partner / maps**：迁移搭档和地图，保留名称显示模式及术语表关系。
+4. **bookshelf / reincarnation**：迁移带详情数据的收集和挑战内容。
+5. **battle / dungeons / events**：迁移嵌套内容较多的攻略模块，并处理用户攻略投稿和审核。
+6. **cats / index**：完成剩余数据和首页动态统计。
+
+每个阶段必须先完成一个可上线的完整模块，再开始下一阶段，不建议同时改造多个页面。
+
+### 单个模块迁移步骤
+
+1. **盘点数据**：统计来源文件行数、字段、空值、重复 ID、枚举值和关联字段。
+2. **设计集合**：稳定字段使用普通数据库列，不稳定的嵌套内容第一阶段可使用 JSONB；可筛选、排序和关联的字段不得藏在 JSONB 中。
+3. **定义公共字段**：至少包含 `status`、`slug` 或稳定 ID、`sort` 和来源追溯字段；如需时间线可增加 `published_at`。
+4. **生成快照**：把来源数据同步到 src/data/samples/，保留为测试 fixture 和故障回退。
+5. **实现 service**：在 src/services/ 中提供列表、详情和字段映射函数，处理超时、取消请求、状态码和数据格式错误。
+6. **拆分页面逻辑**：页面主逻辑放到独立 main.js，导出可注入 loader 的 `create*AppOptions()`，便于离线测试。
+7. **实现页面状态**：必须包含 loading、empty、error/fallback 状态；接口失败时不能让页面直接空白。
+8. **配置 Directus**：更新 backend/directus/bootstrap.mjs，创建集合、字段、公开读取权限并导入数据。
+9. **补充测试**：覆盖字段映射、来源行对照、筛选、搜索、加载失败回退和完整模板渲染。
+10. **完整验证**：运行 `npm test` 和 `npm run build`，刷新页面确认无控制台错误，并重新打开对应页面。
+
+### 数据与关联规则
+
+- 源文件中的顺序和行号必须保存，便于追溯；不得因导入顺序改变页面默认排序。
+- 来源中缺失的字段保持 null/空值，不推测填充；需要运营补录的字段应在 Directus 中标明。
+- 多值字段使用独立子表或结构清晰的 JSONB；不得使用逗号拼接字符串保存关联关系。
+- 名称、时代、区域、类型等筛选值必须来自 src/data/config.js 或 Directus 中的受控选项。
+- 删除源记录时只标记 archived；是否删除必须由人工确认。
+- 公开 API 必须通过 Directus Policy 限制为已发布数据，并在迁移测试中验证草稿不可见。
+- 用户投稿、战斗视频和图片等可写数据不得继续只存 localStorage；迁移时应进入带审核状态的数据库集合。
+
+### 完成标准
+
+一个板块只有同时满足以下条件才算迁移完成：
+
+- 来源记录数量和非空字段与源数据逐条一致。
+- Directus 后台可新增、编辑、排序、发布和归档。
+- 前端优先读取 Directus，接口失败时可回退到内置快照并显示提示。
+- 原有筛选、搜索、名称显示、详情跳转和 URL 参数保持可用。
+- 公开 API 不包含草稿或归档记录。
+- 单元测试、页面测试和生产构建全部通过。
+- Vite 页面已在浏览器中实际打开，并确认没有控制台错误。
 
 ---
 
