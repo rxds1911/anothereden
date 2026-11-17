@@ -1,6 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { flushPromises, mount } from '@vue/test-utils'
 import GuideSection from '../../src/components/GuideSection.vue'
+import SearchableSelect from '../../src/components/SearchableSelect.vue'
 
 const builtinGuides = [
   {
@@ -57,6 +58,13 @@ async function mountGuide(props = defaultProps) {
 }
 
 describe('GuideSection', () => {
+  it('uses empty defaults for optional guide collections', async () => {
+    const wrapper = mount(GuideSection, { props: { itemId: 'empty' } })
+    await flushPromises()
+    expect(wrapper.text()).toContain('共 0 篇')
+    expect(wrapper.find('.guide-empty').exists()).toBe(true)
+  })
+
   it('renders builtin guides with badges, team and vows', async () => {
     const wrapper = await mountGuide()
     expect(wrapper.text()).toContain('共 1 篇')
@@ -137,6 +145,43 @@ describe('GuideSection', () => {
 
     await search.setValue('')
     expect(wrapper.findAll('.guide-item')).toHaveLength(1)
+  })
+
+  it('searches safely when teams, vows and titles are empty', async () => {
+    const wrapper = await mountGuide()
+    wrapper.vm.guides = [
+      {
+        id: 'incomplete',
+        title: '',
+        url: 'https://b23.tv/abc',
+        team: {},
+        vows: null,
+        source: 'builtin'
+      }
+    ]
+    await wrapper.find('.guide-search-input').setValue('anything')
+    expect(wrapper.findAll('.guide-item')).toHaveLength(0)
+  })
+
+  it('clears the search and updates every team selector and vow checkbox', async () => {
+    const wrapper = await mountGuide()
+    await wrapper.find('.guide-search-input').setValue('阿尔德')
+    await wrapper.find('.search-clear').trigger('click')
+    expect(wrapper.vm.guideQuery).toBe('')
+    expect(wrapper.findAll('.guide-item')).toHaveLength(1)
+
+    await openForm(wrapper)
+    const selects = wrapper.findAllComponents(SearchableSelect)
+    expect(selects).toHaveLength(8)
+    for (let index = 0; index < selects.length; index += 1) {
+      await selects[index].vm.$emit('update:modelValue', `角色${index + 1}`)
+    }
+    expect(wrapper.vm.form.front).toEqual(['角色1', '角色2', '角色3', '角色4'])
+    expect(wrapper.vm.form.back).toEqual(['角色5', '角色6'])
+    expect(wrapper.vm.form.partner).toEqual(['角色7', '角色8'])
+
+    await wrapper.findAll('.guide-vow-checkbox')[0].setValue(true)
+    expect(wrapper.vm.form.vows).toEqual(['10回合以内'])
   })
 
   it('filters guides by vow chips with AND semantics', async () => {

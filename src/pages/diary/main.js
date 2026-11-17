@@ -92,11 +92,19 @@ export function createDiaryAppOptions({ loader = loadDiaryEntries } = {}) {
   }
 }
 
-if (document.getElementById("app")) {
-  const app = createApp(createDiaryAppOptions())
+export function mountDiaryApp(options = createDiaryAppOptions()) {
+  const app = createApp(options)
   app.component("app-sidebar", AppSidebar)
   app.component("search-bar", SearchBar)
   app.component("data-table", DataTable)
   app.component("pagination-bar", Pagination)
   app.mount("#app")
+  return app
 }
+
+export function bootstrapDiaryPage() {
+  if (!document.getElementById("app")) return null
+  return mountDiaryApp()
+}
+
+bootstrapDiaryPage()

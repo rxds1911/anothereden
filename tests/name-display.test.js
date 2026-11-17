@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { defaultNameDisplayMode, nameDisplayModes } from '../src/data/config.js'
 import { sampleCharacterGlossary } from '../src/data/samples/glossary.js'
 import { sampleMapGlossary } from '../src/data/samples/map-glossary.js'
@@ -21,6 +21,11 @@ beforeEach(() => {
   setNameDisplayMode(defaultNameDisplayMode)
 })
 
+afterEach(() => {
+  vi.unstubAllGlobals()
+  vi.restoreAllMocks()
+})
+
 describe('name display modes', () => {
   it('配置里提供日文名 / 国际服译名 / 国服译名三种模式', () => {
     expect(nameDisplayModes.map((m) => m.key)).toEqual(['internationalName', 'cnName', 'jpName'])
@@ -37,6 +42,34 @@ describe('name display modes', () => {
   it('把用户选择写入 localStorage，并在下次启动时恢复', () => {
     setNameDisplayMode('jpName')
     expect(localStorage.getItem(NAME_DISPLAY_STORAGE_KEY)).toBe('jpName')
+    expect(nameDisplayState.mode).toBe('jpName')
+  })
+
+  it('restores a valid stored mode and survives storage read failures', async () => {
+    vi.resetModules()
+    vi.stubGlobal('localStorage', {
+      getItem: () => 'cnName',
+      setItem: () => {}
+    })
+    const restored = await import('../src/utils/name-display.js?stored-valid')
+    expect(restored.nameDisplayState.mode).toBe('cnName')
+
+    vi.resetModules()
+    vi.stubGlobal('localStorage', {
+      getItem: () => {
+        throw new Error('storage unavailable')
+      },
+      setItem: () => {}
+    })
+    const unavailable = await import('../src/utils/name-display.js?stored-error')
+    expect(unavailable.nameDisplayState.mode).toBe(defaultNameDisplayMode)
+  })
+
+  it('keeps the session mode when storage writes fail', () => {
+    vi.spyOn(localStorage, 'setItem').mockImplementation(() => {
+      throw new Error('quota exceeded')
+    })
+    expect(setNameDisplayMode('jpName')).toBe('jpName')
     expect(nameDisplayState.mode).toBe('jpName')
   })
 })
@@ -61,6 +94,22 @@ describe('character glossary names', () => {
     const character = { id: 'x', name: entry.internationalName }
     expect(resolveCharacterName(character, 'cnName')).toBe(entry.internationalName)
     expect(glossaryDisplayName(entry, 'jpName')).toBe(entry.jpName)
+  })
+
+  it('falls through to later names when intermediate translations are empty', () => {
+    expect(glossaryDisplayName({
+      internationalName: '',
+      cnName: '国服译名',
+      jpName: '日文名'
+    }, 'internationalName')).toBe('国服译名')
+    expect(glossaryDisplayName({
+      internationalName: '',
+      cnName: '',
+      jpName: '日文名'
+    }, 'internationalName')).toBe('日文名')
+    expect(glossaryDisplayName({}, 'cnName')).toBe('')
+    expect(glossaryDisplayName(null, 'cnName')).toBe('')
+    expect(resolveCharacterName(null)).toBe('')
   })
 
   it('术语表里查不到时沿用数据里的原始名称', () => {
@@ -105,5 +154,6 @@ describe('map glossary names', () => {
     const text = mapSearchText({ id: 20, name: entry.internationalName })
     expect(text).toContain(entry.jpName)
     expect(mapSearchText(null)).toBe('')
+    expect(mapSearchText({ jpName: entry.jpName })).toContain(entry.internationalName)
   })
 })

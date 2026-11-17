@@ -12,6 +12,13 @@ function mountSelect(props = {}) {
 }
 
 describe('SearchableSelect', () => {
+  it('uses default props and shows the default placeholder', async () => {
+    const wrapper = mount(SearchableSelect, { attachTo: document.body })
+    expect(wrapper.find('.ss-value').text()).toBe('请选择')
+    await wrapper.find('.ss-control').trigger('click')
+    expect(wrapper.find('.ss-empty').text()).toBe('无匹配选项')
+  })
+
   it('shows the selected value or falls back to the placeholder', () => {
     const withValue = mountSelect({ modelValue: '阿尔德' })
     expect(withValue.find('.ss-value').text()).toBe('阿尔德')

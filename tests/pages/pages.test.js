@@ -145,10 +145,17 @@ describe('characters page (src/pages/characters/main.js)', () => {
 })
 
 describe('character detail page (src/pages/character-detail/main.js)', () => {
+  it('resolves known and unknown character ids through the shared helper', () => {
+    expect(detailFound.findCharacterById('alde').name).toBe('阿尔德')
+    expect(detailFound.findCharacterById('missing')).toBeNull()
+    expect(detailFound.findCharacterById(null)).toBeNull()
+  })
+
   it('resolves the character from the id query parameter', () => {
     const wrapper = mountOptions(detailFound.appOptions)
     expect(wrapper.vm.character.id).toBe('alde')
     expect(wrapper.vm.character.name).toBe('阿尔德')
+    expect(wrapper.vm.displayName).toBe('阿尔德')
   })
 
   it('可以在五星与四星立绘之间切换', () => {
@@ -177,6 +184,7 @@ describe('character detail page (src/pages/character-detail/main.js)', () => {
       data() { return { ...detailFound.appOptions.data(), character: { id: 'x', name: '无立绘' } } }
     })
     expect(withoutArt.vm.artOptions).toEqual([])
+    expect(withoutArt.vm.activeArtKey).toBe('')
     expect(withoutArt.vm.currentArt).toBe('')
   })
 
@@ -240,6 +248,7 @@ describe('character detail page (src/pages/character-detail/main.js)', () => {
     const wrapper = mountOptions(detailMissing.appOptions)
     expect(wrapper.vm.character).toBeNull()
     expect(wrapper.vm.hasStarGuide).toBeFalsy()
+    expect(wrapper.vm.tenmeiRewards).toEqual([])
     expect(wrapper.vm.starSkills).toEqual([])
     expect(wrapper.vm.awakenRows).toEqual([])
     expect(wrapper.vm.getSkillsByType('战斗宣言')).toEqual([])

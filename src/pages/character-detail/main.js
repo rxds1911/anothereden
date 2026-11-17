@@ -12,7 +12,12 @@ import '../../assets/styles/detail.css'
 
 const params = new URLSearchParams(window.location.search)
 const charId = params.get('id')
-const character = sampleCharacters.find(c => c.id === charId) || null
+
+export function findCharacterById(id) {
+  return sampleCharacters.find(c => c.id === id) || null
+}
+
+const character = findCharacterById(charId)
 
 export const appOptions = {
   data() {

@@ -24,11 +24,12 @@ import { sampleBadges } from '../src/data/samples/badges.js'
 import { sampleCats } from '../src/data/samples/cats.js'
 import { sampleEvents } from '../src/data/samples/events.js'
 import { sampleBookshelf } from '../src/data/samples/bookshelf.js'
-import { sampleDiary } from '../src/data/samples/diary.js'
+import { getDiaryArea, sampleDiary } from '../src/data/samples/diary.js'
 import { sampleMaps } from '../src/data/samples/maps.js'
 import { sampleDungeons } from '../src/data/samples/dungeons.js'
 import { sampleGrasta } from '../src/data/samples/grasta.js'
 import { samplePartners } from '../src/data/samples/partner.js'
+import { samplePartnerGlossary } from '../src/data/samples/partner-glossary.js'
 import { samplePersonalWeapons } from '../src/data/samples/personal-weapons.js'
 import { sampleReincarnation } from '../src/data/samples/reincarnation.js'
 
@@ -203,6 +204,10 @@ describe('sample data lists', () => {
     expect(sampleDiary.filter((d) => d.area === '米古尼娜大陆')).toHaveLength(40)
     expect(sampleDiary.filter((d) => d.area === '冥峡界')).toHaveLength(3)
     expect(sampleDiary.filter((d) => d.area === '嘉路雷亚大陆')).toHaveLength(31)
+    expect(getDiaryArea(2)).toBe('米古尼娜大陆')
+    expect(getDiaryArea(42)).toBe('冥峡界')
+    expect(getDiaryArea(1)).toBe('')
+    expect(getDiaryArea(76)).toBe('')
   })
 
   it('maps have unique ids and valid era/area/category values', () => {
@@ -237,6 +242,19 @@ describe('sample data lists', () => {
     expectUniqueIds(samplePartners)
     expectRequiredStrings(samplePartners, ['name', 'rarity', 'source'])
     for (const p of samplePartners) expect(p.rarity).toMatch(/^[3-5]星$/)
+  })
+
+  it('partner glossary entries are complete and keep alternate forms as separate rows', () => {
+    expectUniqueIds(samplePartnerGlossary)
+    expect(samplePartnerGlossary).toHaveLength(26)
+    expectRequiredStrings(samplePartnerGlossary, ['jpName', 'cnName'])
+
+    const lilisForms = samplePartnerGlossary.filter((entry) => entry.jpName === 'ライリス')
+    expect(lilisForms.map((entry) => entry.cnName)).toEqual([
+      '莱利斯(攻击型)',
+      '莱利斯(防御型)',
+      '莱利斯(回复型)'
+    ])
   })
 
   it('personal weapons reference known characters and valid tabs', () => {

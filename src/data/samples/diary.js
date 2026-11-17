@@ -84,12 +84,12 @@ const areaRanges = [
   { from: 45, to: 75, area: "嘉路雷亚大陆" }
 ]
 
-function getArea(sourceRow) {
+export function getDiaryArea(sourceRow) {
   const match = areaRanges.find(({ from, to }) => sourceRow >= from && sourceRow <= to)
   return match ? match.area : ""
 }
 
 export const sampleDiary = diarySnapshot.map((entry) => ({
   ...entry,
-  area: getArea(entry.sourceRow)
+  area: getDiaryArea(entry.sourceRow)
 }))

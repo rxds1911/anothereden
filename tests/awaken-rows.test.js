@@ -71,4 +71,22 @@ describe('buildAwakenRows', () => {
     expect(rows[0].blocks).toEqual([{ cond: '', segments: [{ text: '', diff: false }] }])
     expect(rows[1].blocks).toEqual([{ cond: '', segments: [{ text: '', diff: false }] }])
   })
+
+  it('puts unknown or missing categories at the end under 其他', () => {
+    const rows = buildAwakenRows([
+      { category: '未知分类', initialEffect: 'A', enhancedEffect: 'B' },
+      { initialEffect: 'C', enhancedEffect: 'D' },
+      { category: '天冥能力', initialEffect: 'E', enhancedEffect: 'F' }
+    ])
+    expect(rows.map((row) => row.category)).toEqual([
+      '天冥能力',
+      '天冥能力',
+      '未知分类',
+      '未知分类',
+      '其他',
+      '其他'
+    ])
+    expect(rows[2].blocks).toHaveLength(1)
+    expect(rows[4].blocks).toHaveLength(1)
+  })
 })

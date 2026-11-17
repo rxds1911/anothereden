@@ -9,6 +9,12 @@ const genericColumns = [
 ]
 
 describe('DataTable', () => {
+  it('uses safe defaults when mounted without props', () => {
+    const wrapper = mount(DataTable, { props: { columns: [] } })
+    expect(wrapper.find('.char-list-empty').exists()).toBe(true)
+    expect(wrapper.text()).toContain('没有找到符合条件的战斗')
+  })
+
   it('renders the empty state when there is no data', () => {
     const wrapper = mount(DataTable, {
       props: { columns: genericColumns, data: [], emptyText: '空空如也' }
