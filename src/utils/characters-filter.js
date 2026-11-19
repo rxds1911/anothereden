@@ -8,6 +8,7 @@ export function filterCharacters(list, filters = {}) {
     form = [],
     personality = [],
     lightShadow = [],
+    encounterType = [],
     query = ''
   } = filters
   return filterRows(list, {
@@ -19,7 +20,8 @@ export function filterCharacters(list, filters = {}) {
       { field: 'element', values: element },
       { field: 'form', values: form },
       { field: 'personality', values: personality, arrayMatch: true },
-      { field: 'lightShadow', values: lightShadow }
+      { field: 'lightShadow', values: lightShadow },
+      { field: 'encounterType', values: encounterType }
     ]
   })
 }
@@ -31,6 +33,7 @@ export function hasActiveCharacterFilters(filters = {}) {
     form = [],
     personality = [],
     lightShadow = [],
+    encounterType = [],
     query = ''
   } = filters
   return hasActiveFilters({
@@ -40,7 +43,8 @@ export function hasActiveCharacterFilters(filters = {}) {
       { field: 'element', values: element },
       { field: 'form', values: form },
       { field: 'personality', values: personality },
-      { field: 'lightShadow', values: lightShadow }
+      { field: 'lightShadow', values: lightShadow },
+      { field: 'encounterType', values: encounterType }
     ]
   })
 }

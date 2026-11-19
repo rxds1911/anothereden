@@ -1,5 +1,7 @@
 import { afterAll, afterEach, beforeAll, describe, expect, it, vi } from 'vitest'
 import { mount } from '@vue/test-utils'
+import { readFileSync } from 'node:fs'
+import { resolve } from 'node:path'
 import { sampleCharacters } from '../../src/data/samples/characters.js'
 import { defaultNameDisplayMode } from '../../src/data/config.js'
 import { setNameDisplayMode } from '../../src/utils/name-display.js'
@@ -72,6 +74,17 @@ describe('characters page (src/pages/characters/main.js)', () => {
     expect(wrapper.vm.filteredData.map((c) => c.id)).toEqual(['qian'])
   })
 
+  it('filters characters by encounter type', () => {
+    const wrapper = mountOptions(charactersPage.appOptions)
+    expect(wrapper.vm.encounterTypes).toEqual(['剧情', '梦见'])
+
+    wrapper.vm.filterEncounterType = ['剧情']
+    expect(wrapper.vm.filteredData.map((c) => c.id)).toEqual(['alde'])
+
+    wrapper.vm.filterEncounterType = ['梦见']
+    expect(wrapper.vm.filteredData.map((c) => c.id)).toEqual(['qian', 'aimi', 'lika', 'saiwen'])
+  })
+
   it('tracks whether any filter or query is active', () => {
     const wrapper = mountOptions(charactersPage.appOptions)
     expect(wrapper.vm.hasActiveFilters).toBe(false)
@@ -100,6 +113,7 @@ describe('characters page (src/pages/characters/main.js)', () => {
     wrapper.vm.filterForm = ['AS']
     wrapper.vm.filterPersonality = ['龙']
     wrapper.vm.filterLightShadow = ['天']
+    wrapper.vm.filterEncounterType = ['梦见']
     wrapper.vm.searchQuery = '阿尔德'
 
     wrapper.vm.clearFilters()
@@ -108,6 +122,7 @@ describe('characters page (src/pages/characters/main.js)', () => {
     expect(wrapper.vm.filterForm).toEqual([])
     expect(wrapper.vm.filterPersonality).toEqual([])
     expect(wrapper.vm.filterLightShadow).toEqual([])
+    expect(wrapper.vm.filterEncounterType).toEqual([])
     expect(wrapper.vm.searchQuery).toBe('')
     expect(wrapper.vm.filteredData).toHaveLength(sampleCharacters.length)
   })
@@ -145,6 +160,14 @@ describe('characters page (src/pages/characters/main.js)', () => {
 })
 
 describe('character detail page (src/pages/character-detail/main.js)', () => {
+  it('labels the acquisition description as encounter method', () => {
+    const html = readFileSync(resolve(process.cwd(), 'src/pages/character-detail/index.html'), 'utf8')
+    expect(html).toContain('<div class="stat-label">相遇方式</div>')
+    expect(html).toContain('{{ character.encounterType }}')
+    expect(html).not.toContain('<div class="stat-label">入手方式</div>')
+    expect(html).not.toContain('{{ character.acquisition }}')
+  })
+
   it('resolves known and unknown character ids through the shared helper', () => {
     expect(detailFound.findCharacterById('alde').name).toBe('阿尔德')
     expect(detailFound.findCharacterById('missing')).toBeNull()

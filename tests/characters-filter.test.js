@@ -10,6 +10,7 @@ const characters = [
     weapon: '刀',
     form: 'NS',
     lightShadow: '天',
+    encounterType: '剧情',
     personality: ['主人公', '天之指引'],
     description: '从异世界被召唤而来的少年',
     skills: [{ name: '火焰斩', type: '火' }]
@@ -22,6 +23,7 @@ const characters = [
     weapon: '剑',
     form: 'AS',
     lightShadow: '冥',
+    encounterType: '梦见',
     personality: ['龙'],
     description: '来自水之都市的女剑士',
     skills: [{ name: '龙鳞击', type: '水' }]
@@ -34,6 +36,7 @@ const characters = [
     weapon: '弓',
     form: 'NS',
     lightShadow: '天',
+    encounterType: '梦见',
     personality: ['龙', '法外之人'],
     description: '风之森的精灵族少女',
     skills: [{ name: '疾风矢', type: '风' }]
@@ -68,6 +71,13 @@ describe('filterCharacters', () => {
   it('filters by lightShadow', () => {
     const result = filterCharacters(characters, { lightShadow: ['天'] })
     expect(result.map((c) => c.id).sort()).toEqual(['alde', 'kikyo'])
+  })
+
+  it('filters by encounter type', () => {
+    expect(filterCharacters(characters, { encounterType: ['剧情'] }).map((c) => c.id))
+      .toEqual(['alde'])
+    expect(filterCharacters(characters, { encounterType: ['梦见'] }).map((c) => c.id))
+      .toEqual(['asami', 'kikyo'])
   })
 
   it('matches search query against name', () => {
@@ -117,6 +127,7 @@ describe('hasActiveCharacterFilters', () => {
     expect(hasActiveCharacterFilters({ element: ['火'] })).toBe(true)
     expect(hasActiveCharacterFilters({ personality: ['龙'] })).toBe(true)
     expect(hasActiveCharacterFilters({ lightShadow: ['天'] })).toBe(true)
+    expect(hasActiveCharacterFilters({ encounterType: ['梦见'] })).toBe(true)
     expect(hasActiveCharacterFilters({ query: '阿尔德' })).toBe(true)
   })
 })

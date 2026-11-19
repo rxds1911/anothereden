@@ -4,7 +4,7 @@ import { createApp } from "vue"
     import DataTable from "../../components/DataTable.vue"
     import Breadcrumb from "../../components/Breadcrumb.vue"
     import { sampleCharacters } from "../../data/samples/characters.js"
-    import { weaponTypes, elementOptions, formOptions, lightShadowOptions, personalityOptions } from "../../data/config.js"
+    import { weaponTypes, elementOptions, formOptions, lightShadowOptions, personalityOptions, encounterTypes } from "../../data/config.js"
     import { filterCharacters, hasActiveCharacterFilters } from "../../utils/characters-filter.js"
     import { resolveCharacterName, characterSearchText } from "../../utils/name-display.js"
     import "../../assets/styles/variables.css"
@@ -17,7 +17,7 @@ import { createApp } from "vue"
 
     export const appOptions = {
       data() {
-        return { searchQuery: "", filterWeapon: [], filterElement: [], filterForm: [], filterPersonality: [], filterLightShadow: [], showPersonality: false, sortKey: "", sortDir: "", columns, filterOptions: [], personalityOptions, weaponTypes, elementOptions, formOptions, lightShadowOptions, sidebarOpen: window.innerWidth > 768 }
+        return { searchQuery: "", filterWeapon: [], filterElement: [], filterForm: [], filterPersonality: [], filterLightShadow: [], filterEncounterType: [], showPersonality: false, sortKey: "", sortDir: "", columns, filterOptions: [], personalityOptions, encounterTypes, weaponTypes, elementOptions, formOptions, lightShadowOptions, sidebarOpen: window.innerWidth > 768 }
       },
       computed: {
         // 按全局名称显示模式（国际服译名 / 国服译名 / 日文名）从术语表取名
@@ -32,6 +32,7 @@ import { createApp } from "vue"
             form: this.filterForm,
             personality: this.filterPersonality,
             lightShadow: this.filterLightShadow,
+            encounterType: this.filterEncounterType,
             query: this.searchQuery
           })
         },
@@ -42,6 +43,7 @@ import { createApp } from "vue"
             form: this.filterForm,
             personality: this.filterPersonality,
             lightShadow: this.filterLightShadow,
+            encounterType: this.filterEncounterType,
             query: this.searchQuery
           })
         }
@@ -62,6 +64,7 @@ import { createApp } from "vue"
           this.filterForm = []
           this.filterLightShadow = []
           this.filterPersonality = []
+          this.filterEncounterType = []
           this.searchQuery = ""
         },
         goToDetail(row) { window.location.href = "../character-detail/index.html?id=" + row.id }

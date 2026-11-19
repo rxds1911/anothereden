@@ -4,6 +4,7 @@ import {
   formOptions,
   lightShadowOptions,
   personalityOptions,
+  encounterTypes,
   taskCategories,
   weaponTypes,
   armorTypes,
@@ -25,6 +26,7 @@ const optionSets = {
   formOptions,
   lightShadowOptions,
   personalityOptions,
+  encounterTypes,
   taskCategories,
   weaponTypes,
   armorTypes,
@@ -52,6 +54,7 @@ describe('config option lists', () => {
     expect(elementOptions).toEqual(['火', '水', '风', '地', '无', '阴', '雷', '晶'])
     expect(formOptions).toEqual(['NS', 'AS', 'ES', 'AC'])
     expect(lightShadowOptions).toEqual(['天', '冥'])
+    expect(encounterTypes).toEqual(['剧情', '梦见'])
     expect(weaponTypes).toEqual(['杖', '剑', '刀', '斧', '枪', '弓', '拳', '锤'])
     expect(armorTypes).toEqual(['手环', '项链', '戒指'])
     expect(grastaTypes).toEqual(['攻击', '生命', '支援', '特殊'])

@@ -14,7 +14,8 @@ import {
   bookTypes,
   dungeonTypes,
   eventTypes,
-  taskCategories
+  taskCategories,
+  encounterTypes
 } from '../src/data/config.js'
 import { sampleCharacters } from '../src/data/samples/characters.js'
 import { sampleBattles } from '../src/data/samples/battle.js'
@@ -76,6 +77,7 @@ describe('sample data lists', () => {
       expect(weaponTypes).toContain(c.weapon)
       expect(formOptions).toContain(c.form)
       expect(lightShadowOptions).toContain(c.lightShadow)
+      expect(encounterTypes).toContain(c.encounterType)
       expect(Array.isArray(c.personality)).toBe(true)
       expect(c.personality.length).toBeGreaterThan(0)
       expect(c.personality.every((p) => typeof p === 'string' && p.trim() !== '')).toBe(true)
